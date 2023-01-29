@@ -1,0 +1,115 @@
+@import './variables';
+
+.mb-btn{
+    border-radius: 3px;
+    border: none;
+
+    transition: 0.25s;
+
+    &-dark-blue{
+        background: $mb-btn-background-dark-blue;
+        color: $mb-btn-text-color-dark-blue;
+
+        &:hover{
+            background: $mb-btn-hover-dark-blue;
+            color: $mb-btn-text-color-dark-blue;
+        }
+    }
+    
+    &-gray{
+        background: $mb-btn-background-gray;
+        color: $mb-btn-text-color-gray;
+
+        &:hover{
+            background: $mb-btn-hover-gray;
+            color: $mb-btn-text-color-gray;
+        }
+    }
+
+    &-outline-gray{
+        background: transparent;
+        color: $mb-btn-background-gray;
+        &:hover{
+            border: 1px solid $mb-btn-background-gray;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &-blue{
+        background: $mb-btn-background-blue;
+        color: $mb-btn-text-color-blue;
+
+        &:hover{
+            background: $mb-btn-hover-blue;
+            color: $mb-btn-text-color-blue;
+        }
+    }
+
+    &-outline-blue{
+        background: transparent;
+        color: $mb-btn-background-blue;
+
+        &:hover{
+            border: 1px solid $mb-btn-background-blue;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &-light-blue{
+        background: $mb-btn-background-light-blue;
+        color: $mb-btn-text-color-light-blue;
+
+        &:hover{
+            background: $mb-btn-hover-light-blue;
+            color: $mb-btn-text-color-light-blue;
+        }
+    }
+
+    &-green{
+        background: $mb-btn-background-green;
+        color: $mb-btn-text-color-green;
+
+        &:hover{
+            background: $mb-btn-hover-green;
+            color: $mb-btn-text-color-green;
+        }
+    }
+
+    &-outline-green{
+        background: transparent;
+        color: $mb-btn-background-green;
+
+        &:hover{
+            border: 1px solid $mb-btn-background-green;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+
+    &-red{
+        background: $mb-btn-background-red;
+        color: $mb-btn-text-color-red;
+
+        &:hover{
+            background: $mb-btn-hover-red;
+            color: $mb-btn-text-color-red;
+        }
+    }
+
+    &-outline-red{
+        background: transparent;
+        color: $mb-btn-background-red;
+
+        &:hover{
+            border: 1px solid $mb-btn-background-red;
+        }
+        &:focus {
+            outline: none;
+        }
+    }
+}

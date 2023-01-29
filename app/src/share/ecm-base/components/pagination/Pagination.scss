@@ -1,0 +1,101 @@
+@import './../../style/variables';
+
+.paginition-container{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px;
+    min-width: 600px;
+
+    .info{
+        width: 30%;
+        font-weight: bold;
+        // flex-grow: 0;
+        margin-left: 10px;
+        box-sizing: border-box;
+
+        display: flex;
+        align-items: center;
+        &__item{
+            margin-right: 20px;
+            color: $color-gray-700;
+            font-weight: 400;
+        }
+
+        &__drop-down{
+            width: 50px;
+        }
+    }
+
+    .handle-box{
+        width: 70%;
+        margin-right: 10px;
+        box-sizing: border-box;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+
+        .buttons{
+            .button{
+                min-width: 30px;
+                height: 30px;
+                border-radius: 3px;
+                margin: 5px;
+                background-color: transparent;
+                color: $color-gray-700;
+                border: none;
+                text-align: center;
+        
+                &-active{
+                    background-color: $mb-color-blue-light;
+                    color: $mb-color-blue-primary;
+                }
+        
+                &:hover{
+                    background-color: $mb-color-blue-light;
+                    color: $mb-color-blue-primary;
+                }
+            }
+        }
+
+        .jump{
+            margin-left: 20px;
+            box-sizing: border-box;
+
+            span{
+                // font-weight: bold;
+                margin: 0 5px;
+                color: $color-gray-700;
+            }
+    
+            input{
+                width: 48px;
+                height: 40px;
+                border-radius: 5px;
+                border: 1px solid $mb-color-gray-300;
+                text-align: center;
+                color:  #303030;
+    
+                &:focus{
+                    outline: none;
+                }
+            }
+            
+        }
+    }
+
+    .btn-next-page .btn-pre-page{
+        background-color: #ebf3ff;
+        color: #141ed2;
+    }
+
+    input[type='number'] {
+        -moz-appearance:textfield;
+    }
+    
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+    }
+
+}

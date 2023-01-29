@@ -1,0 +1,50 @@
+@import './variables';
+
+.mb-tag{
+    width: 96px;
+    height: 21px;
+    border-radius: 17px;
+    border: none;
+
+    font-size: 10px;
+    font-weight: bold;
+    // font-stretch: normal;
+    // font-style: normal;
+    // line-height: normal;
+    // letter-spacing: normal;
+    // text-align: center;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &-success{
+        background-color: #d7f2db;
+        color: #1da57d;
+    }
+    
+    &-warning{
+        background-color: #fff2d3;
+        color: #e59d01;
+    }
+
+    &-error{
+        background-color: #ffdce1;
+        color: #de1a34;
+    }
+
+    &-blue{
+        background-color: #e2f0ff;
+        color: #121bba;
+    }
+
+    &-gray{
+        background-color: #e8e8e8;
+        color: #737373;
+    }
+
+    &-disabled{
+        background-color: #f7f7f7;
+        color: #d8d8d8;
+    }
+}

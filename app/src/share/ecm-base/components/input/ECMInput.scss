@@ -1,0 +1,16 @@
+@import './../../style/variables';
+
+.ecm-input-container{
+    &__input{
+        height: 40px;
+        width: 280px;
+
+        border-radius: 6px;
+        border: 1px solid $mb-color-gray-400;
+
+        background-color: white;
+        &:focus{
+            outline: none;
+        }
+    }
+}

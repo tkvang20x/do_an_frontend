@@ -1,0 +1,22 @@
+.sidebar-container{
+    width: 259px;
+    height: 100vh;
+    padding: 0 17px;
+    // box-sizing: border-box;
+
+    background-color: white;
+    box-shadow: 0 3px 14px 0 rgba(0, 0, 0, 0.08);
+
+    &__section-top{
+        // margin: 35px 84px 40px 2px;
+
+        &__logo{
+            height: 40px;
+            width: 40px;
+            border-radius: 20px;
+
+            background-image: url('./../../assets/logos/mb.png');
+            background-size: cover;
+        }
+    }
+}

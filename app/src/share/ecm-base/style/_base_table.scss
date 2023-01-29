@@ -1,0 +1,15 @@
+@import './variables';
+
+.ant-table-thead{
+    border-radius: 50px;
+
+    tr th{
+        color: white;
+        background: $mb-header-background !important;
+        color:  $mb-header-text-color;
+    }
+}
+
+.ant-table-container{
+    border-radius: 50px;
+}

@@ -1,11 +1,24 @@
-import SimpleInput from './components/SimpleInput';
+import React from "react";
+import { Provider } from "react-redux";
+import Layout from "./layout/Layout";
+import { store } from "./redux/Store";
 
-function App() {
+/**
+ *  Integration with App Shell
+ */
+export let callbackFunc = null;
+
+const App = ({ prefixPath, callback }) => {
+  callbackFunc = callback;
   return (
-    <div className="app">
-      <SimpleInput />
-    </div>
+    <Provider store={store}>
+      <>
+        <Layout prefixPath={prefixPath ? prefixPath : ""}>
+          <Layout />
+        </Layout>
+      </>
+    </Provider>
   );
-}
+};
 
 export default App;

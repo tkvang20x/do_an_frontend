@@ -1,0 +1,56 @@
+@import './variables';
+// @import './fonts';
+@import './base_button';
+@import './base_rectangle';
+@import './base_table';
+@import './base_input';
+@import './base_tag';
+// @import './reset_css';
+
+.flex-container{
+    &-row{
+        display: flex;
+        flex-direction: row;
+    }
+    
+    &-column{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.flex-item{
+    &-end{
+        display: flex;
+        flex-direction: row-reverse;
+    }
+
+    &-center{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    &-space-between{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &-space-around{
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
+
+    &-wrapper{
+        display: flex;
+        flex-wrap: wrap;
+    }
+}
+
+.gap{
+
+}
+
+

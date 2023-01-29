@@ -1,0 +1,11 @@
+@import './variables';
+
+.rectangle{
+    border: none;
+    border-radius: 5px;
+
+    &-blue{
+        background: $mb-header-background;
+        color: $mb-header-text-color;
+    }
+}

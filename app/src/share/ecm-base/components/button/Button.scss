@@ -1,0 +1,95 @@
+@import './../../style/variables';
+
+@mixin style-button(
+    $background,
+    $color,
+    $border,
+    $hover-background,
+){
+    background-color: $background;
+    color: $color;
+    border: 1px solid $border;
+    &:hover{
+        background-color: $hover-background;
+    }
+}
+
+
+.ecm-button{
+    height: 110px;
+    width: 40px;
+    margin: 0 0 32px;
+    padding: 11px 27px;
+    border-radius: 3px;
+    border: none;
+
+    font-size: 14px;
+    font-weight: normal;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: normal;
+    letter-spacing: normal;
+
+    &__normal-blue{
+        @include style-button(
+            $color-blue-primary,
+            $color-white,
+            none,
+            $color-blue-400
+        )
+    }
+
+    &__dark-blue{
+        @include style-button(
+            $color-blue-800
+            $color-white,
+            none,
+            $color-blue-700
+        )
+    }
+
+    &__light-blue{
+        @include style-button(
+            $color-blue-100,
+            $color-blue-primary,
+            none,
+            $color-blue-200
+        )
+    }
+
+    &__regular-blue{
+        @include style-button(
+            $color-white,
+            $color-blue-primary,
+            $color-blue-primary,
+            $color-blue-100
+        )
+    }
+
+    &__normal-red{
+        @include style-button(
+            $color-red-400
+            $color-white,
+            none,
+            $color-red-300
+        )
+    }
+
+    &__regular-red{
+        @include style-button(
+            $color-white,
+            $color-red-400,
+            $color-red-400
+            $color-red-100
+        )
+    }
+
+    &__normal-gray{
+        @include style-button(
+            $color-gray-300,
+            $color-gray-700,
+            none,
+            $color-red-500
+        )
+    }
+}
