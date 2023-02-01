@@ -6,10 +6,8 @@ import { store } from "./redux/Store";
 /**
  *  Integration with App Shell
  */
-export let callbackFunc = null;
 
-const App = ({ prefixPath, callback }) => {
-  callbackFunc = callback;
+const App = ({ prefixPath }) => {
   return (
     <Provider store={store}>
       <>

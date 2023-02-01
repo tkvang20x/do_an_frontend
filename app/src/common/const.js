@@ -22,6 +22,7 @@ export const stopLoading = () => {
 }
 
 export const startLoading = () => {
+    console.log("vao day");
     document.getElementById("loading").classList.add("loading");
 }
 
