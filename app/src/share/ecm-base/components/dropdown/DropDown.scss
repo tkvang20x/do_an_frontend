@@ -29,11 +29,8 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+        cursor: pointer;
         // z-index: 2;
-
-        &__text{
-            color:$mb-color-gray-700;
-        }
 
         &__icon{
             color: $mb-color-blue-primary;
@@ -57,7 +54,8 @@
         background-color: white;
         display: none;
         transition: all 0.3s ease;
-        overflow: hidden;
+        max-height: 200px;
+        overflow: auto;
 
         &__item{
             height: 40px;
@@ -65,6 +63,7 @@
             vertical-align: middle;
             display: flex;
             align-items: center;
+            cursor: pointer;
 
             &:hover{
                 background-color: $mb-color-blue-light;

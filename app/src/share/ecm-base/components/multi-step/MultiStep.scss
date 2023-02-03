@@ -1,0 +1,100 @@
+@import '../../style//variables';
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts/";
+@import '~@fortawesome/fontawesome-free/scss/fontawesome';
+@import '~@fortawesome/fontawesome-free/scss/regular';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/solid';
+
+.ecm-multi-step-container {
+    position: relative;
+    margin-top: 20px;
+    z-index: 0;
+    border: none;
+    position: relative;
+    &__row{
+        flex-flow: row wrap;
+        align-items: center;
+        flex-direction: row;
+    }
+}
+#ecm-multi-step-progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey;
+    display: flex;
+}
+
+#ecm-multi-step-progressbar-icon {
+    margin-bottom: 10px;
+    overflow: hidden;
+    color: lightgrey;
+    display: flex;
+}
+
+#ecm-multi-step-progressbar .ecm-multi-step-active {
+    color: $mb-color-sematic-success
+}
+
+#ecm-multi-step-progressbar li {
+    list-style-type: none;
+    font-size: 15px;
+    width: 25%;
+    float: left;
+    position: relative;
+    font-weight: 400
+}
+
+#ecm-multi-step-progressbar-icon li {
+    list-style-type: none;
+    font-size: 35px;
+    width: 25%;
+    float: left;
+    font-weight: 400;
+    padding-left: 3px;
+    color: $color-gray-700;
+}
+#ecm-multi-step-progressbar-icon li:last-child {
+    width: auto;
+}
+#ecm-multi-step-progressbar .em-multi-step-check:before {
+    font-family: 'Font Awesome\ 6 Free';
+    content: '\f058';
+    font-size: 35px;
+}
+
+#ecm-multi-step-progressbar li:before {
+    text-align: center;
+    width: 35px;
+    height: 35px;
+    line-height: 35px;
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 50%;
+    margin: 0 0 10px 0;
+}
+
+#ecm-multi-step-progressbar li:after {
+    @extend %fa-icon;
+    @extend .fa-brands;
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 15px;
+    z-index: -1
+}
+#ecm-multi-step-progressbar li:last-child:after {
+    display: none;
+}
+#ecm-multi-step-progressbar li:last-child {
+    width: auto;
+}
+
+#ecm-multi-step-progressbar li.ecm-multi-step-active:before,
+#ecm-multi-step-progressbar li.ecm-multi-step-active:after {
+    background: $mb-color-sematic-success
+}

@@ -1,0 +1,106 @@
+@import '../../style//variables';
+
+.ocr_base_multi-selected {
+    background-color: $color-blue-200;
+}
+
+.ocr_base_multi{
+    &__title{
+        width: calc(100% - 15px);
+    }
+    &__icon{
+        color: $color-blue-primary;
+    }
+}
+
+.dropdown-multi-input{
+    line-height: 1.57;
+    padding: 0px 10px;
+    height: 100%;
+    width: 100%;
+}
+
+.dropdown-multiselect-container__header__value{
+    margin: 4px 8px 0px 0px;
+}
+
+.dropdown-multiselect-container{
+    position: relative;
+
+    &__overlay{
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        z-index: 1;
+        display: none;
+
+        &__active{
+            display: flex;
+        }
+    }
+
+    &__header{
+        width: 100%;
+        border-radius: 6px;
+        border: 1px solid $mb-color-gray-400;
+        box-sizing: border-box;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        // z-index: 2;
+
+        &__text{
+            color:$mb-color-gray-700;
+        }
+
+        &__icon{
+            color: $mb-color-blue-primary;
+            padding-left: 5px;
+            &:hover{
+                cursor: pointer;
+            }
+        }
+    }
+
+
+    &__select-box{
+        width: 100%;
+        margin-top: 10px;
+        border-radius: 6px;
+        border: none;
+        box-shadow: 0 3px 14px 0 rgba(0, 0, 0, 0.14);
+        box-sizing: border-box;
+        position: absolute;
+        z-index: 2;
+        background-color: white;
+        display: none;
+        transition: all 0.3s ease;
+        max-height: 200px;
+        overflow: auto;
+
+        &__item{
+            height: 40px;
+            padding: 0 10px;
+            vertical-align: middle;
+            display: flex;
+            align-items: center;
+
+            &:hover{
+                background-color: $mb-color-blue-light;
+                color:#6788ec;
+            }
+        }
+
+        &__top{
+            bottom: 50px;
+        }
+    }
+
+    .open{
+        display: block;
+        opacity: 1;
+    }
+}

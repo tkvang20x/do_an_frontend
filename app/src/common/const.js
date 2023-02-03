@@ -1,29 +1,13 @@
-import { notification } from "antd";
-
-/*const routes link*/
-export const routesLink = [
-    {
-        path: "/ocr/processes/user-verify",
-        name: "",
-        breadcrumb: "user-verify",
-        role: "MenuMaterialOCR",
-    },
-    {
-        path: "/ocr/processes/view-detail",
-        name: "",
-        breadcrumb: "view-detail",
-        role: "MenuMaterialOCR",
-    }
-];
-
+import {openNotification, subLoading, addLoading} from "../layout/Layout";
 
 export const stopLoading = () => {
-    document.getElementById("loading").classList.remove("loading");
+  subLoading()
 }
 
 export const startLoading = () => {
-    console.log("vao day");
-    document.getElementById("loading").classList.add("loading");
+  addLoading()
 }
 
-
+export const openNotificationCommon = (type, message, description) => {
+  openNotification(type, message, description)
+};

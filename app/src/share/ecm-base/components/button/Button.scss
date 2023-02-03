@@ -8,7 +8,7 @@
 ){
     background-color: $background;
     color: $color;
-    border: 1px solid $border;
+    border: 1px solid border;
     &:hover{
         background-color: $hover-background;
     }
@@ -16,10 +16,8 @@
 
 
 .ecm-button{
-    height: 110px;
-    width: 40px;
-    margin: 0 0 32px;
-    padding: 11px 27px;
+    width: 110px;
+    height: 40px;
     border-radius: 3px;
     border: none;
 
@@ -30,20 +28,23 @@
     line-height: normal;
     letter-spacing: normal;
 
+    text-align: center;
+    cursor: pointer;
+
     &__normal-blue{
         @include style-button(
             $color-blue-primary,
             $color-white,
-            none,
+            $color-blue-primary,
             $color-blue-400
         )
     }
 
     &__dark-blue{
         @include style-button(
-            $color-blue-800
+            $color-blue-800,
             $color-white,
-            none,
+            $color-blue-primary,
             $color-blue-700
         )
     }
@@ -52,7 +53,7 @@
         @include style-button(
             $color-blue-100,
             $color-blue-primary,
-            none,
+            $color-blue-primary,
             $color-blue-200
         )
     }
@@ -68,9 +69,9 @@
 
     &__normal-red{
         @include style-button(
-            $color-red-400
+            $color-red-400,
             $color-white,
-            none,
+            $color-blue-primary,
             $color-red-300
         )
     }
@@ -79,7 +80,7 @@
         @include style-button(
             $color-white,
             $color-red-400,
-            $color-red-400
+            $color-blue-primary,
             $color-red-100
         )
     }
@@ -88,8 +89,17 @@
         @include style-button(
             $color-gray-300,
             $color-gray-700,
-            none,
-            $color-red-500
+            $color-blue-primary,
+            $color-gray-500
+        )
+    }
+
+    &__normal-green{
+        @include style-button(
+            $mb-btn-background-green,
+            $mb-btn-text-color-green,
+            $mb-btn-pressed-green,
+            $mb-btn-hover-green
         )
     }
 }

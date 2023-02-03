@@ -1,0 +1,48 @@
+@import './../../style//variables';
+
+.ecm-base__collapse-container{
+    width: fit-content;
+    height: auto;
+
+    transition: 0.3s;
+
+    &__header{
+        height: 30px;
+
+        padding: 0 10px;
+        border-radius: 6px;
+        border: 1px solid $color-gray-600;
+
+        font-size: 12px;
+
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+
+        &__icon{
+            transition: 0.3s;
+        }
+
+        .expand{
+            transform: rotate(90deg);
+        }
+
+        &__name{
+            
+        }
+    }
+
+    &__content{
+        padding: 10px;
+    }
+
+    .show{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .hidden{
+        display: none;
+    }
+}

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import PropTypes from 'prop-types'
 import './Pagination.scss'
 import Toasts from '../toasts/Toasts';
@@ -6,8 +6,9 @@ import DropDown from '../dropdown/DropDown';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faAngleRight } from "@fortawesome/free-solid-svg-icons";
 
-const Pagination = (props) => {
-    let { pagination, onPageChange, onNumberItemChange } = props;
+const Pagination = ({ pagination, onPageChange, onNumberItemChange, placement ="top" }) => {
+
+    const refContainer = useRef(null)
     if (!pagination) {
         pagination = {
             page: 0,
@@ -28,7 +29,17 @@ const Pagination = (props) => {
     const [arrOfCurrentPage, setArrOfCurrentPage] = useState([])
     const [toastList, setToastList] = useState([])
     const [numberShow, setNumberShow] = useState(size)
+    const [showTotal, setShowTotal] = useState(true)
     let toastProperties = null
+
+    useEffect(() => {
+        const widthPagination = refContainer.current.clientWidth
+        if(widthPagination && widthPagination <= 600){
+            setShowTotal(false)
+        }else {
+            setShowTotal(true)
+        }
+      }, [refContainer])
 
     useEffect(() => {
         setNumberShow(size)
@@ -57,19 +68,33 @@ const Pagination = (props) => {
         setCurrentPage(pagination.page)
         let tempNumberOfPage = [...arrOfCurrentPage]
 
-        if (numberOfPages.length <= 8) {
+        if (numberOfPages.length <= 4 && !showTotal) {
+            tempNumberOfPage = numberOfPages
+        }else
+        if (numberOfPages.length <= 8 && showTotal) {
             tempNumberOfPage = numberOfPages
         }
-        else if (currentPage >= 1 && currentPage <= 4) {
-            tempNumberOfPage = [1, 2, 3, 4, 5, midDots, numberOfPages.length]
+        else if (currentPage >= 1 && currentPage <= 4 && showTotal) {
+            tempNumberOfPage = [1, 2, 3, 4 , 5, midDots, numberOfPages.length]
         }
-        else if (currentPage > 4 && currentPage < numberOfPages.length - 2) {
+        else if (currentPage >= 1 && currentPage <= 3 && !showTotal) {
+            tempNumberOfPage = [1, 2, 3, midDots, numberOfPages.length]
+        }
+        else if (currentPage > 4 && currentPage < numberOfPages.length - 2 && showTotal) {
             const sliceLeft = numberOfPages.slice(currentPage - 2, currentPage)
             const sliceRight = numberOfPages.slice(currentPage, currentPage + 1)
             tempNumberOfPage = [1, leftDots, ...sliceLeft, ...sliceRight, rightDots, numberOfPages.length]
         }
-        else if (currentPage > numberOfPages.length - 3) {
+        else if (currentPage >= 4 && currentPage < numberOfPages.length - 2 && !showTotal) {
+            const sliceLeft = numberOfPages.slice(currentPage - 2, currentPage)
+            tempNumberOfPage = [1, leftDots, ...sliceLeft, rightDots, numberOfPages.length]
+        }
+        else if (currentPage > numberOfPages.length - 3 && showTotal) {
             const slice = numberOfPages.slice(numberOfPages.length - 5, numberOfPages.length)
+            tempNumberOfPage = [1, leftDots, ...slice]
+        }
+        else if (currentPage > numberOfPages.length - 3 && !showTotal) {
+            const slice = numberOfPages.slice(numberOfPages.length - 3, numberOfPages.length)
             tempNumberOfPage = [1, leftDots, ...slice]
         }
         else if (currentPage === midDots) {
@@ -103,7 +128,9 @@ const Pagination = (props) => {
             let regex = /^[0-9]+$/
             let value = event.target.value
             if (value.match(regex)) {
-                if (value <= numberOfPages.length) {
+                if (value <= 0) {
+                    showToast("warning", "Cảnh báo", "Số trang phải lơn hơn 0!")
+                } else if (value <= numberOfPages.length) {
                     handlePageChange(Number(value))
                 }
                 else {
@@ -127,50 +154,51 @@ const Pagination = (props) => {
         const newTotalPage = numberTotalPage > numberTotalPageFixed ? numberTotalPageFixed + 1 : numberTotalPageFixed
         const newPage = page <= newTotalPage ? page: newTotalPage
         setNumberShow(value)
-        onNumberItemChange(value, newPage)
+        onNumberItemChange(value, newPage || 1)
     }
 
 
     return (
-        <div className='paginition-container'>
-            <div className='info'>
-                <div className='info__item'>
+        <div className='paginition-container' ref={refContainer}>
+            <div className={`info ${showTotal ? null: "paginition-container__info-view-small"}`}>
+                {showTotal && <div className='info__item'>
                     Hiển thị {totalItem > 0 ? (page - 1) * size + 1 : 0}-
                     {((page - 1) * size + size) < totalItem ? ((page - 1) * size + size) : totalItem} của {totalItem}
                 </div>
+                }
                 <DropDown
                     selected={numberShow}
                     listItem={listNumberShow}
                     onSelected={handleChangeNumberShow}
-                    placement="top"
+                    placement={placement}
 
                     className="info__drop-down info__item"
                 ></DropDown>
             </div>
-            <div className='handle-box'>
+            <div className={`handle-box ${showTotal ? null: "paginition-container__handle-box-view-small"}`}>
                 <div className='buttons'>
                     <button
                         type="button"
-                        disabled={currentPage === 1 || totalPage ==0? true : false}
+                        disabled={currentPage === 1 || totalPage ===0? true : false}
                         className='button btn-pre-page'
                         onClick={() => handlePageChange(currentPage - 1)}
                     >
                         <FontAwesomeIcon icon={faAngleLeft} />
                     </button>
-                    {arrOfCurrentPage.map((page, index) => {
+                    {arrOfCurrentPage.map((pageItem, index) => {
                         return (
                             <button
                                 type="button"
                                 key={index}
-                                className={'button' + ((page === currentPage) ? ' button-active' : '')}
-                                onClick={() => handlePageChange(page)}
-                            >{page}
+                                className={'button' + ((pageItem === currentPage) ? ' button-active' : '')}
+                                onClick={() => handlePageChange(pageItem)}
+                            >{pageItem}
                             </button>
                         )
                     })}
                     <button
                         type="button"
-                        disabled={(currentPage === totalPage || totalPage ==0) ? true : false}
+                        disabled={(currentPage === totalPage || totalPage === 0) ? true : false}
                         className='button btn-next-page'
                         onClick={() => handlePageChange(currentPage + 1)}>
                         <FontAwesomeIcon icon={faAngleRight} />
@@ -178,7 +206,7 @@ const Pagination = (props) => {
                 </div>
                 <div className='jump'>
                     <span>Đến:</span>
-                    <input onKeyDown={handleGo} type="number" min="1" value={valueGo} onChange={handleChangeInput}></input>
+                    <input disabled={totalPage === 0} onKeyDown={handleGo} type="number" min="1" value={valueGo} onChange={handleChangeInput}></input>
                 </div>
             </div>
             <Toasts toastList={toastList} setList={setToastList}></Toasts>
@@ -189,7 +217,8 @@ const Pagination = (props) => {
 Pagination.propTypes = {
     pagination: PropTypes.object.isRequired,
     onPageChange: PropTypes.func,
-    onNumberItemChange: PropTypes.func
+    onNumberItemChange: PropTypes.func,
+    placement: PropTypes.string
 }
 
 Pagination.defaultProps = {

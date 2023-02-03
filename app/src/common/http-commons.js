@@ -5,9 +5,6 @@ export const JSON_API_CONTENT_TYPE = "application/vnd.api+json";
 export const FORM_CONTENT_TYPE = "application/x-www-form-urlencoded";
 export const FORM_CONTENT_MULTIPART = "multipart/form-data";
 
-const REST_BASE_URL = 'http://127.0.0.1:8000/do-an/v1';
-
-
 /**
  * HTTP REST api access
  *   contentType: accepted json/json api content type
@@ -15,7 +12,7 @@ const REST_BASE_URL = 'http://127.0.0.1:8000/do-an/v1';
 export const httpAccess = (contentType) => {
   try {
     return axios.create({
-      baseURL: REST_BASE_URL,
+      baseURL: process.env.REACT_APP_REST_BASE_URL,
       timeout: 1000 * 30, // time out 30 seconds
       headers: {
         'Access-Control-Allow-Origin': '*',
@@ -28,7 +25,29 @@ export const httpAccess = (contentType) => {
   }
 };
 
-const checkToken = (token) => {
-  return (token == null || token.length === 0 || token === "null") ? false: true;
+
+
+const axiosClient = axios.create({
+  baseURL:  process.env.REACT_APP_REST_BASE_URL
+})
+
+axiosClient.interceptors.request.use(async (config) => {
+  config.headers.Authorization = localStorage.getItem("token")? `Bearer ${localStorage.getItem("token")}`: null;
+  return config
+})
+
+axiosClient.defaults.headers= {
+  'Content-Type': 'application/json'
 }
 
+axiosClient.interceptors.response.use((response) => {
+  if (response && response.data){
+      return response
+  }
+  return null
+}, (error) => {
+  throw error;
+})
+
+
+export {axiosClient}

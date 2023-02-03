@@ -2,6 +2,7 @@
 
 .dropdown-container{
     position: relative;
+    height: 40px;
 
     &__overlay{
         position: fixed;
@@ -19,21 +20,19 @@
 
     &__header{
         width: 100%;
-        height: 40px;
+        height: 100%;
         padding: 0 10px;
         border-radius: 6px;
         border: 1px solid $mb-color-gray-400;
         box-sizing: border-box;
         position: relative;
 
+        background-color: white;
+
         display: flex;
         align-items: center;
         justify-content: space-between;
         // z-index: 2;
-
-        &__text{
-            color:$mb-color-gray-700;
-        }
 
         &__icon{
             color: $mb-color-blue-primary;
@@ -42,10 +41,14 @@
                 cursor: pointer;
             }
         }
+        &__text{
+            font-size: 14px;
+        }
     }
 
 
     &__select-box{
+        font-size: 14px;
         width: 100%;
         margin-top: 10px;
         border-radius: 6px;
@@ -57,7 +60,8 @@
         background-color: white;
         display: none;
         transition: all 0.3s ease;
-        overflow: hidden;
+        max-height: 200px;
+        overflow: auto;
 
         &__item{
             height: 40px;
@@ -65,6 +69,10 @@
             vertical-align: middle;
             display: flex;
             align-items: center;
+
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
 
             &:hover{
                 background-color: $mb-color-blue-light;
@@ -80,5 +88,12 @@
     .open{
         display: block;
         opacity: 1;
+    }
+
+    &__no-drop{
+        .dropdown-container__header{
+            background-color: transparent;
+            cursor: no-drop;
+        }
     }
 }

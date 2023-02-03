@@ -1,0 +1,62 @@
+@import './../../style/variables';
+
+.ecm-switch-container {
+    width: 50px;
+    height: 25px;
+    background: $color-gray;
+    border-radius: 35px;
+    position: relative;
+    border: 2px solid;
+    position: relative;
+    border: 0.5px solid $color-gray;
+    text-align: left;
+  }
+
+  .ecm-switch-on,
+  .ecm-switch-off {
+    position: absolute;
+    display: inline-block;
+    line-height: 21px;
+    font-size: 18px;
+    margin: 1px;
+    color: $color-white !important;
+    cursor: default;
+  }
+  .ecm-switch-on {
+    opacity: 0;
+    left: 1%;
+  }
+  .ecm-switch-off {
+    right: 1%;
+  }
+  .ecm-switch-circle {
+    height: 21px;
+    width: 21px;
+    background: $color-white;
+    border-radius: 50%;
+    margin: 2px;
+    display: inline-block;
+    transition-duration: 0.5s;
+    border: none;
+    box-shadow: 0px 12px 58px -13px rgba(0, 0, 0, 0.42);
+    -webkit-box-shadow: 0px 12px 58px -13px rgba(0, 0, 0, 0.42);
+    -moz-box-shadow: 0px 12px 58px -13px rgba(0, 0, 0, 0.42);
+    transform: translate(0%, -5%);
+  }
+
+  .ecm-switch-click .ecm-switch-circle {
+    transform: translate(110%, -5%);
+    transition-duration: 0.5s;
+  }
+  .ecm-switch-click .ecm-switch-container {
+    background: $color-blue-500;
+    border: 0.5px solid $color-blue-700;
+  }
+  .ecm-switch-click .ecm-switch-on {
+    transition-delay: 0.1s;
+    opacity: 1;
+  }
+  .ecm-switch-click .ecm-switch-off {
+    transition-delay: 0.1s;
+    opacity: 0;
+  }

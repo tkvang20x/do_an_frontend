@@ -2,8 +2,10 @@ import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faAngleDown, faAngleUp} from "@fortawesome/free-solid-svg-icons";
-import './Table.scss'
+import './DataTable.scss'
 import Pagination from "../pagination/Pagination"
+import Utils from '../../../../common/utils';
+import $ from "jquery"
 
 const defaulPagination =  {
     page: 1,
@@ -12,7 +14,7 @@ const defaulPagination =  {
     totalItem: 0,
   }
 
-const Table = ({tableData, headerData, pagination, sort, onSort, showPagination = true, onPageChange = Function(), onNumberItemChange = Function()}) => {
+const DataTable = ({tableData, headerData, pagination, sort, onSort, showPagination = true, onPageChange = Function(), onNumberItemChange = Function(), onClickRow = Function(), rowClassName}) => {
     const [isDecrement, setIsDecrement] = useState(false)
     const [dataView, setDataView] = useState([])
     const [paginationTable, setPaginationTable] = useState(defaulPagination)
@@ -22,6 +24,10 @@ const Table = ({tableData, headerData, pagination, sort, onSort, showPagination 
         setPaginationTable(newPagination)
     },[tableData, pagination])
 
+    // $(document).ready(function () {
+    //     Utils.showTooltip()
+    // })
+
     useEffect(() => {
         let newDataView = [...tableData]
         if(tableData && tableData.length > paginationTable.size ) {
@@ -29,6 +35,7 @@ const Table = ({tableData, headerData, pagination, sort, onSort, showPagination 
         }
         setDataView(newDataView)
     },[paginationTable])
+
 
     const setPagination = () => {
         if(pagination) {
@@ -61,17 +68,19 @@ const Table = ({tableData, headerData, pagination, sort, onSort, showPagination 
         for (let header of headerData) {
             rowData.push({
                 key: header.dataIndex,
-                value: header.render(row[header.dataIndex], row),
+                value: header.render ? header.render(row[header.dataIndex], row): row[header.dataIndex],
                 className: header?.className ? header?.className : "",
-                titleClassName: header?.titleClassName ? header?.titleClassName : ""
+                titleClassName: header?.titleClassName ? header?.titleClassName : "",
+                properties: header?.propertiesRow ? header?.propertiesRow(row) : {}
             });
         }
         return (
-            <tr key={index}>
+            <tr className={(rowClassName) ? rowClassName(row) : ""} key={index} onClick={(e) => {onClickRow(row, e)}}
+            >
                 {paginationTable ? <td>{(paginationTable.page - 1) * paginationTable.size + index + 1}</td>:
                               <td>{index + 1}</td>}
                 {rowData.map((item, indexItem) => {
-                        return (<td key={indexItem} data-heading={item.key} className={item.className}>
+                        return (<td key={indexItem} className={item.className} {...item.properties}>
                             {item.value}
                         </td>)
                     }
@@ -103,6 +112,7 @@ const Table = ({tableData, headerData, pagination, sort, onSort, showPagination 
 
     return (
         <div className='table-container'>
+            <div className='table-container__content'>
             <table className='table-container__table'>
                 <thead>
                 <tr>
@@ -134,13 +144,14 @@ const Table = ({tableData, headerData, pagination, sort, onSort, showPagination 
                 </React.Suspense>
 
             </table>
+            </div>
             {(!tableData || tableData.length < 1) &&
             <div className='empty'>
                 <div className='logo'></div>
                 <div className='text'>Không có dữ liệu</div>
             </div>
             }
-            {showPagination &&<Pagination
+            {showPagination && <Pagination
                 pagination={paginationTable}
                 onPageChange={handleOnPageChange}
                 onNumberItemChange={handleNumberItemChange}
@@ -149,11 +160,15 @@ const Table = ({tableData, headerData, pagination, sort, onSort, showPagination 
     )
 }
 
-Table.propTypes = {
+DataTable.propTypes = {
     tableData: PropTypes.arrayOf(PropTypes.object).isRequired,
     headerData: PropTypes.arrayOf(PropTypes.object).isRequired,
     onPageChange: PropTypes.func,
-    onNumberItemChange: PropTypes.func
+    onNumberItemChange: PropTypes.func,
+    pagination: PropTypes.object,
+    sort: PropTypes.bool,
+    onSort: PropTypes.func,
+    showPagination: PropTypes.bool,
 }
 
-export default Table
+export default DataTable

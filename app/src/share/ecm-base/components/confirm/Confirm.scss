@@ -1,0 +1,20 @@
+.ocr-base-confirm-body{
+    font-size: 15px;
+    min-height: 50px;
+    padding: 0.5rem;
+    line-height: 1.25rem;
+}
+
+.ocr-button-confirm{
+   margin: 0.25rem;
+}
+
+.ocr-base-confirm-button{
+    align-items: center;
+    font-size: 14px;
+    button{
+        width: 100px;
+        height: 30px;
+        margin-left: 20px;
+    }
+}

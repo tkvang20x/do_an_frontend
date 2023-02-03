@@ -29,6 +29,38 @@
         border-top-right-radius: 10px;
         overflow: hidden;
 
+        &__scroll{
+
+            tbody{
+                display: block;
+                max-height: 100%;
+                overflow-y: auto;
+                border-radius: 0px 0px 10px 10px;
+                &::-webkit-scrollbar {
+                    width: 10px;
+                    border-radius: 6px;
+                    left:-100px;
+                }
+                
+                /* Track */
+                &::-webkit-scrollbar-track {
+                    background: transparent;
+                }
+                
+                /* Handle */
+                &::-webkit-scrollbar-thumb {
+                    background: $color-gray-600;
+                    border-radius: 6px;
+                }
+            }
+
+            thead, tbody tr {
+                display:table;
+                width:100%;
+                table-layout:fixed;
+            }
+        }
+
         &__header{
             display: flex;
             flex-direction: row;
@@ -51,7 +83,7 @@
 
         thead{
             background-color: $mb-header-background;
-            border-radius: 10px;
+            border-radius: 10px 10px 0px 0px;
 
             tr{
                 background-color: transparent;

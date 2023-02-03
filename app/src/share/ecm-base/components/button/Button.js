@@ -1,11 +1,14 @@
 import React from 'react'
 import './Button.scss'
 
-const Button = ({children, type, content, onClick}) => {
+const Button = ({className, children, type, onClick, title, id="", mode="button"}) => {
   return (
     <button
-        className={`ecm-button ecm-button__${type}`}
+        className={`ecm-button ecm-button__${type} ${className|| ""}`}
         onClick={onClick}
+        title={title}
+        type={mode}
+        id={id}
     >{children}</button>
   )
 }

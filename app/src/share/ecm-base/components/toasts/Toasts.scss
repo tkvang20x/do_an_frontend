@@ -1,9 +1,8 @@
 .toasts-container{
-    font-size: 18px;
+    font-size: 14px;
     position: fixed;
     z-index: 10;
     transition: 0.3s ease;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 
     .toast{
         margin-bottom: 1rem;
@@ -15,7 +14,8 @@
         display: flex;
         align-items: center;
         justify-content: left;
-
+        flex-basis: 360px;
+        line-height: 1.5;
         width: 360px;
         height: 80px;
         padding: 10px;
@@ -28,7 +28,7 @@
         .logo{
             width: 10%;
             height: 100%;
-            font-size:32px;
+            font-size:24px;
             p{
                 text-align: center;
             }
@@ -44,7 +44,7 @@
             .title{
                 width: 100%;
                 font-weight: bold;
-                font-size: 20px;
+                font-size: 16px;
                 color: #212121;
                 text-align: left;
             }
@@ -56,15 +56,14 @@
         }
 
         .button{
+            clear: both;
             width: 10%;
             height: 100%;
-
+            text-align: end;
             button{
                 border: none;
                 background: transparent;
             }
-
-            font-size:24px;
         }
     }
 }

@@ -23,6 +23,7 @@ const Login = ({prefixPath, showToast}) => {
   const handleSubmitLogin = () => {
     startLoading();
     LoginService.login(formLogin).then(response => {
+      console.log(response);
       if (response.data.status === 200){
         window.localStorage.setItem("token", response.data.data.token)
         showToast("success", "Thông báo", "Đăng nhập thành công!");

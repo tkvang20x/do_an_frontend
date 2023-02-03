@@ -2,7 +2,6 @@ import { httpAccess, JSON_CONTENT_TYPE } from "../../common/http-commons";
 import Utils from "../../common/utils";
 import CommonService from "./commonService";
 
-
 const login = async (dataLogin) => {
     var loginResponse = null;
     try {
@@ -11,7 +10,7 @@ const login = async (dataLogin) => {
             loginPath, JSON.stringify(dataLogin));
         return loginResponse;
     } catch (error) {
-        console.log("[Engine]- Create", error);
+        console.log("[Login]- Fail", error);
         return CommonService.errorServiceHandle(error);
     }
 

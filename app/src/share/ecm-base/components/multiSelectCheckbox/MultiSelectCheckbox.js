@@ -1,7 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./MultiSelectCheckbox.scss"
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 import { useDetectOutsideClick } from "./useDetectOutsideClick";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+
 
 const MultiSelectCheckbox = ({ options, placeholder, onChange, className="", defaultValue = [] }) => {
   const selectRef = useRef(null);
@@ -25,7 +28,7 @@ const MultiSelectCheckbox = ({ options, placeholder, onChange, className="", def
     setInputsActiveStatus(newInputsActiveStatus);
     setListContentSelected(newlListContentSelected);
     setValue(defaultValue);
-  },[defaultValue]);
+  },[]);
 
   const toggleIsClicked = () => {
     setIsClicked(!isClicked);
@@ -69,7 +72,7 @@ const MultiSelectCheckbox = ({ options, placeholder, onChange, className="", def
                 <span className="multi-select-checkbox-container__content__placeholder" >
                 {listContentSelected?.length > 0 ? listContentSelected.join(", ") : placeholder}
                 </span>
-                <i className="fa fa-caret-down"></i>
+                <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>
             </div>
             {options && inputsActiveStatus !== null && (
               <ul className={isClicked ? "multi-select-checkbox-container__option" : "multi-select-checkbox-container__dp-none"} ref={selectRef}>
@@ -92,9 +95,11 @@ const MultiSelectCheckbox = ({ options, placeholder, onChange, className="", def
 };
 
 MultiSelectCheckbox.propTypes = {
-  options: propTypes.array.isRequired,
-  placeholder: propTypes.string.isRequired,
-  onChange: propTypes.func.isRequired
+  options: PropTypes.array.isRequired,
+  placeholder: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  className: PropTypes.string,
+  defaultValue: PropTypes.arrayOf(PropTypes.object)
 };
 
 export default MultiSelectCheckbox;

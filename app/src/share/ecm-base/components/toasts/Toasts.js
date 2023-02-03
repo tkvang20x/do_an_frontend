@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import { faCircleCheck, faTriangleExclamation, faCircleInfo } from "@fortawesome/free-solid-svg-icons";
+import { faCircleCheck, faTriangleExclamation, faCircleInfo, faXmark } from "@fortawesome/free-solid-svg-icons";
+import PropTypes from "prop-types"
 import './Toasts.scss'
 
 const Toasts = ({toastList, setList}) => {
@@ -43,7 +44,7 @@ const Toasts = ({toastList, setList}) => {
     return (
         <div className='toasts-container bottom-right'>
             {
-                toastList.map((toast, i) => {
+                toastList.map((toast) => {
                     return(
                         <div
                             key={toast.id}
@@ -57,13 +58,18 @@ const Toasts = ({toastList, setList}) => {
                                 <div className='title'>{toast.title}</div>
                                 <div className='message'> {toast.message}</div>
                             </div>
-                            <div className='button'><button onClick={() => deleteToast(toast.id)}><i className="fa-solid fa-xmark"></i></button></div>
+                            <div className='button'><button onClick={() => deleteToast(toast.id)}><FontAwesomeIcon icon={faXmark} /></button></div>
                         </div>
                     )
                 })
             }
         </div>
     )
+}
+
+Toasts.prototype = {
+    toastList: PropTypes.arrayOf(PropTypes.object).isRequired,
+    setList: PropTypes.func.isRequired
 }
 
 export default Toasts

@@ -5,7 +5,14 @@
     align-items: center;
     width: 100%;
     padding: 5px;
-    min-width: 600px;
+
+    &__info-view-small{
+        width: 15%!important;
+    }
+
+    &__handle-box-view-small{
+        width: 85%!important;
+    }
 
     .info{
         width: 30%;
@@ -45,6 +52,7 @@
                 color: $color-gray-700;
                 border: none;
                 text-align: center;
+                cursor: pointer;
         
                 &-active{
                     background-color: $mb-color-blue-light;
