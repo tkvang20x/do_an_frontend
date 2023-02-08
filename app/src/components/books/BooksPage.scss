@@ -1,6 +1,7 @@
 .do-an__home-page {
     height: 100%;
     background-color: #efefef;
+    overflow-y: auto;
 
     &__image-cover {
         width: 100%;
@@ -63,6 +64,19 @@
         }
     }
 
+    &__group-table{
+
+        &__title{
+            display: flex;
+            justify-content: end;
+            width: 98%;
+        }
+
+        &__table-data{
+            margin: 10px;
+        }
+    }
+
     .button-search {
         width: 130px;
         height: 28px;
@@ -72,5 +86,22 @@
         border-width: 0px;
         cursor: pointer;
 
+        &:hover{
+            background-color: #1d27f5;
+        }
+    }
+
+    .button-create-new {
+        width: 130px;
+        height: 28px;
+        border-radius: 8px;
+        background-color: #00c70a;
+        color: white;
+        border-width: 0px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: #02e01f;
+        }
     }
 }

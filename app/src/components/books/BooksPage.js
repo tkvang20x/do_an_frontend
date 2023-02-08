@@ -6,7 +6,12 @@ import { faFileCirclePlus, faFilter, faSearch } from "@fortawesome/free-solid-sv
 import DataTable from "../../share/ecm-base/components/data-table/DataTable";
 import BooksAction from "../../redux/action/BooksAction";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useSearchParams } from 'react-router-dom'
+import { useParams, useSearchParams } from 'react-router-dom';
+import GroupsAction from "../../redux/action/GroupsAction";
+import DropDown from '../../share/ecm-base/components/dropdown-v2/DropDown';
+import Modal from '../../share/ecm-base/components/modal/Modal';
+import Button from '../../share/ecm-base/components/button/Button';
+import CreateBooks from './components/CreateBooks';
 
 
 const BooksPage = ({ prefixPath }) => {
@@ -70,22 +75,48 @@ const BooksPage = ({ prefixPath }) => {
         }
     ]
 
+    let listOrder = [
+        {
+            title: "Tăng dần",
+            value: 1
+        },
+        {
+            title: "Giảm dần",
+            value: -1
+        },
+    ]
+
+    let listOrderBy = [
+        {
+            title: "Thời gian tạo",
+            value: "created_time"
+        },
+        {
+            title: "Thời gian sửa",
+            value: "modified_time"
+        },
+    ]
+
     var initPagingFilter = {
         page: 1,
         size: 10,
         order_by: "created_time",
-        order: 1,
+        order: -1,
     };
 
     const listBooks = useSelector(state => state.booksReducer.listBooks)
     const filter = useSelector(state => state.booksReducer.paginationFilter)
     const pagination = useSelector(state => state.booksReducer.pagination)
 
+    const listGroups = useSelector(state => state.groupsReducer.listGroups)
+
     const [searchParams, setSearchParams] = useSearchParams({});
     const dispatch = useDispatch();
 
+    const [isHiddenModalCreateBooks, setIsHiddenModalCreateBooks] = useState(false)
+
     useEffect(() => {
-        const urlParams = { ...initPagingFilter }
+        let urlParams = { ...initPagingFilter }
         if (searchParams.get('name')) {
             urlParams["name"] = searchParams.get('name')
         }
@@ -112,29 +143,99 @@ const BooksPage = ({ prefixPath }) => {
         }
 
         setSearchParams(urlParams)
-        BooksAction.updateBooksFilterAction(dispatch, filter, urlParams)
+        BooksAction.updateBooksFilterAction(dispatch, urlParams)
         BooksAction.updateBooksPagination(dispatch, {
             ...pagination,
             page: urlParams.page,
             size: urlParams.size
         })
-        console.log(urlParams);
         BooksAction.getListBooksAction(dispatch, urlParams)
     }, [])
 
+    useEffect(() => {
+        GroupsAction.getListGroupsAction(dispatch)
+    }, [])
+
+    let listDefault = [
+        {
+            title: "Tất cả thể loại",
+            value: "ALL"
+        }
+    ]
+
+    const [listDefaultDropDown, setListDefaultDropDown] = useState(listDefault)
+
+
+    useEffect(() => {
+        let listGrgoupsDropDown = listGroups.map((item) => {
+            return {
+                title: item?.group_name,
+                value: item?.group_code
+            }
+        })
+        setListDefaultDropDown([...listDefault, ...listGrgoupsDropDown])
+    }, [listGroups])
+
+    const onCancel = () => {
+        setIsHiddenModalCreateBooks(!isHiddenModalCreateBooks)
+    }
+
 
     const handleChangeInputSearch = (field, value) => {
-        const newSearchFilter = {...filter, [field]: value}
+        let newSearchFilter = { ...filter }
+        if (field === "group_code" && value === "ALL") {
+            delete newSearchFilter.group_code
+        } else {
+            newSearchFilter = { ...filter, [field]: value }
+        }
+        // const newSearchFilter = { ...filter, [field]: value }
 
         BooksAction.updateBooksFilterAction(dispatch, newSearchFilter)
     }
-    console.log(filter);
 
     const handleSearch = () => {
         setSearchParams(filter)
         BooksAction.getListBooksAction(dispatch, filter)
     }
 
+    const handleNumberItemChange = (newSize, newPage) => {
+        console.log(newSize);
+        let newSearchFilter = {
+            ...filter,
+            size: newSize,
+            page: 1
+        }
+        setSearchParams(newSearchFilter)
+        BooksAction.updateBooksFilterAction(dispatch, newSearchFilter)
+        BooksAction.updateBooksPagination(dispatch, {
+            ...pagination,
+            size: newSize,
+            page: 1
+        })
+        BooksAction.getListBooksAction(dispatch, newSearchFilter)
+    }
+
+    const handleNumberPagehange = (newPage) => {
+        let newSearchFilter = {
+            ...filter,
+            page: newPage
+        }
+        setSearchParams(newSearchFilter)
+        BooksAction.updateBooksFilterAction(dispatch, newSearchFilter)
+        BooksAction.updateBooksPagination(dispatch, {
+            ...pagination,
+            page: newPage
+        })
+        BooksAction.getListBooksAction(dispatch, newSearchFilter)
+    }
+
+    const handleOpenModalCreate = () => {
+        setIsHiddenModalCreateBooks(true)
+    }
+
+    const onSubmitFormCreate = () => {
+        document.getElementById("do-an-form-create-books-button").click();
+    }
 
     return (
         <div className="do-an__home-page">
@@ -149,8 +250,8 @@ const BooksPage = ({ prefixPath }) => {
                             Tên sách:
                         </div>
                         <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input" 
-                                    onChange={(event) => handleChangeInputSearch("name", event.target.value)}
+                            <input className="do-an__home-page__group-search__item__input"
+                                onChange={(event) => handleChangeInputSearch("name", event.target.value)}
                             />
                         </div>
                     </div>
@@ -159,7 +260,9 @@ const BooksPage = ({ prefixPath }) => {
                             Mã sách:
                         </div>
                         <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input" />
+                            <input className="do-an__home-page__group-search__item__input"
+                                onChange={(event) => handleChangeInputSearch("code", event.target.value)}
+                            />
                         </div>
                     </div>
                     <div className="do-an__home-page__group-search__item">
@@ -167,7 +270,9 @@ const BooksPage = ({ prefixPath }) => {
                             Tác giả:
                         </div>
                         <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input" />
+                            <input className="do-an__home-page__group-search__item__input"
+                                onChange={(event) => handleChangeInputSearch("author", event.target.value)}
+                            />
                         </div>
                     </div>
                 </div>
@@ -178,7 +283,12 @@ const BooksPage = ({ prefixPath }) => {
                             Thể loại:
                         </div>
                         <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input" />
+                            <DropDown className="do-an__home-page__group-search__item__input"
+                                listItem={listDefaultDropDown}
+                                selected={filter?.group_code || "ALL"}
+                                name="group_code"
+                                onSelected={handleChangeInputSearch}
+                            />
                         </div>
                     </div>
                     <div className="do-an__home-page__group-search__item">
@@ -186,7 +296,12 @@ const BooksPage = ({ prefixPath }) => {
                             Sắp xếp theo:
                         </div>
                         <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input" />
+                            <DropDown className="do-an__home-page__group-search__item__input"
+                                listItem={listOrderBy}
+                                selected={filter?.order_by || "created_time"}
+                                name="order_by"
+                                onSelected={handleChangeInputSearch}
+                            />
                         </div>
                     </div>
                     <div className="do-an__home-page__group-search__item">
@@ -194,7 +309,12 @@ const BooksPage = ({ prefixPath }) => {
                             Thứ tự:
                         </div>
                         <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input" />
+                            <DropDown className="do-an__home-page__group-search__item__input"
+                                listItem={listOrder}
+                                selected={filter?.order || -1}
+                                name="order"
+                                onSelected={handleChangeInputSearch}
+                            />
                         </div>
                     </div>
                 </div>
@@ -206,16 +326,43 @@ const BooksPage = ({ prefixPath }) => {
 
             <div className="do-an__home-page__group-table">
                 <div className="do-an__home-page__group-table__title">
-
+                    <button className="button-create-new" onClick={handleOpenModalCreate}>Thêm mới</button>
                 </div>
                 <div className="do-an__home-page__group-table__table-data">
                     <DataTable headerData={columnBook}
                         tableData={listBooks}
+                        onNumberItemChange={handleNumberItemChange}
+                        pagination={pagination}
+                        onPageChange={handleNumberPagehange}
                     >
 
                     </DataTable>
                 </div>
             </div>
+            <Modal
+                title="Tạo mới sách"
+                width="70%"
+                onCancel={onCancel}
+                visible={isHiddenModalCreateBooks}
+                footer={
+                    <div className='do-an__modal__footer'>
+                        <Button
+                            type={"normal-green"}
+                            onClick={onSubmitFormCreate}
+                        >
+                            Tạo mới
+                        </Button>
+                        <Button
+                            type={"normal-gray"}
+                            onClick={onCancel}
+                        >
+                            Hủy bỏ
+                        </Button>
+                    </div>
+                }
+            >
+                {isHiddenModalCreateBooks && <CreateBooks onCloseModal={onCancel}></CreateBooks>}
+            </Modal>
         </div>
     )
 }

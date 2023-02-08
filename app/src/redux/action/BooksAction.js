@@ -13,7 +13,7 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
     try {
       // get response from api
       const response = await BooksService.getList(paging);
-      console.log(response);
+      console.log(paging);
       if (
         Utils.isNotNullOrUndefined(response) &&
         Utils.isNotNullOrUndefined(response.data) &&
@@ -70,10 +70,7 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
   const updateBooksFilterAction = (dispatch, filter, newFilter) => {
     // dispath data to reducer
     dispatch(
-      BooksSlice.actions.loadPaginationFilter({
-        ...filter,
-        ...newFilter,
-      })
+      BooksSlice.actions.loadPaginationFilter(filter)
     );
   };
 
@@ -83,11 +80,37 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
       );
   }
 
+/**
+ * [CREATE] - Create Project data
+ * @param {*} formData
+ */
+export const createBooksAction = async (formData, dispatch, filter) => {
+  try {
+    const response = await BooksService.create(
+      formData
+    );
+
+    if (response.data.status === 201) {
+      openNotificationCommon("success", "Thông báo", "Thêm mới sách thành công!")
+      getListBooksAction(dispatch, filter)
+      return true
+  } else {
+      openNotificationCommon("error", "Thông báo", "Thêm mới sách thất bại!")
+  }
+    return response
+  } catch (err) {
+    console.log("createBooksAction - error: ", err);
+    openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+    return null;
+  }
+};
+
 
  const BooksAction = {
     getListBooksAction,
     updateBooksFilterAction,
-    updateBooksPagination
+    updateBooksPagination,
+    createBooksAction
  } 
 
  export default BooksAction;

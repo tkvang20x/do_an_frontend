@@ -5,12 +5,16 @@ import {
 import {
   BooksSlice,
 } from "../redux/slice/BooksSlice";
+import {
+  GroupsSlice,
+} from "../redux/slice/GroupsSlice";
 
 
 
 export const store = configureStore({
   reducer: {
     loginReducer: LoginSlice.reducer,
-    booksReducer: BooksSlice.reducer
+    booksReducer: BooksSlice.reducer,
+    groupsReducer: GroupsSlice.reducer
   },
 });
