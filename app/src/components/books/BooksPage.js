@@ -1,35 +1,35 @@
 import React, { useEffect, useState } from 'react';
 import './BooksPage.scss';
-import imageCover from '../../share/image/1.png';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileCirclePlus, faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import DataTable from "../../share/ecm-base/components/data-table/DataTable";
 import BooksAction from "../../redux/action/BooksAction";
 import { useSelector, useDispatch } from "react-redux";
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useParams, useSearchParams, Link } from 'react-router-dom';
 import GroupsAction from "../../redux/action/GroupsAction";
 import DropDown from '../../share/ecm-base/components/dropdown-v2/DropDown';
 import Modal from '../../share/ecm-base/components/modal/Modal';
 import Button from '../../share/ecm-base/components/button/Button';
-import CreateBooks from './components/CreateBooks';
+import CreateBooks from './components/create_books/CreateBooks';
 
 
 const BooksPage = ({ prefixPath }) => {
 
-    const columnBook = [
+
+    const columnBooks = [
+        {
+            title: "Mã sách",
+            dataIndex: "code",
+            render: (text) => {
+                return <Link to={`${prefixPath}/manager/books/${text}`}>{text}</Link>;
+            },
+            width: "15%"
+        },
         {
             title: "Tên sách",
             dataIndex: "name",
             render: (text) => {
                 return <span>{text}</span>
-            },
-            width: "15%"
-        },
-        {
-            title: "Mã sách",
-            dataIndex: "code",
-            render: (text) => {
-                return <span>{text}</span>;
             },
             width: "15%"
         },
@@ -329,7 +329,7 @@ const BooksPage = ({ prefixPath }) => {
                     <button className="button-create-new" onClick={handleOpenModalCreate}>Thêm mới</button>
                 </div>
                 <div className="do-an__home-page__group-table__table-data">
-                    <DataTable headerData={columnBook}
+                    <DataTable headerData={columnBooks}
                         tableData={listBooks}
                         onNumberItemChange={handleNumberItemChange}
                         pagination={pagination}

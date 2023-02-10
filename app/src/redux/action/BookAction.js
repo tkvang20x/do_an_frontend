@@ -1,8 +1,7 @@
 import { openNotificationCommon, startLoading, stopLoading } from "../../common/const";
 import Utils from "../../common/utils";
-import booksService from "../../redux/service/BooksService";
-import BooksService from "../../redux/service/BooksService";
-import { BooksSlice } from "../../redux/slice/BooksSlice";
+import BookService from "../../redux/service/BookService";
+import { BookSlice } from "../../redux/slice/BookSlice";
 
 /**
  *[LiST] - Get list Project Action
@@ -10,10 +9,10 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
  * @param {*} dispatch
  * @param {*} params
  */
- const getListBooksAction = async (dispatch, paging) => {
+ const getListBookAction = async (dispatch,code_id ,paging) => {
     try {
       // get response from api
-      const response = await BooksService.getList(paging);
+      const response = await BookService.getListBook(paging, code_id);
       console.log(paging);
       if (
         Utils.isNotNullOrUndefined(response) &&
@@ -27,14 +26,14 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
   
         // dispath data to reducer
         dispatch(
-          BooksSlice.actions.loadListBooksReducer(
+          BookSlice.actions.loadListBookReducer(
             listResults
           )
         );
   
         // dispatch paging
         dispatch(
-          BooksSlice.actions.setPagination({
+          BookSlice.actions.setPagination({
             page: pagingResult.page,
             size: pagingResult.limit,
             totalPage: pagingResult.total_page,
@@ -44,10 +43,10 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
       } else {
         // dispath data to reducer - empty
         dispatch(
-          BooksSlice.actions.loadListBooksReducer([])
+          BookSlice.actions.loadListBookReducer([])
         );
         dispatch(
-            BooksSlice.actions.setPagination({
+            BookSlice.actions.setPagination({
             page: 1,
             size: paging.size,
             totalPage: 0,
@@ -56,7 +55,7 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
         );
       }
     } catch (err) {
-      console.log("getListBooksAction - error: ", err);
+      console.log("getListBookAction - error: ", err);
       openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
       return null;
     }
@@ -68,47 +67,22 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
    * @param {*} dispatch
    * @param {*} params
    */
-  const updateBooksFilterAction = (dispatch, filter, newFilter) => {
+  const updateBookFilterAction = (dispatch, filter, newFilter) => {
     // dispath data to reducer
     dispatch(
-      BooksSlice.actions.loadPaginationFilter(filter)
+      BookSlice.actions.loadPaginationFilter(filter)
     );
   };
 
-  const updateBooksPagination = (dispatch, pagination) => {
+  const updateBookPagination = (dispatch, pagination) => {
     dispatch(
-        BooksSlice.actions.setPagination(pagination)
+        BookSlice.actions.setPagination(pagination)
       );
   }
 
-/**
- * [CREATE] - Create Project data
- * @param {*} formData
- */
-export const createBooksAction = async (formData, dispatch, filter) => {
+const getDetailBookAction = async (dispatch, code_id) => {
   try {
-    const response = await BooksService.create(
-      formData
-    );
-
-    if (response.data.status === 201) {
-      openNotificationCommon("success", "Thông báo", "Thêm mới sách thành công!")
-      getListBooksAction(dispatch, filter)
-      return true
-  } else {
-      openNotificationCommon("error", "Thông báo", "Thêm mới sách thất bại!")
-  }
-    return response
-  } catch (err) {
-    console.log("createBooksAction - error: ", err);
-    openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
-    return null;
-  }
-};
-
-const getDetailBooksAction = async (dispatch, code) => {
-  try {
-      const response = await booksService.getDetail(code)
+      const response = await BookService.getDetailBook(code_id)
     console.log(response);
       if (
           Utils.isNotNullOrUndefined(response) &&
@@ -116,7 +90,7 @@ const getDetailBooksAction = async (dispatch, code) => {
           Utils.isNotNullOrUndefined(response.data.data) 
       ){
           dispatch(
-              BooksSlice.actions.saveDetailBooks(
+              BookSlice.actions.saveDetailBook(
                   response.data.data
               )
           )
@@ -128,12 +102,11 @@ const getDetailBooksAction = async (dispatch, code) => {
 }
 
 
- const BooksAction = {
-    getListBooksAction,
-    updateBooksFilterAction,
-    updateBooksPagination,
-    createBooksAction,
-    getDetailBooksAction
+ const BookAction = {
+    getListBookAction,
+    updateBookFilterAction,
+    updateBookPagination,
+    getDetailBookAction
  } 
 
- export default BooksAction;
+ export default BookAction;

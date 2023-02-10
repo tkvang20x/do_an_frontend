@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 // init state
-const initialBooksState = {
-    title: "BOOKS",
+const initialBookState = {
+    title: "BOOK",
     /** ------- list ---------- */
     // init list data
-    listBooks: [],
+    listBook: [],
     // init pagination
     paginationFilter: {
         page: 1,
@@ -24,19 +24,19 @@ const initialBooksState = {
 
     /** ------- detail ---------- */
     // init details data
-    detailBooks: {},
+    detailBook: {},
     /** ------- detail - end ---------- */
 };
 
 // List Project Slice
-export const BooksSlice = createSlice({
-    name: "booksSlice",
-    initialState: initialBooksState,
+export const BookSlice = createSlice({
+    name: "bookSlice",
+    initialState: initialBookState,
     reducers: {
         /** ------- list ---------- */
         // load list reducer
-        loadListBooksReducer: (state, action) => {
-            state.listBooks = action.payload;
+        loadListBookReducer: (state, action) => {
+            state.listBook = action.payload;
         },
         // load paging 
         loadPaginationFilter: (state, action) => {
@@ -45,8 +45,8 @@ export const BooksSlice = createSlice({
         setPagination: (state, action) => {
             state.pagination = action.payload;
         },
-        saveDetailBooks: (state, action) => {
-            state.detailBooks = action.payload;
+        saveDetailBook: (state, action) => {
+            state.detailBook = action.payload;
         }
     },
 });

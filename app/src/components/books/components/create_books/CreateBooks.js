@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import './CreateBooks.scss';
-import image2 from '../../../share/image/123.jpg';
-import ConstAPI from '../../../common/const';
-import constImage from "../../../common/constImage";
-import BooksAction from "../../../redux/action/BooksAction";
-import DropDown from '../../../share/ecm-base/components/dropdown-v2/DropDown';
-import GroupsAction from "../../../redux/action/GroupsAction";
+import image2 from '../../../../share/image/123.jpg';
+import ConstAPI from '../../../../common/const';
+import constImage from "../../../../common/constImage";
+import BooksAction from "../../../../redux/action/BooksAction";
+import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
+import GroupsAction from "../../../../redux/action/GroupsAction";
 
 
 const CreateBooks = ({ onCloseModal }) => {

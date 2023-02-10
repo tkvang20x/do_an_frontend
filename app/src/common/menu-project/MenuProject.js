@@ -9,7 +9,7 @@ const MenuProject = ({ prefixPath }) => {
     const menus = [
         {
             title: "Quản lý sách",
-            url: `${prefixPath}/homepage/book/list`,
+            url: `${prefixPath}/manager/books/list`,
             children: [
                 // {
                 //     title: "Thêm sách",

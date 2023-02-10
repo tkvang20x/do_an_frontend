@@ -8,6 +8,9 @@ import {
 import {
   GroupsSlice,
 } from "../redux/slice/GroupsSlice";
+import {
+  BookSlice,
+} from "../redux/slice/BookSlice";
 
 
 
@@ -15,6 +18,7 @@ export const store = configureStore({
   reducer: {
     loginReducer: LoginSlice.reducer,
     booksReducer: BooksSlice.reducer,
-    groupsReducer: GroupsSlice.reducer
+    groupsReducer: GroupsSlice.reducer,
+    bookReducer: BookSlice.reducer
   },
 });

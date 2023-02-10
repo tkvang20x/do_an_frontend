@@ -8,6 +8,7 @@ import Toasts from "../share/ecm-base/components/toasts/Toasts";
 import Loading from "../share/ecm-base/components/loading/Loading";
 import MenuProject from "../common/menu-project/MenuProject";
 import LayoutProject from "./layout-project/LayoutProject";
+import DetailBooks from "../components/books/components/detail_books/DetailBooks";
 
 export let openNotification = null
 export let openLoading = null
@@ -47,8 +48,9 @@ const Layout = ({ prefixPath }) => {
       <Router>
         <Routes>
           <Route exact path={`${prefixPath}/`} element={<Login prefixPath={prefixPath} showToast={showToast} />} />
-          <Route exact path={`${prefixPath}/homepage`} element={<LayoutProject prefixPath={prefixPath}/>} >
-              <Route exact path={`book/list`} element={<BooksPage prefixPath={prefixPath} />} />
+          <Route exact path={`${prefixPath}/manager`} element={<LayoutProject prefixPath={prefixPath}/>} >
+              <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
+              <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
           </Route>
         </Routes>
       </Router>

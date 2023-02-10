@@ -36,7 +36,6 @@ const booksService = {
                     group_code: formData.group_code,
                     amount: formData.amount
                 });
-                console.log(booksData);
             const formDataBooks = new FormData();
             formDataBooks.append("data", booksData);
             formDataBooks.append("avatar", formData.avatar);
@@ -45,8 +44,18 @@ const booksService = {
         } catch (error) {
             console.log("[Project - create]", error);
         }
-    }
+    },
 
+    getDetail: (code) => {
+        try {
+            // Get data with default
+                return axiosClient.get(
+                    process.env.REACT_APP_RUD_BOOKS.replace('{code}', code)
+                );
+        } catch (error) {
+            console.log("[Books - Get detail]", error);
+        }
+    }
 }
 
 export default booksService;

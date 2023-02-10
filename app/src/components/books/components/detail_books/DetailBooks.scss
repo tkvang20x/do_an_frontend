@@ -1,0 +1,64 @@
+.do-an__view-books-container {
+
+    &__header {
+        display: flex;
+
+        &__text {
+            display: flex;
+            width: 100%;
+        }
+
+        &__button {
+            border: none;
+        }
+
+        &__title {
+            font-size: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+            padding-top: 6px;
+        }
+    }
+
+    &__info {
+        // display: grid;
+        // grid-gap: 10px;
+        // grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        width: calc(100% - 40px);
+        background-color: white;
+        border-radius: 8px;
+        margin: 10px;
+        padding: 10px;
+
+        &__group-info {
+            width: 40%;
+            display: table;
+            height: 150px;
+        }
+
+        &__avatar {
+            text-align: center;
+            width: 20%;
+        }
+
+        &__row {
+            display: table-row;
+
+            &__title {
+                display: table-cell;
+                font-size: 18px;
+                font-weight: bold;
+                vertical-align: middle;
+                width: 30%;
+            }
+
+            &__value {
+                display: table-cell;
+                margin-left: 20px;
+                vertical-align: middle;
+            }
+        }
+    }
+
+}

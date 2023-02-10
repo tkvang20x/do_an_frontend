@@ -27,7 +27,7 @@ const Login = ({prefixPath, showToast}) => {
       if (response.data.status === 200){
         window.localStorage.setItem("token", response.data.data.token)
         showToast("success", "Thông báo", "Đăng nhập thành công!");
-        navigate(`${prefixPath}/homepage`);
+        navigate(`${prefixPath}/manager`);
         stopLoading();
       } else if(response.data.status === 400) {
         stopLoading();

@@ -1,8 +1,6 @@
 .do-an-form-create-books {
     &__body {
 
-        &__title {}
-
         &__content {
             padding: 10px;
             display: flex;
@@ -44,8 +42,8 @@
 }
 
 .do-an-preview-image{
-    height: 200px;
-    width: 150px;
+    height: 160px;
+    width: 140px;
     object-fit: contain;
     margin-top: 10px;
 }
