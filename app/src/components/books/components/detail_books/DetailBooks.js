@@ -10,6 +10,9 @@ import { useSelector, useDispatch } from "react-redux";
 import ConstAPI from '../../../../common/const';
 import DataTable from '../../../../share/ecm-base/components/data-table/DataTable';
 import BookAction from '../../../../redux/action/BookAction';
+import Modal from '../../../../share/ecm-base/components/modal/Modal';
+import Button from '../../../../share/ecm-base/components/button/Button';
+import UpdateBooks from '../update_books/UpdateBooks';
 
 const DetailBooks = ({ prefixPath }) => {
 
@@ -78,6 +81,21 @@ const DetailBooks = ({ prefixPath }) => {
     useEffect(() => {
         BookAction.getListBookAction(dispatch, code, initPagingFilter)
     }, [])
+
+    const [openModalUpdate, setOpenModalUpdate] = useState(false)
+
+    const handleOpenModalUpdate = () => {
+        setOpenModalUpdate(true)
+    }
+
+    const onSubmitFormUpdate = () => {
+        document.getElementById("do-an-form-update-books-button").click();
+    }
+
+    const onCancel = () => {
+        setOpenModalUpdate(false)
+    }
+
     return (
         <div className='do-an__view-books-container'>
             <div className='do-an__view-books-container__header'>
@@ -92,7 +110,8 @@ const DetailBooks = ({ prefixPath }) => {
 
                 <button
                     className="do-an__view-books-container__header__button-edit button-search"
-                    style={{ float: "right" }}
+                    style={{ float: "right", margin: "10px   " }}
+                    onClick={handleOpenModalUpdate}
                 >
                     Chỉnh sửa
                 </button>
@@ -197,6 +216,33 @@ const DetailBooks = ({ prefixPath }) => {
                 </DataTable>
             </div>
 
+            {openModalUpdate &&
+                <Modal
+                    title="Tạo mới sách"
+                    width="70%"
+                    onCancel={onCancel}
+                    visible={openModalUpdate}
+                    footer={
+                        <div className='do-an__modal__footer'>
+                            <Button
+                                type={"normal-blue"}
+                                onClick={onSubmitFormUpdate}
+                            >
+                                Cập nhật
+                            </Button>
+                            <Button
+                                type={"normal-gray"}
+                                onClick={onCancel}
+                            >
+                                Hủy bỏ
+                            </Button>
+                        </div>
+                    }
+                >
+                    <UpdateBooks onCloseModal={onCancel}>
+
+                    </UpdateBooks>
+                </Modal>}
         </div>
     )
 

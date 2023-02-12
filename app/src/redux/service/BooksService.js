@@ -22,7 +22,6 @@ const booksService = {
     },
 
     create: (formData) => {
-        console.log(formData);
         try {
             const booksData = JSON.stringify(
                 {
@@ -55,7 +54,47 @@ const booksService = {
         } catch (error) {
             console.log("[Books - Get detail]", error);
         }
-    }
+    },
+
+    updateBooks: (code, formData) => {
+        try {
+            const booksDataUpdate = JSON.stringify(
+                {
+                    name: formData.name,
+                    description: formData.description,
+                    title: formData.title,
+                    author: formData.author,
+                    name_university: formData.name_university,
+                    publishing_year: formData.publishing_year,
+                    origin: formData.origin,
+                    group_code: formData.group_code
+                });
+            const formDataBooks = new FormData();
+            formDataBooks.append("data_update", booksDataUpdate);
+            if(formData.avatar){
+                formDataBooks.append("avatar", formData.avatar);
+            }
+            // else{
+            //     formDataBooks.append("avatar", null)
+            // }
+            console.log(formDataBooks);
+            return axiosClient.put(process.env.REACT_APP_RUD_BOOKS.replace('{code}',code), formDataBooks,
+                { headers: { "Content-Type": "multipart/form-data" } });
+        } catch (error) {
+            console.log("[Project - update]", error);
+        }
+    },
+
+    // ------------------------------------------------------------------------------------------------------------
+    remove: (code) => {
+        try {
+            return axiosClient.delete(
+                process.env.REACT_APP_RUD_BOOKS.replace("{code}", code)
+            )
+        } catch (error) {
+            console.log("BooksService || Delete || Cause by ", error)
+        }
+    },
 }
 
 export default booksService;

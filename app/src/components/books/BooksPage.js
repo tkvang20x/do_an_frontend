@@ -11,7 +11,9 @@ import DropDown from '../../share/ecm-base/components/dropdown-v2/DropDown';
 import Modal from '../../share/ecm-base/components/modal/Modal';
 import Button from '../../share/ecm-base/components/button/Button';
 import CreateBooks from './components/create_books/CreateBooks';
-
+import { ListButton } from '../../common/utils';
+import ConstAPI from '../../common/const';
+import Confirm from '../../share/ecm-base/components/confirm/Confirm';
 
 const BooksPage = ({ prefixPath }) => {
 
@@ -45,7 +47,7 @@ const BooksPage = ({ prefixPath }) => {
             title: "Ảnh",
             dataIndex: "avatar",
             render: (text) => {
-                return text !== null ? <span>{text}</span> : <span>Không có avatar</span>;
+                return text !== null ? <img style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
             },
             width: "10%"
         },
@@ -72,6 +74,19 @@ const BooksPage = ({ prefixPath }) => {
                 return <span>{text}</span>;
             },
             width: "10%"
+        },
+        {
+            title: "Thao tác",
+            dataIndex: "code",
+            render: (code) => {
+                return (
+                    <ListButton
+                        onRemoveAction={() => handleDeleteBooks(code)}
+                        removeButtonName="btnDeleteBooks"
+                    ></ListButton>
+                );
+            },
+            width: "15%"
         }
     ]
 
@@ -237,53 +252,72 @@ const BooksPage = ({ prefixPath }) => {
         document.getElementById("do-an-form-create-books-button").click();
     }
 
+    const [isOpenConfirmDialog, setIsOpenConfirmDialog] = useState(false);
+    const [codeBooksDelete, setCodeBooksDelete] = useState(null);
+
+    const handleDeleteBooks = (code) => {
+        setCodeBooksDelete(code)
+        setIsOpenConfirmDialog(true)
+    }
+
+    const handleCancelConfirmDialog = () => {
+        setCodeBooksDelete(null)
+        setIsOpenConfirmDialog(false)
+    }
+
+    const handleDeleteConfirmDialog = () => {
+        console.log("vao day");
+        BooksAction.removeBooks(dispatch, codeBooksDelete, filter)
+        handleCancelConfirmDialog()
+    }
+
     return (
-        <div className="do-an__home-page">
-            <div className="do-an__home-page__image-cover">
+        <div className="do-an__books">
+            <div className="do-an__books__image-cover">
                 {/* <img className="image-cover" src={imageCover}></img> */}
                 <h3 style={{ margin: "10px 0px 10px 10px" }}>Danh mục sách</h3>
             </div>
-            <div className="do-an__home-page__group-search">
-                <div className="do-an__home-page__group-search__filter">
-                    <div className="do-an__home-page__group-search__item">
-                        <div className="do-an__home-page__group-search__item__title">
+            <div className="do-an__books__group-search">
+                <div className="do-an__books__group-search__filter">
+                    <div className="do-an__books__group-search__item">
+                        <div className="do-an__books__group-search__item__title">
                             Tên sách:
                         </div>
-                        <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input"
+                        <div className="do-an__books__group-search__item__input-container">
+                            <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("name", event.target.value)}
                             />
                         </div>
                     </div>
-                    <div className="do-an__home-page__group-search__item">
-                        <div className="do-an__home-page__group-search__item__title">
+                    <div className="do-an__books__group-search__item">
+                        <div className="do-an__books__group-search__item__title">
                             Mã sách:
                         </div>
-                        <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input"
+                        <div className="do-an__books__group-search__item__input-container">
+                            <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("code", event.target.value)}
                             />
                         </div>
                     </div>
-                    <div className="do-an__home-page__group-search__item">
-                        <div className="do-an__home-page__group-search__item__title">
+                    <div className="do-an__books__group-search__item">
+                        <div className="do-an__books__group-search__item__title">
                             Tác giả:
                         </div>
-                        <div className="do-an__home-page__group-search__item__input-container">
-                            <input className="do-an__home-page__group-search__item__input"
+                        <div className="do-an__books__group-search__item__input-container">
+                            <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("author", event.target.value)}
                             />
                         </div>
                     </div>
                 </div>
 
-                <div className="do-an__home-page__group-search__filter">
-                    <div className="do-an__home-page__group-search__item">
-                        <div className="do-an__home-page__group-search__item__title">
+                <div className="do-an__books__group-search__filter">
+                    <div className="do-an__books__group-search__item">
+                        <div className="do-an__books__group-search__item__title">
                             Thể loại:
                         </div>
-                        <div className="do-an__home-page__group-search__item__input-container">
-                            <DropDown className="do-an__home-page__group-search__item__input"
+                        <div className="do-an__books__group-search__item__input-container">
+                            <DropDown className="do-an__books__group-search__item__input"
                                 listItem={listDefaultDropDown}
                                 selected={filter?.group_code || "ALL"}
                                 name="group_code"
@@ -291,12 +325,12 @@ const BooksPage = ({ prefixPath }) => {
                             />
                         </div>
                     </div>
-                    <div className="do-an__home-page__group-search__item">
-                        <div className="do-an__home-page__group-search__item__title">
+                    <div className="do-an__books__group-search__item">
+                        <div className="do-an__books__group-search__item__title">
                             Sắp xếp theo:
                         </div>
-                        <div className="do-an__home-page__group-search__item__input-container">
-                            <DropDown className="do-an__home-page__group-search__item__input"
+                        <div className="do-an__books__group-search__item__input-container">
+                            <DropDown className="do-an__books__group-search__item__input"
                                 listItem={listOrderBy}
                                 selected={filter?.order_by || "created_time"}
                                 name="order_by"
@@ -304,12 +338,12 @@ const BooksPage = ({ prefixPath }) => {
                             />
                         </div>
                     </div>
-                    <div className="do-an__home-page__group-search__item">
-                        <div className="do-an__home-page__group-search__item__title">
+                    <div className="do-an__books__group-search__item">
+                        <div className="do-an__books__group-search__item__title">
                             Thứ tự:
                         </div>
-                        <div className="do-an__home-page__group-search__item__input-container">
-                            <DropDown className="do-an__home-page__group-search__item__input"
+                        <div className="do-an__books__group-search__item__input-container">
+                            <DropDown className="do-an__books__group-search__item__input"
                                 listItem={listOrder}
                                 selected={filter?.order || -1}
                                 name="order"
@@ -318,17 +352,17 @@ const BooksPage = ({ prefixPath }) => {
                         </div>
                     </div>
                 </div>
-                <div className="do-an__home-page__group-search__button-search">
+                <div className="do-an__books__group-search__button-search">
                     <button className="button-search" onClick={handleSearch}>Tìm kiếm</button>
                 </div>
 
             </div>
 
-            <div className="do-an__home-page__group-table">
-                <div className="do-an__home-page__group-table__title">
+            <div className="do-an__books__group-table">
+                <div className="do-an__books__group-table__title">
                     <button className="button-create-new" onClick={handleOpenModalCreate}>Thêm mới</button>
                 </div>
-                <div className="do-an__home-page__group-table__table-data">
+                <div className="do-an__books__group-table__table-data">
                     <DataTable headerData={columnBooks}
                         tableData={listBooks}
                         onNumberItemChange={handleNumberItemChange}
@@ -363,6 +397,16 @@ const BooksPage = ({ prefixPath }) => {
             >
                 {isHiddenModalCreateBooks && <CreateBooks onCloseModal={onCancel}></CreateBooks>}
             </Modal>
+
+            <Confirm
+                title="Xoá sách"
+                width="45%"
+                visible={isOpenConfirmDialog}
+                onCancel={handleCancelConfirmDialog}
+                onOk={handleDeleteConfirmDialog}
+            >
+                <p>Nếu xóa {codeBooksDelete} thì dữ liệu sách sẽ mất hết, xác nhận xóa?</p>
+            </Confirm>
         </div>
     )
 }

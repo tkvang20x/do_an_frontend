@@ -1,115 +1,119 @@
 @import '../../style/variables';
 
-.header{
+.header {
     padding: 50px 15px;
 
     background-color: $mb-header-background;
 }
 
-.table-container{
+.table-container {
     max-width: 100%;
     width: 100%;
-    
+
     border-radius: 10px;
 
     font-size: 14px;
     background-color: #ffffff;
-    
 
-    &__content{
+
+    &__content {
         max-width: 100%;
         width: 100%;
         overflow-x: auto;
     }
 
-    &__table{
+    &__table {
         width: 100%;
         border-collapse: collapse;
         border-top-left-radius: 10px;
         border-top-right-radius: 10px;
         overflow: hidden;
 
-        &__header{
+        &__header {
             display: flex;
             flex-direction: row;
             justify-content: center;
             font-weight: 700;
             font-size: 12px;
 
-            -webkit-user-select:none;
-            -moz-user-select:none;
-            user-select:none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            user-select: none;
 
-            &__btn-sort{
+            &__btn-sort {
                 margin-left: 5px;
             }
         }
 
-        &__item{
+        &__item {
             // display: flex;
             justify-content: center;
         }
 
-        thead{
+        thead {
             background-color: $mb-header-background;
             border-radius: 10px 10px 0px 0px;
 
-            tr{
+            tr {
                 background-color: transparent;
             }
 
-            th{
+            th {
                 color: $mb-color-blue-primary;
                 font-weight: normal;
             }
         }
 
-        td, th{
+        td,
+        th {
             padding: 10px;
             text-align: center;
             align-items: center;
 
-            a{
+            a {
                 color: $mb-color-blue-primary;
             }
         }
 
-        tbody tr{
+        tbody tr {
             // display: flex;
             // justify-content: space-around;
             background-color: $mb-color-gray-50;
             border-bottom: 1px solid $mb-color-gray-300;
 
-            &:last-child{
+            &:last-child {
                 border-bottom: 1px solid $mb-color-gray-300;
             }
+
             &:hover {
                 background-color: $color-gray-200;
             }
         }
 
-        
+
     }
 
-    .empty{
+    .empty {
         width: 100%;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         background-color: $mb-color-gray-50;
-        .logo{
+
+        .logo {
             height: 140px;
             width: 140px;
             background-image: url('./../../assets/icons/img-empty.png');
             background-size: cover;
         }
-        .text{
+
+        .text {
             color: $color-gray-600;
         }
     }
 
-    &__hidden{
+    &__hidden {
         display: none;
     }
 }

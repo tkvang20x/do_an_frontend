@@ -10,76 +10,76 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
  * @param {*} dispatch
  * @param {*} params
  */
- const getListBooksAction = async (dispatch, paging) => {
-    try {
-      // get response from api
-      const response = await BooksService.getList(paging);
-      console.log(paging);
-      if (
-        Utils.isNotNullOrUndefined(response) &&
-        Utils.isNotNullOrUndefined(response.data) &&
-        Utils.isNotNullOrUndefined(response.data.data) &&
-        Utils.isNotNullOrUndefined(response.data.data.result) &&
-        Utils.isNotNullOrUndefined(response.data.data.pagination)
-      ) {
-        var listResults = response.data.data.result;
-        var pagingResult = response.data.data.pagination;
-  
-        // dispath data to reducer
-        dispatch(
-          BooksSlice.actions.loadListBooksReducer(
-            listResults
-          )
-        );
-  
-        // dispatch paging
-        dispatch(
-          BooksSlice.actions.setPagination({
-            page: pagingResult.page,
-            size: pagingResult.limit,
-            totalPage: pagingResult.total_page,
-            totalItem: pagingResult.total_records,
-          })
-        );
-      } else {
-        // dispath data to reducer - empty
-        dispatch(
-          BooksSlice.actions.loadListBooksReducer([])
-        );
-        dispatch(
-            BooksSlice.actions.setPagination({
-            page: 1,
-            size: paging.size,
-            totalPage: 0,
-            totalItem: 0,
-          })
-        );
-      }
-    } catch (err) {
-      console.log("getListBooksAction - error: ", err);
-      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
-      return null;
-    }
-  };
-  
-  /**
-   *[LiST] - Load Filter Data
-   *
-   * @param {*} dispatch
-   * @param {*} params
-   */
-  const updateBooksFilterAction = (dispatch, filter, newFilter) => {
-    // dispath data to reducer
-    dispatch(
-      BooksSlice.actions.loadPaginationFilter(filter)
-    );
-  };
+const getListBooksAction = async (dispatch, paging) => {
+  try {
+    // get response from api
+    const response = await BooksService.getList(paging);
+    console.log(paging);
+    if (
+      Utils.isNotNullOrUndefined(response) &&
+      Utils.isNotNullOrUndefined(response.data) &&
+      Utils.isNotNullOrUndefined(response.data.data) &&
+      Utils.isNotNullOrUndefined(response.data.data.result) &&
+      Utils.isNotNullOrUndefined(response.data.data.pagination)
+    ) {
+      var listResults = response.data.data.result;
+      var pagingResult = response.data.data.pagination;
 
-  const updateBooksPagination = (dispatch, pagination) => {
-    dispatch(
-        BooksSlice.actions.setPagination(pagination)
+      // dispath data to reducer
+      dispatch(
+        BooksSlice.actions.loadListBooksReducer(
+          listResults
+        )
       );
+
+      // dispatch paging
+      dispatch(
+        BooksSlice.actions.setPagination({
+          page: pagingResult.page,
+          size: pagingResult.limit,
+          totalPage: pagingResult.total_page,
+          totalItem: pagingResult.total_records,
+        })
+      );
+    } else {
+      // dispath data to reducer - empty
+      dispatch(
+        BooksSlice.actions.loadListBooksReducer([])
+      );
+      dispatch(
+        BooksSlice.actions.setPagination({
+          page: 1,
+          size: paging.size,
+          totalPage: 0,
+          totalItem: 0,
+        })
+      );
+    }
+  } catch (err) {
+    console.log("getListBooksAction - error: ", err);
+    openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+    return null;
   }
+};
+
+/**
+ *[LiST] - Load Filter Data
+ *
+ * @param {*} dispatch
+ * @param {*} params
+ */
+const updateBooksFilterAction = (dispatch, filter, newFilter) => {
+  // dispath data to reducer
+  dispatch(
+    BooksSlice.actions.loadPaginationFilter(filter)
+  );
+};
+
+const updateBooksPagination = (dispatch, pagination) => {
+  dispatch(
+    BooksSlice.actions.setPagination(pagination)
+  );
+}
 
 /**
  * [CREATE] - Create Project data
@@ -95,9 +95,9 @@ export const createBooksAction = async (formData, dispatch, filter) => {
       openNotificationCommon("success", "Thông báo", "Thêm mới sách thành công!")
       getListBooksAction(dispatch, filter)
       return true
-  } else {
+    } else {
       openNotificationCommon("error", "Thông báo", "Thêm mới sách thất bại!")
-  }
+    }
     return response
   } catch (err) {
     console.log("createBooksAction - error: ", err);
@@ -108,32 +108,84 @@ export const createBooksAction = async (formData, dispatch, filter) => {
 
 const getDetailBooksAction = async (dispatch, code) => {
   try {
-      const response = await booksService.getDetail(code)
+    const response = await booksService.getDetail(code)
     console.log(response);
-      if (
-          Utils.isNotNullOrUndefined(response) &&
-          Utils.isNotNullOrUndefined(response.data) &&
-          Utils.isNotNullOrUndefined(response.data.data) 
-      ){
-          dispatch(
-              BooksSlice.actions.saveDetailBooks(
-                  response.data.data
-              )
-          )
-      }
+    if (
+      Utils.isNotNullOrUndefined(response) &&
+      Utils.isNotNullOrUndefined(response.data) &&
+      Utils.isNotNullOrUndefined(response.data.data)
+    ) {
+      dispatch(
+        BooksSlice.actions.saveDetailBooks(
+          response.data.data
+        )
+      )
+    }
   } catch (error) {
-      console.log("BooksAction || getDetail || Cause by ", error)
+    console.log("BooksAction || getDetail || Cause by ", error)
+  };
+}
+
+const updateBooksAction = async (dispatch,code, formData) => {
+  try {
+    const response = await booksService.updateBooks(code, formData)
+    // if (
+    //   Utils.isNotNullOrUndefined(response) &&
+    //   Utils.isNotNullOrUndefined(response.data) &&
+    //   Utils.isNotNullOrUndefined(response.data.data)
+    // ) {
+    //   dispatch(
+    //     BooksSlice.actions.saveDetailBooks(
+    //       response.data.data
+    //     )
+    //   )
+    // }
+    if (response.data.status === 200){
+      openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
+      dispatch(
+            BooksSlice.actions.saveDetailBooks(
+              response.data.data
+            )
+      )
+      return true
+  }else{
+      openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
   }
-  
+    return false;
+  } catch (err) {
+    console.log("UpdateBooks Action - error: ", err);
+    openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+    return null;
+  }
+}
+
+const removeBooks = async (dispatch, code, filter) => {
+  try {
+      const response = await booksService.remove(code)
+      if (response.data.status === 204){
+          openNotificationCommon("success", "Thông báo", `Xóa sách ${code} thành công!`)
+          getListBooksAction(dispatch, filter)
+          return true
+      }else{
+          openNotificationCommon("error", "Thông báo", `Xóa sách ${code} thất bại!`)
+      }
+      return false
+  } catch (error) {
+      openNotificationCommon("error", "Thông báo", `Xóa sách ${code} thất bại!`)
+      console.log("BooksAction || remove || Cause by ", error)
+      return false
+  }
 }
 
 
- const BooksAction = {
-    getListBooksAction,
-    updateBooksFilterAction,
-    updateBooksPagination,
-    createBooksAction,
-    getDetailBooksAction
- } 
+const BooksAction = {
+  getListBooksAction,
+  updateBooksFilterAction,
+  updateBooksPagination,
+  createBooksAction,
+  getDetailBooksAction,
+  updateBooksAction,
+  removeBooks
+}
 
- export default BooksAction;
+export default BooksAction;

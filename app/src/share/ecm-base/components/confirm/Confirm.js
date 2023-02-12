@@ -17,13 +17,15 @@ const Confirm = (props) => {
                 <div className="ocr-base-confirm-button">
                     <button type="button"
                         className="mb-btn mb-btn-blue"
-                        onClick={onOk}>
+                        onClick={onOk}
+                        style={{cursor:"pointer"}}>
                         {okText || "Xác nhận"}
                     </button>
                     <button type="button"
                             hidden={hiddenCancel}
                         className="mb-btn mb-btn-nomal-gray"
-                        onClick={onCancel}>
+                        onClick={onCancel}
+                        style={{cursor:"pointer"}}>
                         {cancelText || "Hủy"}
                     </button>
                 </div>
