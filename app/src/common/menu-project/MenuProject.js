@@ -25,7 +25,7 @@ const MenuProject = ({ prefixPath }) => {
         },
         {
             title: "Quản lý khách hàng",
-            url: `${prefixPath}/user/list`,
+            url: `${prefixPath}/manager/user/list`,
             children: [
                 // {
                 //     title: "Thêm sách",

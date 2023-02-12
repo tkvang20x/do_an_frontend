@@ -29,6 +29,7 @@
     &-outline-gray{
         background: transparent;
         color: $mb-btn-background-gray;
+        padding: 8px;
         &:hover{
             border: 1px solid $mb-btn-background-gray;
         }
@@ -50,6 +51,7 @@
     &-outline-blue{
         background: transparent;
         color: $mb-btn-background-blue;
+        padding: 8px;
 
         &:hover{
             border: 1px solid $mb-btn-background-blue;
@@ -82,6 +84,7 @@
     &-outline-green{
         background: transparent;
         color: $mb-btn-background-green;
+        padding: 8px;
 
         &:hover{
             border: 1px solid $mb-btn-background-green;
@@ -104,6 +107,7 @@
     &-outline-red{
         background: transparent;
         color: $mb-btn-background-red;
+        padding: 8px;
 
         &:hover{
             border: 1px solid $mb-btn-background-red;

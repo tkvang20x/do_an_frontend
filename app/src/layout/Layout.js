@@ -9,6 +9,7 @@ import Loading from "../share/ecm-base/components/loading/Loading";
 import MenuProject from "../common/menu-project/MenuProject";
 import LayoutProject from "./layout-project/LayoutProject";
 import DetailBooks from "../components/books/components/detail_books/DetailBooks";
+import UserPage from "../components/user/UserPage";
 
 export let openNotification = null
 export let openLoading = null
@@ -51,6 +52,7 @@ const Layout = ({ prefixPath }) => {
           <Route exact path={`${prefixPath}/manager`} element={<LayoutProject prefixPath={prefixPath}/>} >
               <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
               <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
+              <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
           </Route>
         </Routes>
       </Router>

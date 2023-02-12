@@ -266,7 +266,6 @@ const BooksPage = ({ prefixPath }) => {
     }
 
     const handleDeleteConfirmDialog = () => {
-        console.log("vao day");
         BooksAction.removeBooks(dispatch, codeBooksDelete, filter)
         handleCancelConfirmDialog()
     }
@@ -286,6 +285,7 @@ const BooksPage = ({ prefixPath }) => {
                         <div className="do-an__books__group-search__item__input-container">
                             <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("name", event.target.value)}
+                                value={filter?.name || ""}
                             />
                         </div>
                     </div>
@@ -296,6 +296,7 @@ const BooksPage = ({ prefixPath }) => {
                         <div className="do-an__books__group-search__item__input-container">
                             <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("code", event.target.value)}
+                                value={filter?.code || ""}
                             />
                         </div>
                     </div>
@@ -306,6 +307,7 @@ const BooksPage = ({ prefixPath }) => {
                         <div className="do-an__books__group-search__item__input-container">
                             <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("author", event.target.value)}
+                                value={filter?.author || ""}
                             />
                         </div>
                     </div>

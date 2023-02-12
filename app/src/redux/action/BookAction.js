@@ -9,11 +9,11 @@ import { BookSlice } from "../../redux/slice/BookSlice";
  * @param {*} dispatch
  * @param {*} params
  */
- const getListBookAction = async (dispatch,code_id ,paging) => {
+ const getListBookAction = async (dispatch,code_books ,paging) => {
     try {
-      // get response from api
-      const response = await BookService.getListBook(paging, code_id);
       console.log(paging);
+      // get response from api
+      const response = await BookService.getListBook(paging, code_books);
       if (
         Utils.isNotNullOrUndefined(response) &&
         Utils.isNotNullOrUndefined(response.data) &&

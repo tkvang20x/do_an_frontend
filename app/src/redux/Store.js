@@ -11,6 +11,9 @@ import {
 import {
   BookSlice,
 } from "../redux/slice/BookSlice";
+import {
+  UserSlice,
+} from "../redux/slice/UserSlice";
 
 
 
@@ -19,6 +22,7 @@ export const store = configureStore({
     loginReducer: LoginSlice.reducer,
     booksReducer: BooksSlice.reducer,
     groupsReducer: GroupsSlice.reducer,
-    bookReducer: BookSlice.reducer
+    bookReducer: BookSlice.reducer,
+    userReducer: UserSlice.reducer
   },
 });
