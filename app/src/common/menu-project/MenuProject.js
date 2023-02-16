@@ -26,18 +26,12 @@ const MenuProject = ({ prefixPath }) => {
         {
             title: "Quản lý khách hàng",
             url: `${prefixPath}/manager/user/list`,
-            children: [
-                // {
-                //     title: "Thêm sách",
-                //     url: `${prefixPath}/project/${projectRowId}/detail`,
-                //     children: null
-                // },
-                // {
-                //     title: "Dataset",
-                //     url: `${prefixPath}/project/${projectRowId}/list-dataset`,
-                //     children: null
-                // },
-            ]
+            children: []
+        },
+        {
+            title: "Quản lý phiếu mượn",
+            url: `${prefixPath}/manager/voucher/list`,
+            children: []
         },
     ]
 

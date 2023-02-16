@@ -10,6 +10,9 @@ import MenuProject from "../common/menu-project/MenuProject";
 import LayoutProject from "./layout-project/LayoutProject";
 import DetailBooks from "../components/books/components/detail_books/DetailBooks";
 import UserPage from "../components/user/UserPage";
+import DetailUser from "../components/user/components/get_detail_user/DetailUser";
+import VoucherPage from "../components/voucher/VoucherPage";
+import CreateVoucher from "../components/voucher/components/create_voucher/CreateVoucher";
 
 export let openNotification = null
 export let openLoading = null
@@ -53,6 +56,9 @@ const Layout = ({ prefixPath }) => {
               <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
               <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
               <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
+              <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
+              <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
+              <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
           </Route>
         </Routes>
       </Router>

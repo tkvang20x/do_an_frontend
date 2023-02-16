@@ -135,6 +135,53 @@ export const ListButton = ({
               title="Sửa"
               onClick={onEditAction}
               type="button"
+              hidden={editDisable}
+              disabled={editDisable}
+              style={{cursor:"pointer"}}
+            >
+              <FontAwesomeIcon icon={faPencilAlt}></FontAwesomeIcon>
+          </button>
+        </div>
+        <div className="do-an-list-action-item">
+          <button
+              className="mb-btn mb-btn-outline-red"
+              name={removeButtonName}
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Xóa"
+              onClick={onRemoveAction}
+              type="button"
+              disabled={removeDisable}
+              style={{cursor:"pointer"}}
+            >
+             <FontAwesomeIcon icon={faTrash}></FontAwesomeIcon>
+          </button>
+        </div>
+      </div>
+    );
+  };
+
+
+  export const ListButtonUser = ({
+    editButtonName,
+    removeButtonName,
+    onEditAction,
+    onRemoveAction,
+    editDisable = false,
+    removeDisable = false,
+  }) => {
+    return (
+      <div className="do-an-list-action" style={{display:"grid",gridTemplateColumns:"repeat(1,1fr)"}}>
+        <div className="do-an-list-action-item">
+          <button
+              className="mb-btn mb-btn-outline-blue"
+              name={editButtonName}
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Sửa"
+              onClick={onEditAction}
+              type="button"
+              hidden={editDisable}
               disabled={editDisable}
               style={{cursor:"pointer"}}
             >
@@ -168,7 +215,8 @@ const Utils = {
     b64toBlob,
     showTooltip,
     isJSONString,
-    ListButton
+    ListButton,
+    ListButtonUser
 };
 
 export default Utils;

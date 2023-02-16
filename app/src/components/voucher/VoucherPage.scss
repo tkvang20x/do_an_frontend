@@ -1,0 +1,91 @@
+.do-an__voucher {
+    height: 100%;
+    background-color: #efefef;
+    overflow-y: auto;
+
+    &__image-cover {
+        width: 100%;
+    }
+
+    .image-cover {
+        width: 100%;
+        object-fit: fill;
+        height: 130px;
+    }
+
+    &__group-search {
+        border-radius: 8px;
+        background-color: white;
+        margin: 10px;
+        height: 9.5rem;
+        justify-content: space-between;
+        display: flex;
+        flex-direction: column;
+        padding-top: 10px;
+
+        &__filter {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        &__item {
+            display: flex;
+            margin: 10px;
+            flex-direction: row;
+            width: 100%;
+
+            &__title {
+                font-size: 14px;
+                margin-right: 10px;
+                display: flex;
+                align-items: center;
+                width: 25%;
+            }
+
+            &__input-container {
+                width: 80%;
+            }
+
+            &__input {
+                width: 80%;
+                height: 30px;
+                border-radius: 8px;
+                border: 0.5px solid;
+            }
+        }
+
+        &__button-search {
+            display: flex;
+            justify-content: end;
+            margin: 0px 10px 10px 0px;
+        }
+    }
+
+    &__group-table{
+
+        &__title{
+            display: flex;
+            justify-content: end;
+            width: 98%;
+        }
+
+        &__table-data{
+            margin: 10px;
+        }
+    }
+
+    .button-create-new {
+        width: 130px;
+        height: 28px;
+        border-radius: 8px;
+        background-color: #00c70a;
+        color: white;
+        border-width: 0px;
+        cursor: pointer;
+
+        &:hover{
+            background-color: #02e01f;
+        }
+    }
+}

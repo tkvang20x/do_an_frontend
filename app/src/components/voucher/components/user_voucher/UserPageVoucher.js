@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import './UserPage.scss';
+import './UserPageVoucher.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileCirclePlus, faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
-import DataTable from "../../share/ecm-base/components/data-table/DataTable";
-import UserAction from "../../redux/action/UserAction";
+import DataTable from "../../../../share/ecm-base/components/data-table/DataTable";
+import UserAction from "../../../../redux/action/UserAction";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useSearchParams, Link } from 'react-router-dom';
-import DropDown from '../../share/ecm-base/components/dropdown-v2/DropDown';
-import Modal from '../../share/ecm-base/components/modal/Modal';
-import Button from '../../share/ecm-base/components/button/Button';
-import { ListButton, ListButtonUser } from '../../common/utils';
-import ConstAPI from '../../common/const';
-import Confirm from '../../share/ecm-base/components/confirm/Confirm';
-import CreateUser from './components/create_user/CreateUser';
+import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
+import ConstAPI from '../../../../common/const';
 
-const UserPage = ({ prefixPath }) => {
+const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
 
 
     const columnUser = [
@@ -22,7 +17,9 @@ const UserPage = ({ prefixPath }) => {
             title: "Mã người dùng",
             dataIndex: "code",
             render: (text) => {
-                return <Link to={`${prefixPath}/manager/user/${text}`}>{text}</Link>;
+                return <span 
+                onClick={() => handleSelectUser(text)}
+                style={{textDecoration:"underline", color:"#141ed2", cursor:"pointer"}}>{text}</span>;
             },
             width: "15%"
         },
@@ -74,20 +71,6 @@ const UserPage = ({ prefixPath }) => {
             },
             width: "10%"
         },
-        {
-            title: "Thao tác",
-            dataIndex: "code",
-            render: (code) => {
-                return (
-                    <ListButtonUser
-                        editDisable = {true}
-                        onRemoveAction={() => handleDeleteUser(code)}
-                        removeButtonName="btnDeleteUser"
-                    ></ListButtonUser>
-                );
-            },
-            width: "15%"
-        }
     ]
 
     let listOrder = [
@@ -130,8 +113,6 @@ const UserPage = ({ prefixPath }) => {
     const [searchParams, setSearchParams] = useSearchParams({});
     const dispatch = useDispatch();
 
-    const [isHiddenModalCreateUser, setIsHiddenModalCreateUser] = useState(false)
-
     useEffect(() => {
         let urlParams = { ...initPagingFilter }
         if (searchParams.get('name')) {
@@ -163,9 +144,6 @@ const UserPage = ({ prefixPath }) => {
         UserAction.getListUserAction(dispatch, urlParams)
     }, [])
 
-    const onCancel = () => {
-        setIsHiddenModalCreateUser(!isHiddenModalCreateUser)
-    }
 
 
     const handleChangeInputSearch = (field, value) => {
@@ -212,31 +190,7 @@ const UserPage = ({ prefixPath }) => {
         UserAction.getListUserAction(dispatch, newSearchFilter)
     }
 
-    const handleOpenModalCreate = () => {
-        setIsHiddenModalCreateUser(true)
-    }
 
-    const onSubmitFormCreate = () => {
-        document.getElementById("do-an-form-create-user-button").click();
-    }
-
-    const [isOpenConfirmDialog, setIsOpenConfirmDialog] = useState(false);
-    const [codeUserDelete, setCodeUserDelete] = useState(null);
-
-    const handleDeleteUser = (code) => {
-        setCodeUserDelete(code)
-        setIsOpenConfirmDialog(true)
-    }
-
-    const handleCancelConfirmDialog = () => {
-        setCodeUserDelete(null)
-        setIsOpenConfirmDialog(false)
-    }
-
-    const handleDeleteConfirmDialog = () => {
-        UserAction.removeUser(dispatch, codeUserDelete, filter)
-        handleCancelConfirmDialog()
-    }
 
     return (
         <div className="do-an__user">
@@ -302,9 +256,6 @@ const UserPage = ({ prefixPath }) => {
             </div>
 
             <div className="do-an__user__group-table">
-                <div className="do-an__user__group-table__title">
-                    <button className="button-create-new" onClick={handleOpenModalCreate}>Thêm mới</button>
-                </div>
                 <div className="do-an__user__group-table__table-data">
                     <DataTable headerData={columnUser}
                         tableData={listUser}
@@ -316,42 +267,8 @@ const UserPage = ({ prefixPath }) => {
                     </DataTable>
                 </div>
             </div>
-            <Modal
-                title="Tạo mới người dùng"
-                width="70%"
-                onCancel={onCancel}
-                visible={isHiddenModalCreateUser}
-                footer={
-                    <div className='do-an__modal__footer'>
-                        <Button
-                            type={"normal-green"}
-                            onClick={onSubmitFormCreate}
-                        >
-                            Tạo mới
-                        </Button>
-                        <Button
-                            type={"normal-gray"}
-                            onClick={onCancel}
-                        >
-                            Hủy bỏ
-                        </Button>
-                    </div>
-                }
-            >
-                {isHiddenModalCreateUser && <CreateUser onCloseModal={onCancel}></CreateUser>}
-            </Modal>
-
-            <Confirm
-                title="Xoá người dùng"
-                width="45%"
-                visible={isOpenConfirmDialog}
-                onCancel={handleCancelConfirmDialog}
-                onOk={handleDeleteConfirmDialog}
-            >
-                <p>Nếu xóa {codeUserDelete} thì dữ liệu thông tin và mượn sách của người dùng sẽ mất hết, xác nhận xóa?</p>
-            </Confirm>
         </div>
     )
 }
 
-export default UserPage;
+export default UserPageVoucher;

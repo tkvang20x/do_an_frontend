@@ -9,7 +9,7 @@ const Button = ({className, children, type, onClick, title, id="", mode="button"
         title={title}
         type={mode}
         id={id}
-        style={{cursor:"pointer"}}
+        style={{cursor:"pointer",borderRadius:"8px"}}
     >{children}</button>
   )
 }
