@@ -100,11 +100,78 @@ const createVoucherAction = async (formData, dispatch, filter) => {
   }
 }
 
+const getDetailVoucherAction = async (dispatch, voucher_id) => {
+  try {
+    const response = await VoucherService.getDetail(voucher_id)
+    console.log(response);
+    if (
+      Utils.isNotNullOrUndefined(response) &&
+      Utils.isNotNullOrUndefined(response.data) &&
+      Utils.isNotNullOrUndefined(response.data.data)
+    ) {
+      dispatch(
+        VoucherSlice.actions.saveDetailVoucher(
+          response.data.data
+        )
+      )
+      return response.data.data
+    }
+  } catch (error) {
+    console.log("BooksAction || getDetail || Cause by ", error)
+  };
+}
+
+const updateVoucherAction = async (dispatch, voucher_id, formData) => {
+  try {
+    const response = await VoucherService.updateVoucher(voucher_id, formData)
+    if (response.data.status === 200){
+      openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
+      dispatch(
+            VoucherSlice.actions.saveDetailVoucher(
+              response.data.data
+            )
+      )
+      return true
+  }else{
+      openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
+  }
+    return false;
+  } catch (err) {
+    console.log("UpdateBooks Action - error: ", err);
+    openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+    return null;
+  }
+}
+
+const updateStatusVoucher = async (dispatch, voucher_id, status_update, filter) => {
+  try {
+    const response = await VoucherService.updateStatus(voucher_id, status_update)
+    if (response.data.status === 200) {
+      openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
+      dispatch(
+        VoucherSlice.actions.saveDetailVoucher(
+          response.data.data
+        )
+      )
+      VoucherAction.getListVoucherAction(dispatch, filter)
+      return true
+    } else {
+      openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
+    }
+    return false
+  } catch (error) {
+    console.log("BooksAction || getDetail || Cause by ", error)
+  };
+}
+
 const VoucherAction = {
   getListVoucherAction,
   updateVoucherFilterAction,
   updateVoucherPagination,
-  createVoucherAction
-} 
+  createVoucherAction,
+  getDetailVoucherAction,
+  updateStatusVoucher,
+  updateVoucherAction
+}
 
 export default VoucherAction;

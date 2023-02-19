@@ -7,8 +7,6 @@ import VoucherAction from "../../redux/action/VoucherAction";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import DropDown from '../../share/ecm-base/components/dropdown-v2/DropDown';
-import Modal from '../../share/ecm-base/components/modal/Modal';
-import Button from '../../share/ecm-base/components/button/Button';
 import { ListButton, ListButtonVoucher } from '../../common/utils';
 import ConstAPI from '../../common/const';
 import Confirm from '../../share/ecm-base/components/confirm/Confirm';
@@ -21,9 +19,9 @@ const VoucherPage = ({ prefixPath }) => {
             title: "Mã thẻ mượn",
             dataIndex: "voucher_id",
             render: (text) => {
-                return <span>{text}</span>
+                return <Link to={`${prefixPath}/manager/voucher/${text}`}>{text}</Link>;
             },
-            width: "20%"
+            width: "10%"
         },
         {
             title: "Thời gian mượn",
@@ -31,7 +29,7 @@ const VoucherPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "20%"
+            width: "15%"
         },
         {
             title: "Hạn trả",
@@ -39,7 +37,7 @@ const VoucherPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "20%"
+            width: "15%"
         },
         {
             title: "Người duyệt",
@@ -47,13 +45,40 @@ const VoucherPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "20%"
+            width: "10%"
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "status_voucher",
+            render: (text) => {
+                return <div className={`do-an-status-voucher-${text}`}>
+                    {text === "WAITING_CONFIRM" ? "Chờ xác nhận" : ""}
+                    {text === "CONFIRMED" ? "Đã xác nhận" : ""}
+                    {text === "PAYED" ? "Đã trả" : ""}
+                    {text === "EXPIRED" ? "Quá hạn" : ""}
+                    {text === "CANCELLED" ? "Đã hủy" : ""}
+                </div>
+            },
+            width: "10%"
         },
         {
             title: "Số lượng sách mượn",
             dataIndex: "books_borrowed",
             render: (text) => {
                 return <span>{text.length}</span>
+            },
+            width: "5%"
+        },
+        {
+            title: "Thao tác",
+            dataIndex: "voucher_id",
+            render: (text, index) => {
+                return <div className="do-an-action-list-button" style={{display:"flex",justifyContent:"space-around"}}>
+                    {index.status_voucher === "WAITING_CONFIRM" && <button className="do-an-status-voucher-CONFIRMED" onClick={() => handleUpdateStatusVoucher(text)}>Xác nhận</button>}
+                    {index.status_voucher === "CONFIRMED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text)}>Trả phiếu</button>}
+                    {index.status_voucher === "EXPIRED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text)}>Trả phiếu</button>}
+                    {index.status_voucher !== "CANCELLED" &&<button className="do-an-status-voucher-CANCELLED" onClick={() => handleUpdateStatusVoucher(text, "CANCELLED")}>Hủy</button>}
+                </div>
             },
             width: "20%"
         },
@@ -174,8 +199,12 @@ const VoucherPage = ({ prefixPath }) => {
 
 
     const handleChangeInputSearch = (field, value) => {
-        let newSearchFilter = { ...filter ,[field]: value }
-        console.log(newSearchFilter);
+        let newSearchFilter = { ...filter }
+        if (field === "status_voucher" && value === "ALL") {
+            delete newSearchFilter.status_voucher
+        } else {
+            newSearchFilter = { ...filter, [field]: value }
+        }
         // const newSearchFilter = { ...filter, [field]: value }
 
         VoucherAction.updateVoucherFilterAction(dispatch, newSearchFilter)
@@ -187,7 +216,6 @@ const VoucherPage = ({ prefixPath }) => {
     }
 
     const handleNumberItemChange = (newSize, newPage) => {
-        console.log(newSize);
         let newSearchFilter = {
             ...filter,
             size: newSize,
@@ -218,29 +246,41 @@ const VoucherPage = ({ prefixPath }) => {
     }
 
     const handleOpenPageCreate = () => {
-        navigate(`${prefixPath}/manager/voucher/create`)
-    }
-
-    const onSubmitFormCreate = () => {
-        document.getElementById("do-an-form-create-voucher-button").click();
+        navigate(`${prefixPath}/manager/voucher/create  `)
     }
 
     const [isOpenConfirmDialog, setIsOpenConfirmDialog] = useState(false);
-    const [codeVoucherDelete, setCodeVoucherDelete] = useState(null);
+    const [codeVoucherUpdate, setCodeVoucherUpdate] = useState(null);
+    const [statusUpdate, setStatusUpdate] = useState(null);
 
-    const handleDeleteVoucher = (code) => {
-        setCodeVoucherDelete(code)
-        setIsOpenConfirmDialog(true)
-    }
+    // const handleDeleteVoucher = (code) => {
+    //     setCodeVoucherDelete(code)
+    //     setIsOpenConfirmDialog(true)
+    // }
 
     const handleCancelConfirmDialog = () => {
-        setCodeVoucherDelete(null)
+        setCodeVoucherUpdate(null)
         setIsOpenConfirmDialog(false)
+        setStatusUpdate(null)
     }
 
-    const handleDeleteConfirmDialog = () => {
-        VoucherAction.removeVoucher(dispatch, codeVoucherDelete, filter)
+    // const handleDeleteConfirmDialog = () => {
+    //     VoucherAction.removeVoucher(dispatch, codeVoucherDelete, filter)
+    //     handleCancelConfirmDialog()
+    // }
+
+    const handleUpdateStatusVoucher = (voucher_id, status_update) => {
+        setIsOpenConfirmDialog(true)
+        setCodeVoucherUpdate(voucher_id)
+        setStatusUpdate(status_update)
+    }
+    console.log(statusUpdate);
+
+    const handleUpdateStatus = () => {
+        VoucherAction.updateStatusVoucher(dispatch, codeVoucherUpdate, statusUpdate, filter)
+
         handleCancelConfirmDialog()
+
     }
 
     return (
@@ -334,19 +374,22 @@ const VoucherPage = ({ prefixPath }) => {
                 </div>
                 <div className="do-an__voucher__group-table__table-data">
                     <DataTable headerData={columnVoucher}
-                        tableData={listVoucher} >
+                        tableData={listVoucher}
+                        onNumberItemChange={handleNumberItemChange}
+                        onPageChange={handleNumberPagehange}
+                        pagination={pagination}>
                     </DataTable>
                 </div>
             </div>
-            {/* <Confirm
-                title="Xoá người dùng"
+            <Confirm
+                title="Cập nhật phiếu mượn"
                 width="45%"
                 visible={isOpenConfirmDialog}
                 onCancel={handleCancelConfirmDialog}
-                onOk={handleDeleteConfirmDialog}
+                onOk={handleUpdateStatus}
             >
-                <p>Nếu xóa {codeVoucherDelete} thì dữ liệu thông tin và mượn sách của người dùng sẽ mất hết, xác nhận xóa?</p>
-            </Confirm> */}
+                <p>Xác nhận cập nhật trạng thái phiếu mượn: {codeVoucherUpdate}?</p>
+            </Confirm>
         </div>
     )
 }

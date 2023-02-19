@@ -1,3 +1,4 @@
+import { data } from 'jquery';
 import {axiosClient} from '../../common/http-commons';
 import Utils from '../../common/utils';
 
@@ -48,7 +49,7 @@ const VoucherService = {
                     process.env.REACT_APP_RUD_VOUCHER.replace('{voucher_id}', voucher_id), formDataVoucher
                 );
         } catch (error) {
-            console.log("[BookVoucherService - Update voucher]", error);
+            console.log("[VoucherService - Update voucher]", error);
         }
     },
 
@@ -59,7 +60,29 @@ const VoucherService = {
                 process.env.REACT_APP_RUD_VOUCHER.replace("{voucher_id}", voucher_id)
             )
         } catch (error) {
-            console.log("BooksService || Delete || Cause by ", error)
+            console.log("VoucherService || Delete || Cause by ", error)
+        }
+    },
+    // ------------------------------------------------------------------------------------------------------------
+    updateStatus: (voucher_id, status_update) => {
+        console.log(status_update);
+        const formUpdate = {
+            "status_update" : status_update
+        }
+        try {
+            if (!Utils.isNotNullOrUndefined(status_update)) {
+                return  axiosClient.put(
+                    process.env.REACT_APP_UPDATE_STATUS_VOUCHER.replace("{voucher_id}", voucher_id)
+                )
+                // Get data with parameters
+            } else {
+            return axiosClient.put(
+                process.env.REACT_APP_UPDATE_STATUS_VOUCHER.replace("{voucher_id}", voucher_id),
+                formUpdate
+            )
+            }
+        } catch (error) {
+            console.log("VoucherService || Update status || Cause by ", error)
         }
     },
 }

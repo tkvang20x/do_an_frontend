@@ -19,7 +19,7 @@ const UserPage = ({ prefixPath }) => {
 
     const columnUser = [
         {
-            title: "Mã người dùng",
+            title: "Mã bạn đọc",
             dataIndex: "code",
             render: (text) => {
                 return <Link to={`${prefixPath}/manager/user/${text}`}>{text}</Link>;
@@ -27,7 +27,7 @@ const UserPage = ({ prefixPath }) => {
             width: "15%"
         },
         {
-            title: "Tên người dùng",
+            title: "Tên bạn đọc",
             dataIndex: "name",
             render: (text) => {
                 return <span>{text}</span>
@@ -242,13 +242,13 @@ const UserPage = ({ prefixPath }) => {
         <div className="do-an__user">
             <div className="do-an__user__image-cover">
                 {/* <img className="image-cover" src={imageCover}></img> */}
-                <h3 style={{ margin: "10px 0px 10px 10px" }}>Danh sách người dùng</h3>
+                <h3 style={{ margin: "10px 0px 10px 10px" }}>Danh sách bạn đọc</h3>
             </div>
             <div className="do-an__user__group-search">
                 <div className="do-an__user__group-search__filter">
                     <div className="do-an__user__group-search__item">
                         <div className="do-an__user__group-search__item__title">
-                            Tên người dùng:
+                            Tên bạn đọc:
                         </div>
                         <div className="do-an__user__group-search__item__input-container">
                             <input className="do-an__user__group-search__item__input"
@@ -259,7 +259,7 @@ const UserPage = ({ prefixPath }) => {
                     </div>
                     <div className="do-an__user__group-search__item">
                         <div className="do-an__user__group-search__item__title">
-                            Mã người dùng:
+                            Mã bạn đọc:
                         </div>
                         <div className="do-an__user__group-search__item__input-container">
                             <input className="do-an__user__group-search__item__input"
@@ -317,7 +317,7 @@ const UserPage = ({ prefixPath }) => {
                 </div>
             </div>
             <Modal
-                title="Tạo mới người dùng"
+                title="Tạo mới bạn đọc"
                 width="70%"
                 onCancel={onCancel}
                 visible={isHiddenModalCreateUser}
@@ -342,13 +342,13 @@ const UserPage = ({ prefixPath }) => {
             </Modal>
 
             <Confirm
-                title="Xoá người dùng"
+                title="Xoá bạn đọc"
                 width="45%"
                 visible={isOpenConfirmDialog}
                 onCancel={handleCancelConfirmDialog}
                 onOk={handleDeleteConfirmDialog}
             >
-                <p>Nếu xóa {codeUserDelete} thì dữ liệu thông tin và mượn sách của người dùng sẽ mất hết, xác nhận xóa?</p>
+                <p>Nếu xóa {codeUserDelete} thì dữ liệu thông tin và mượn sách của bạn đọc sẽ mất hết, xác nhận xóa?</p>
             </Confirm>
         </div>
     )

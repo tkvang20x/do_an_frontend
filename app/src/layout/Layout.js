@@ -13,6 +13,8 @@ import UserPage from "../components/user/UserPage";
 import DetailUser from "../components/user/components/get_detail_user/DetailUser";
 import VoucherPage from "../components/voucher/VoucherPage";
 import CreateVoucher from "../components/voucher/components/create_voucher/CreateVoucher";
+import DetailVoucher from "../components/voucher/components/detail_voucher/DetailVoucher";
+import UpdateVoucher from "../components/voucher/components/update_voucher/UpdateVoucher";
 
 export let openNotification = null
 export let openLoading = null
@@ -59,6 +61,8 @@ const Layout = ({ prefixPath }) => {
               <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
               <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
               <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
+              <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
+              <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
           </Route>
         </Routes>
       </Router>

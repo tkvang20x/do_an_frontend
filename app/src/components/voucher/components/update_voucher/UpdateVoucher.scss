@@ -1,0 +1,158 @@
+.do-an__update-voucher-container {
+    padding: 5px;
+
+    &__header {
+        display: flex;
+        border-radius: 8px;
+        background-color: white;
+
+
+        &__text {
+            display: flex;
+            width: 100%;
+        }
+
+        &__button {
+            border: none;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        &__title {
+            font-size: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+            padding-top: 5px;
+        }
+    }
+
+    &__body {
+        background-color: white;
+        padding: 10px 8px 10px 8px;
+        margin-top: 2px;
+        border-radius: 8px;
+
+
+        &__user-info {
+            display: flex;
+
+            &__group-info {
+                width: 80%;
+
+
+                &__group-first {
+                    display: flex;
+                }
+
+                &__group-second {
+                    display: flex;
+                    margin-top: 10px;
+                }
+
+                &__group-input-name {
+                    width: 46%;
+                }
+
+                &__group-input-code {
+                    width: 29%;
+                }
+
+                &__group-input-course {
+                    width: 25%;
+                }
+
+                &__group-input-start-date {
+                    width: 22%;
+                    padding-right: 10px;
+                }
+
+                &__group-input-due-date {
+                    width: 22%;
+                    padding-right: 10px;
+                }
+
+                &__group-input-description {
+                    width: 54%;
+                }
+            }
+
+            &__history-voucher {
+                display: flex;
+                width: 20%;
+                border: solid 4px #3d3d3d11;
+                border-radius: 8px;
+                margin-left: 10px;
+
+
+                &__infor {
+                    display: flex;
+                    flex-direction: column;
+                    width: 70%;
+                    justify-content: center;
+                }
+
+                &__icon {
+                    width: 30%;
+                    justify-content: center;
+                    align-items: center;
+                    display: flex;
+                }
+            }
+        }
+
+        &__table-borrow {
+            margin-top: 30px;
+
+            &__header {
+                display: flex;
+
+                &__title {
+                    display: flex;
+                    align-items: center;
+                    width: 6%;
+                }
+
+                &__input {
+                    display: flex;
+                    align-items: center;
+                    width: 20%;
+                    margin-right: 10px;
+                }
+
+                &__button {}
+            }
+
+            &__table {
+                margin-top: 10px;
+            }
+        }
+    }
+
+    &__footer {
+        display: flex;
+        justify-content: end;
+        margin: 10px 10px 0px 10px;
+    }
+
+    .do-an-input-name-update-voucher {
+        width: 83%;
+    }
+
+    .do-an-input-description-update-voucher {
+        width: 95.5%;
+    }
+
+    .do-an__update-voucher-container__body__button {
+        width: 8%;
+        border: solid blue;
+        cursor: pointer;
+        border-width: 1px;
+        margin-left: 10px;
+        background: white;
+        border-radius: 8px;
+
+        &:hover{
+            background-color: #ebf3ff;
+        }
+    }
+}

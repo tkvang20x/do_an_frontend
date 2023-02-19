@@ -20,14 +20,15 @@ const CreateUser = ({ onCloseModal }) => {
     const [formCreate, setFormCreate] = useState(
         {
             name: "",
-            description: "",
-            title: "",
-            author: "",
-            name_university: "",
-            publishing_year: "",
-            origin: "",
-            group_code: "GROUPS_1673458766",
-            amount: 0,
+            code: "",
+            date_of_birth: "",
+            gender: "",
+            course: "",
+            university: "",
+            phone: "",
+            email: "",
+            user_name: "",
+            password:"",
             avatar: null
         }
     )
@@ -93,7 +94,7 @@ const CreateUser = ({ onCloseModal }) => {
                     <div className="do-an-form-create-user__body__content__info">
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Tên Sách: <i className="do-an__input-require">*</i></span>
+                                <span>Tên bạn đọc: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
                                 <input
@@ -106,7 +107,7 @@ const CreateUser = ({ onCloseModal }) => {
                                     )}
                                 />
                                 {errors.name?.type === "required" &&
-                                    <div className="input-value-error">Tên người dùng không được trống!</div>}
+                                    <div className="input-value-error">Tên bạn đọc không được trống!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -194,7 +195,7 @@ const CreateUser = ({ onCloseModal }) => {
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Năm xuất bản: <i className="do-an__input-require">*</i></span>
+                                <span>Email: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
                                 <input
@@ -212,7 +213,7 @@ const CreateUser = ({ onCloseModal }) => {
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Nhà xuất bản: <i className="do-an__input-require">*</i></span>
+                                <span>Tên tài khoản: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
                                 <input
@@ -230,7 +231,7 @@ const CreateUser = ({ onCloseModal }) => {
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Nhập số lượng: <i className="do-an__input-require">*</i></span>
+                                <span>Mật khẩu: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
                                 <input

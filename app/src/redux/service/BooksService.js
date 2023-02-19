@@ -77,7 +77,6 @@ const booksService = {
             // else{
             //     formDataBooks.append("avatar", null)
             // }
-            console.log(formDataBooks);
             return axiosClient.put(process.env.REACT_APP_RUD_BOOKS.replace('{code}',code), formDataBooks,
                 { headers: { "Content-Type": "multipart/form-data" } });
         } catch (error) {

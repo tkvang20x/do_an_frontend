@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft, faBook, faPencil } from "@fortawesome/free-solid-svg-icons";
-import { useNavigate } from 'react-router-dom';
-import "./CreateVoucher.scss";
+import { useNavigate, useParams } from 'react-router-dom';
+import "./UpdateVoucher.scss";
 import Button from "../../../../share/ecm-base/components/button/Button";
 import DataTable from "../../../../share/ecm-base/components/data-table/DataTable";
 import { ListButton, ListButtonUser } from "../../../../common/utils";
@@ -17,7 +17,7 @@ import ConstAPI from "../../../../common/const";
 import VoucherAction from "../../../../redux/action/VoucherAction";
 
 
-const CreateVoucher = ({ prefixPath }) => {
+const UpdateVoucher = ({ prefixPath }) => {
 
     const columnVoucher = [
         {
@@ -74,18 +74,66 @@ const CreateVoucher = ({ prefixPath }) => {
         }
     ]
 
-    const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
+    const { register, setValue, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
 
-    const [listBookCreate, setListBookCreate] = useState([])
+    const [listBookUpdate, setListBookUpdate] = useState([])
     const [listBookTable, setListBookTable] = useState([])
     const [openModalUser, setOpenModaluser] = useState(false)
-    const [formCreate, setFormCreate] = useState({})
+    const [formUpdate, setFormUpdate] = useState({})
     const [valueInput, setValueInput] = useState("")
+    const [userDataUpdate, setUserDataUpdate] = useState({})
+    const [userInfo, setUserInfo] = useState({})
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
+    const { voucher_id } = useParams()
+    const [loading, setLoading] = useState(false);
 
-    const detailUser = useSelector(state => state.userReducer.detailUser)
+    // const detailUser = useSelector(state => state.userReducer.detailUser)
+    const detailVoucher = useSelector(state => state.voucherReducer.detailVoucher)
+    console.log(detailVoucher);
+    useEffect(() => {
+        if(Object.keys(detailVoucher).length === 0){
+            VoucherAction.getDetailVoucherAction(dispatch, voucher_id)
+        }
+    }, [voucher_id])
+
+    useEffect(() => {
+        setValue("user_id", detailVoucher?.user_id)
+        setValue("due_date", detailVoucher?.due_date)
+        setValue("description", detailVoucher?.description)
+
+        setUserInfo(detailVoucher?.users)
+
+        const newBookTable = [...listBookTable]
+        const newBookUpdate = [...listBookUpdate]
+
+        detailVoucher?.books_borrowed?.forEach(item => {
+            console.log("vao day", item);
+            let itemMap = {
+                "code_id": item.code_id,
+                "name": item?.books.name,
+                "avatar": item?.books.avatar,
+                "author": item?.books.author,
+                "title": item?.books.title
+            }
+
+            newBookTable.push(itemMap)
+            newBookUpdate.push(item.code_id)
+        })
+
+        setListBookTable(newBookTable)
+        setListBookUpdate(newBookUpdate)
+
+        setFormUpdate({
+            "due_date": detailVoucher?.due_date,
+            "user_id": detailVoucher?.user_id,
+            "description": detailVoucher?.description,
+            "manager_id": "",
+            "books_borrowed": newBookUpdate
+        })
+    }, [detailVoucher])
+
 
     var initPagingFilter = {
         page: 1,
@@ -103,7 +151,9 @@ const CreateVoucher = ({ prefixPath }) => {
     }
 
     const handleSelectUser = (user_id) => {
-        UserAction.getDetailUserAction(dispatch, user_id)
+        UserAction.getDetailUserAction(dispatch, user_id).then(response => {
+            setUserDataUpdate(response)
+        })
         setOpenModaluser(false)
     }
 
@@ -112,8 +162,8 @@ const CreateVoucher = ({ prefixPath }) => {
     }
 
     const handleChangeInputForm = (field, value) => {
-        const newFormData = {...formCreate, [field]: value}
-        setFormCreate(newFormData)
+        const newFormData = { ...formUpdate, [field]: value }
+        setFormUpdate(newFormData)
     }
 
     const handleAddBook = () => {
@@ -133,71 +183,73 @@ const CreateVoucher = ({ prefixPath }) => {
                 }
             })
 
-            setListBookCreate([
-                ...listBookCreate,
+            setListBookUpdate([
+                ...listBookUpdate,
                 valueInput
             ])
             setValueInput("")
         }
     }
 
-    const handleSubmitFormCreate = () => {
-        const formCreateVoucher = {
-            ...formCreate,
-            manager_id:"MANAGER_1674916899",
-            books_borrowed: listBookCreate
+    const handleSubmitFormUpdate = () => {
+        const formUpdateVoucher = {
+            ...formUpdate,
+            manager_id: "MANAGER_1674916899",
+            books_borrowed: listBookUpdate
         }
 
-        VoucherAction.createVoucherAction(formCreateVoucher,dispatch, initPagingFilter)
+        VoucherAction.updateVoucherAction(formUpdateVoucher, dispatch, initPagingFilter)
         navigate(`${prefixPath}/manager/voucher/list`)
     }
 
 
     return (
-        <form className="do-an__create-voucher__form" onSubmit={handleSubmit(handleSubmitFormCreate)}>
-            <div className='do-an__create-voucher-container'>
-                <div className='do-an__create-voucher-container__header'>
-                    <div className='do-an__create-voucher-container__header__text'>
+        <form className="do-an__update-voucher__form" onSubmit={handleSubmit(handleSubmitFormUpdate)}>
+            <div className='do-an__update-voucher-container'>
+                <div className='do-an__update-voucher-container__header'>
+                    <div className='do-an__update-voucher-container__header__text'>
                         <button
-                            className="do-an__create-voucher-container__header__button"
+                            className="do-an__update-voucher-container__header__button"
                             style={{ cursor: "pointer" }}
                             onClick={() => navigate(-1)}
+                            type="button"
                         >
                             <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px" }} />
                         </button>
-                        <div className='do-an__create-voucher-container__header__title'>Lập phiếu mượn</div>
+                        <div className='do-an__update-voucher-container__header__title'>Chỉnh sửa phiếu mượn</div>
                     </div>
                 </div>
-                <div className="do-an__create-voucher-container__body">
-                    <div className="do-an__create-voucher-container__body__user-info">
-                        <div className="do-an__create-voucher-container__body__user-info__group-info">
-                            <div className="do-an__create-voucher-container__body__user-info__group-info__group-first">
-                                <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-name">
+                <div className="do-an__update-voucher-container__body">
+                    <div className="do-an__update-voucher-container__body__user-info">
+                        <div className="do-an__update-voucher-container__body__user-info__group-info">
+                            <div className="do-an__update-voucher-container__body__user-info__group-info__group-first">
+                                <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-name">
                                     <div>
                                         Tên bạn đọc<i className="do-an__input-require">*</i>
                                     </div>
                                     <div style={{ display: "flex" }}>
                                         <input
-                                            value={detailUser?.name}
+                                            value={userInfo?.name}
                                             readOnly={true}
-                                            className={`do-an__input do-an-input-name-create-voucher ${errors.name ? 'is-invalid' : ''}`}
+                                            className={`do-an__input do-an-input-name-update-voucher ${errors.name ? 'is-invalid' : ''}`}
                                         />
                                         <button
-                                            className="do-an__create-voucher-container__body__button"
+                                            className="do-an__update-voucher-container__body__button"
                                             style={{ cursor: "pointer" }}
                                             onClick={handleOpenModalUser}
+                                            type="button"
                                         >
                                             <FontAwesomeIcon icon={faPencil} style={{ color: "#141ed2", cursor: "pointer" }}></FontAwesomeIcon>
                                         </button>
                                     </div>
                                 </div>
-                                <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-code">
+                                <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-code">
                                     <div>
                                         Mã bạn đọc<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
                                         <input
-                                            value={detailUser?.code}
+                                            // value={formUpdate?.user_id}
                                             readOnly={true}
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                             {...register("user_id",
@@ -211,21 +263,21 @@ const CreateVoucher = ({ prefixPath }) => {
                                             <div className="input-value-error">Mã bạn đọc không được trống!</div>}
                                     </div>
                                 </div>
-                                <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-course">
+                                <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-course">
                                     <div>
                                         Khóa<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
                                         <input
-                                            value={detailUser?.course}
+                                            value={userInfo?.course}
                                             readOnly={true}
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                         />
                                     </div>
                                 </div>
                             </div>
-                            <div className="do-an__create-voucher-container__body__user-info__group-info__group-second">
-                                <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-start-date">
+                            <div className="do-an__update-voucher-container__body__user-info__group-info__group-second">
+                                <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-start-date">
                                     <div>
                                         Thời gian bắt đầu<i className="do-an__input-require">*</i>
                                     </div>
@@ -235,7 +287,7 @@ const CreateVoucher = ({ prefixPath }) => {
                                         />
                                     </div>
                                 </div>
-                                <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-due-date">
+                                <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-due-date">
                                     <div>
                                         Thời gian hẹn trả<i className="do-an__input-require">*</i>
                                     </div>
@@ -251,13 +303,13 @@ const CreateVoucher = ({ prefixPath }) => {
                                         />
                                     </div>
                                 </div>
-                                <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-description">
+                                <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-description">
                                     <div>
                                         Ghi chú<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
                                         <input
-                                            className={`do-an__input do-an-input-description-create-voucher ${errors.name ? 'is-invalid' : ''}`}
+                                            className={`do-an__input do-an-input-description-update-voucher ${errors.name ? 'is-invalid' : ''}`}
                                             {...register("description",
                                                 {
                                                     required: true,
@@ -269,30 +321,30 @@ const CreateVoucher = ({ prefixPath }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="do-an__create-voucher-container__body__user-info__history-voucher">
-                            <div className="do-an__create-voucher-container__body__user-info__history-voucher__icon">
+                        <div className="do-an__update-voucher-container__body__user-info__history-voucher">
+                            <div className="do-an__update-voucher-container__body__user-info__history-voucher__icon">
                                 <FontAwesomeIcon icon={faBook} style={{ height: "50px", color: "#00089b" }} />
                             </div>
-                            <div className="do-an__create-voucher-container__body__user-info__history-voucher__infor">
+                            <div className="do-an__update-voucher-container__body__user-info__history-voucher__infor">
                                 <span>Tổng số phiếu mượn</span>
                                 <span>Quá hạn</span>
                                 <span>Đã trả</span>
                             </div>
                         </div>
                     </div>
-                    <div className="do-an__create-voucher-container__body__table-borrow">
-                        <div className="do-an__create-voucher-container__body__table-borrow__header">
-                            <div className="do-an__create-voucher-container__body__table-borrow__header__title">
+                    <div className="do-an__update-voucher-container__body__table-borrow">
+                        <div className="do-an__update-voucher-container__body__table-borrow__header">
+                            <div className="do-an__update-voucher-container__body__table-borrow__header__title">
                                 Mã sách:
                             </div>
-                            <div className="do-an__create-voucher-container__body__table-borrow__header__input">
+                            <div className="do-an__update-voucher-container__body__table-borrow__header__input">
                                 <input
                                     value={valueInput}
                                     className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                     onChange={(event) => handleChangeInput(event.target.value)}
                                 />
                             </div>
-                            <div className="do-an__create-voucher-container__body__table-borrow__header__button">
+                            <div className="do-an__update-voucher-container__body__table-borrow__header__button">
                                 <Button
                                     type={"normal-green"}
                                     onClick={handleAddBook}
@@ -301,7 +353,7 @@ const CreateVoucher = ({ prefixPath }) => {
                                 </Button>
                             </div>
                         </div>
-                        <div className="do-an__create-voucher-container__body__table-borrow__table">
+                        <div className="do-an__update-voucher-container__body__table-borrow__table">
                             <DataTable
                                 headerData={columnVoucher}
                                 tableData={listBookTable}
@@ -311,7 +363,7 @@ const CreateVoucher = ({ prefixPath }) => {
                         </div>
                     </div>
                 </div>
-                <div className="do-an__create-voucher-container__footer">
+                <div className="do-an__update-voucher-container__footer">
                     {/* <Button
                         type={"normal-blue"}
                     >
@@ -338,4 +390,4 @@ const CreateVoucher = ({ prefixPath }) => {
     )
 }
 
-export default CreateVoucher;
+export default UpdateVoucher;

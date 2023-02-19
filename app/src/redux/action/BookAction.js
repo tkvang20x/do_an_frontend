@@ -94,6 +94,7 @@ const getDetailBookAction = async (dispatch, code_id) => {
                   response.data.data
               )
           )
+          return response
       }
   } catch (error) {
       console.log("BooksAction || getDetail || Cause by ", error)

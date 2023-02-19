@@ -129,17 +129,6 @@ const getDetailBooksAction = async (dispatch, code) => {
 const updateBooksAction = async (dispatch,code, formData) => {
   try {
     const response = await booksService.updateBooks(code, formData)
-    // if (
-    //   Utils.isNotNullOrUndefined(response) &&
-    //   Utils.isNotNullOrUndefined(response.data) &&
-    //   Utils.isNotNullOrUndefined(response.data.data)
-    // ) {
-    //   dispatch(
-    //     BooksSlice.actions.saveDetailBooks(
-    //       response.data.data
-    //     )
-    //   )
-    // }
     if (response.data.status === 200){
       openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
       dispatch(
