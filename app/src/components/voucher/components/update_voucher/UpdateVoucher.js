@@ -63,10 +63,11 @@ const UpdateVoucher = ({ prefixPath }) => {
         {
             title: "Thao tác",
             dataIndex: "code_id",
-            render: (code_id) => {
+            render: (text) => {
                 return (
                     <ListButtonUser
                         editDisable={true}
+                        onRemoveAction={() => handleRemoveBook(text)}
                     ></ListButtonUser>
                 );
             },
@@ -82,18 +83,16 @@ const UpdateVoucher = ({ prefixPath }) => {
     const [formUpdate, setFormUpdate] = useState({})
     const [valueInput, setValueInput] = useState("")
     const [userDataUpdate, setUserDataUpdate] = useState({})
-    const [userInfo, setUserInfo] = useState({})
+    // const [userInfo, setUserInfo] = useState({})
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { voucher_id } = useParams()
-    const [loading, setLoading] = useState(false);
 
     // const detailUser = useSelector(state => state.userReducer.detailUser)
     const detailVoucher = useSelector(state => state.voucherReducer.detailVoucher)
-    console.log(detailVoucher);
     useEffect(() => {
-        if(Object.keys(detailVoucher).length === 0){
+        if (Object.keys(detailVoucher).length === 0) {
             VoucherAction.getDetailVoucherAction(dispatch, voucher_id)
         }
     }, [voucher_id])
@@ -103,13 +102,12 @@ const UpdateVoucher = ({ prefixPath }) => {
         setValue("due_date", detailVoucher?.due_date)
         setValue("description", detailVoucher?.description)
 
-        setUserInfo(detailVoucher?.users)
+        setUserDataUpdate(detailVoucher?.users)
 
         const newBookTable = [...listBookTable]
         const newBookUpdate = [...listBookUpdate]
 
         detailVoucher?.books_borrowed?.forEach(item => {
-            console.log("vao day", item);
             let itemMap = {
                 "code_id": item.code_id,
                 "name": item?.books.name,
@@ -153,6 +151,11 @@ const UpdateVoucher = ({ prefixPath }) => {
     const handleSelectUser = (user_id) => {
         UserAction.getDetailUserAction(dispatch, user_id).then(response => {
             setUserDataUpdate(response)
+            setFormUpdate({
+                ...formUpdate,
+                "user_id": response.code
+            })
+            setValue("user_id", response.code)
         })
         setOpenModaluser(false)
     }
@@ -198,9 +201,31 @@ const UpdateVoucher = ({ prefixPath }) => {
             books_borrowed: listBookUpdate
         }
 
-        VoucherAction.updateVoucherAction(formUpdateVoucher, dispatch, initPagingFilter)
-        navigate(`${prefixPath}/manager/voucher/list`)
+        VoucherAction.updateVoucherAction(dispatch,voucher_id ,formUpdateVoucher).then(response => {
+            navigate(`${prefixPath}/manager/voucher/list`)
+        })
     }
+
+    const handleRemoveBook = (code_id) => {
+        console.log(code_id);
+        let index = listBookUpdate.findIndex(item => item === code_id)
+        console.log(index);
+        if(index > -1){
+           let newListUpdate = [...listBookUpdate]
+           newListUpdate.splice(index, 1)
+           setListBookUpdate(newListUpdate)
+           setFormUpdate({
+            ...formUpdate,
+            "books_borrowed": newListUpdate
+           })
+
+           let newListTable = [...listBookTable]
+           newListTable.splice(index, 1)
+           setListBookTable(newListTable)
+        }
+    }
+
+    console.log(formUpdate);
 
 
     return (
@@ -229,7 +254,7 @@ const UpdateVoucher = ({ prefixPath }) => {
                                     </div>
                                     <div style={{ display: "flex" }}>
                                         <input
-                                            value={userInfo?.name}
+                                            value={userDataUpdate?.name}
                                             readOnly={true}
                                             className={`do-an__input do-an-input-name-update-voucher ${errors.name ? 'is-invalid' : ''}`}
                                         />
@@ -269,7 +294,7 @@ const UpdateVoucher = ({ prefixPath }) => {
                                     </div>
                                     <div>
                                         <input
-                                            value={userInfo?.course}
+                                            value={userDataUpdate?.course}
                                             readOnly={true}
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                         />

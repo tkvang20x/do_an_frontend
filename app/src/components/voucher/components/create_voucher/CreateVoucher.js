@@ -81,11 +81,11 @@ const CreateVoucher = ({ prefixPath }) => {
     const [openModalUser, setOpenModaluser] = useState(false)
     const [formCreate, setFormCreate] = useState({})
     const [valueInput, setValueInput] = useState("")
-
+    const [dataUser, setDataUser] = useState({})
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const detailUser = useSelector(state => state.userReducer.detailUser)
+    // const detailUser = useSelector(state => state.userReducer.detailUser)
 
     var initPagingFilter = {
         page: 1,
@@ -103,7 +103,14 @@ const CreateVoucher = ({ prefixPath }) => {
     }
 
     const handleSelectUser = (user_id) => {
-        UserAction.getDetailUserAction(dispatch, user_id)
+        UserAction.getDetailUserAction(dispatch, user_id).then(response => {
+            console.log(response);
+            setDataUser(response)
+            setFormCreate({
+                ...formCreate,
+                "user_id": response.code
+            })
+        })
         setOpenModaluser(false)
     }
 
@@ -141,10 +148,12 @@ const CreateVoucher = ({ prefixPath }) => {
         }
     }
 
+    console.log(formCreate);
+    const managerToken = useSelector(state => state.loginReducer.dataToken)
+
     const handleSubmitFormCreate = () => {
         const formCreateVoucher = {
             ...formCreate,
-            manager_id:"MANAGER_1674916899",
             books_borrowed: listBookCreate
         }
 
@@ -178,7 +187,7 @@ const CreateVoucher = ({ prefixPath }) => {
                                     </div>
                                     <div style={{ display: "flex" }}>
                                         <input
-                                            value={detailUser?.name}
+                                            value={dataUser?.name}
                                             readOnly={true}
                                             className={`do-an__input do-an-input-name-create-voucher ${errors.name ? 'is-invalid' : ''}`}
                                         />
@@ -197,18 +206,18 @@ const CreateVoucher = ({ prefixPath }) => {
                                     </div>
                                     <div>
                                         <input
-                                            value={detailUser?.code}
+                                            value={dataUser?.code}
                                             readOnly={true}
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                             {...register("user_id",
                                                 {
-                                                    required: true,
-                                                    onChange: (e) => handleChangeInputForm("user_id", e.target.value)
+                                                    // required: true,
+                                                    // onChange: (e) => handleChangeInputForm("user_id", e.target.value)
                                                 }
                                             )}
                                         />
-                                        {errors.name?.type === "required" &&
-                                            <div className="input-value-error">Mã bạn đọc không được trống!</div>}
+                                        {/* {errors.name?.type === "required" &&
+                                            <div className="input-value-error">Mã bạn đọc không được trống!</div>} */}
                                     </div>
                                 </div>
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-course">
@@ -217,7 +226,7 @@ const CreateVoucher = ({ prefixPath }) => {
                                     </div>
                                     <div>
                                         <input
-                                            value={detailUser?.course}
+                                            value={dataUser?.course}
                                             readOnly={true}
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                         />

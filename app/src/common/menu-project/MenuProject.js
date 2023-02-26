@@ -5,35 +5,54 @@ import './MenuProject.scss'
 
 const MenuProject = ({ prefixPath }) => {
 
+    const [menus, setMenus] = useState([])
     const [isActive, setIsActive] = useState()
-    const menus = [
-        {
-            title: "Quản lý sách",
-            url: `${prefixPath}/manager/books/list`,
-            children: [
-                // {
-                //     title: "Thêm sách",
-                //     url: `${prefixPath}/project/${projectRowId}/detail`,
-                //     children: null
-                // },
-                // {
-                //     title: "Dataset",
-                //     url: `${prefixPath}/project/${projectRowId}/list-dataset`,
-                //     children: null
-                // },
-            ]
-        },
-        {
-            title: "Quản lý khách hàng",
-            url: `${prefixPath}/manager/user/list`,
-            children: []
-        },
-        {
-            title: "Quản lý phiếu mượn",
-            url: `${prefixPath}/manager/voucher/list`,
-            children: []
-        },
-    ]
+    const decode = useSelector(state => state.loginReducer.dataToken)
+    
+    useEffect(() => {
+        if (decode.role === "MANAGER"){
+            setMenus([
+                {
+                    title: "Quản lý sách",
+                    url: `${prefixPath}/manager/books/list`,
+                    children: []
+                },
+                {
+                    title: "Quản lý bạn đọc",
+                    url: `${prefixPath}/manager/user/list`,
+                    children: []
+                },
+                {
+                    title: "Quản lý phiếu mượn",
+                    url: `${prefixPath}/manager/voucher/list`,
+                    children: []
+                },
+            ])
+        }else if(decode.role === "ADMIN"){
+            setMenus([
+                {
+                    title: "Quản lý sách",
+                    url: `${prefixPath}/manager/books/list`,
+                    children: []
+                },
+                {
+                    title: "Quản lý bạn đọc",
+                    url: `${prefixPath}/manager/user/list`,
+                    children: []
+                },
+                {
+                    title: "Quản lý phiếu mượn",
+                    url: `${prefixPath}/manager/voucher/list`,
+                    children: []
+                },
+                {
+                    title: "Quản lý",
+                    url: `${prefixPath}/manager/manager-list`,
+                    children: []
+                },
+            ])
+        }
+    }, [decode])
 
 
     const handleChangeURL = (url) => {

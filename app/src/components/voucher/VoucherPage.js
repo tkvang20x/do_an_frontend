@@ -21,7 +21,7 @@ const VoucherPage = ({ prefixPath }) => {
             render: (text) => {
                 return <Link to={`${prefixPath}/manager/voucher/${text}`}>{text}</Link>;
             },
-            width: "10%"
+            width: "5%"
         },
         {
             title: "Thời gian mượn",
@@ -29,7 +29,7 @@ const VoucherPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "15%"
+            width: "10%"
         },
         {
             title: "Hạn trả",
@@ -37,7 +37,15 @@ const VoucherPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "15%"
+            width: "10%"
+        },
+        {
+            title: "Người mượn",
+            dataIndex: "user_name",
+            render: (text) => {
+                return <span>{text}</span>
+            },
+            width: "10%"
         },
         {
             title: "Người duyệt",
@@ -74,13 +82,13 @@ const VoucherPage = ({ prefixPath }) => {
             dataIndex: "voucher_id",
             render: (text, index) => {
                 return <div className="do-an-action-list-button" style={{display:"flex",justifyContent:"space-around"}}>
-                    {index.status_voucher === "WAITING_CONFIRM" && <button className="do-an-status-voucher-CONFIRMED" onClick={() => handleUpdateStatusVoucher(text)}>Xác nhận</button>}
-                    {index.status_voucher === "CONFIRMED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text)}>Trả phiếu</button>}
-                    {index.status_voucher === "EXPIRED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text)}>Trả phiếu</button>}
+                    {index.status_voucher === "WAITING_CONFIRM" && <button className="do-an-status-voucher-CONFIRMED" onClick={() => handleUpdateStatusVoucher(text, index.status_voucher)}>Xác nhận</button>}
+                    {index.status_voucher === "CONFIRMED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text, index.status_voucher)}>Trả phiếu</button>}
+                    {index.status_voucher === "EXPIRED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text, index.status_voucher)}>Trả phiếu</button>}
                     {index.status_voucher !== "CANCELLED" &&<button className="do-an-status-voucher-CANCELLED" onClick={() => handleUpdateStatusVoucher(text, "CANCELLED")}>Hủy</button>}
                 </div>
             },
-            width: "20%"
+            width: "10%"
         },
     ]
 
@@ -274,7 +282,6 @@ const VoucherPage = ({ prefixPath }) => {
         setCodeVoucherUpdate(voucher_id)
         setStatusUpdate(status_update)
     }
-    console.log(statusUpdate);
 
     const handleUpdateStatus = () => {
         VoucherAction.updateStatusVoucher(dispatch, codeVoucherUpdate, statusUpdate, filter)

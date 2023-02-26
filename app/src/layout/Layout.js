@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "../share/shared.scss";
 import Login from '../components/login/Login';
@@ -15,6 +15,7 @@ import VoucherPage from "../components/voucher/VoucherPage";
 import CreateVoucher from "../components/voucher/components/create_voucher/CreateVoucher";
 import DetailVoucher from "../components/voucher/components/detail_voucher/DetailVoucher";
 import UpdateVoucher from "../components/voucher/components/update_voucher/UpdateVoucher";
+import ManagerPage from "../components/manager/ManagerPage";
 
 export let openNotification = null
 export let openLoading = null
@@ -26,13 +27,13 @@ const Layout = ({ prefixPath }) => {
   const [toastList, setToastList] = useState([]);
   const [isLoading, setIsLoading] = useState(0)
   const showToast = (type, title, message) => {
-      const toastProperties = {
-          id: Date.now().toString(),
-          type: type,
-          title: title,
-          message: message,
-      };
-      setToastList([...toastList, toastProperties]);
+    const toastProperties = {
+      id: Date.now().toString(),
+      type: type,
+      title: title,
+      message: message,
+    };
+    setToastList([...toastList, toastProperties]);
   };
   openNotification = showToast
 
@@ -44,7 +45,7 @@ const Layout = ({ prefixPath }) => {
     setIsLoading(isLoading - 1)
   }
 
-   //setLoading
+  //setLoading
   addLoading = _addLoading
   subLoading = _subLoading
   numberLoading = isLoading
@@ -54,15 +55,16 @@ const Layout = ({ prefixPath }) => {
       <Router>
         <Routes>
           <Route exact path={`${prefixPath}/`} element={<Login prefixPath={prefixPath} showToast={showToast} />} />
-          <Route exact path={`${prefixPath}/manager`} element={<LayoutProject prefixPath={prefixPath}/>} >
-              <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
-              <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
-              <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
-              <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
-              <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
-              <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
-              <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
-              <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
+          <Route exact path={`${prefixPath}/manager`} element={<LayoutProject prefixPath={prefixPath} />} >
+            <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
+            <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
+            <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
+            <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
+            <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
           </Route>
         </Routes>
       </Router>

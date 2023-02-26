@@ -1,0 +1,107 @@
+.do-an__view-manager-container {
+
+    &__header {
+        display: flex;
+
+        &__text {
+            display: flex;
+            width: 100%;
+        }
+
+        &__button {
+            border: none;
+        }
+
+        &__title {
+            font-size: 20px;
+            margin-left: 10px;
+            font-weight: bold;
+            padding-top: 14px;
+        }
+    }
+
+    &__info {
+        // display: grid;
+        // grid-gap: 10px;
+        // grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        width: calc(100% - 40px);
+        background-color: white;
+        border-radius: 8px;
+        margin: 10px;
+        padding: 10px;
+
+        &__group-info {
+            width: 40%;
+            display: table;
+            height: 150px;
+        }
+
+        &__avatar {
+            text-align: center;
+            width: 20%;
+        }
+
+        &__row {
+            display: table-row;
+
+            &__title {
+                display: table-cell;
+                font-size: 18px;
+                font-weight: bold;
+                vertical-align: middle;
+                width: 30%;
+            }
+
+            &__value {
+                display: table-cell;
+                margin-left: 20px;
+                vertical-align: middle;
+            }
+        }
+    }
+
+    &__table{
+        margin: 10px;
+        background-color: white ;
+        padding: 10px;
+        &__search{
+            &__filter {
+                width: 100%;
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                margin-bottom: 10px;
+                background-color: #ebf3ff;
+                border-radius: 8px;
+            }
+    
+            &__item {
+                display: flex;
+                margin: 10px;
+                flex-direction: row;
+                width: 100%;
+    
+                &__title {
+                    font-size: 14px;
+                    margin-right: 10px;
+                    display: flex;
+                    align-items: center;
+                    width: 20%;
+                }
+    
+                &__input-container {
+                    width: 80%;
+                }
+    
+                &__input {
+                    width: 80%;
+                    height: 30px;
+                    border-radius: 8px;
+                    // padding: 4px;
+                    border-width: 0.5px;
+                }
+            }
+        }
+    }
+
+}

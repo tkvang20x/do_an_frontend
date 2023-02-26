@@ -5,7 +5,7 @@ const initialState = { //reducer lưu trữ TT
     title: "LOGIN",
     //init list data
     token: "",
-
+    dataToken: {}
 };
 
 
@@ -16,6 +16,9 @@ export const LoginSlice = createSlice({
     reducers: {
         setToken :(state, action) => {
             state.token = action.payload;
+        },
+        setDataToken :(state, action) => {
+            state.dataToken = action.payload;
         }
     }
 });

@@ -29,6 +29,7 @@ const getListVoucherAction = async (dispatch, paging) => {
           listResults
         )
       );
+      console.log(listResults);
 
       // dispatch paging
       dispatch(

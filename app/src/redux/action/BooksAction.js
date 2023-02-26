@@ -14,7 +14,6 @@ const getListBooksAction = async (dispatch, paging) => {
   try {
     // get response from api
     const response = await BooksService.getList(paging);
-    console.log(paging);
     if (
       Utils.isNotNullOrUndefined(response) &&
       Utils.isNotNullOrUndefined(response.data) &&
