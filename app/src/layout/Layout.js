@@ -16,6 +16,7 @@ import CreateVoucher from "../components/voucher/components/create_voucher/Creat
 import DetailVoucher from "../components/voucher/components/detail_voucher/DetailVoucher";
 import UpdateVoucher from "../components/voucher/components/update_voucher/UpdateVoucher";
 import ManagerPage from "../components/manager/ManagerPage";
+import ManagerInfoPage from "../components/manager/manager_info/ManagerInfoPage ";
 
 export let openNotification = null
 export let openLoading = null
@@ -66,6 +67,7 @@ const Layout = ({ prefixPath }) => {
             <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
             <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
           </Route>
+          <Route exact path={`${prefixPath}/info-manager`}  element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
         </Routes>
       </Router>
       <Toasts toastList={toastList} setList={setToastList}></Toasts>

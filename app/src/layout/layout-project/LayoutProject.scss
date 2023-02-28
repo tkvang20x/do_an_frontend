@@ -16,4 +16,24 @@
         height: 100%;
         background-color: #efefef;
     }
+
+    &__manager-info {
+        text-align: center;
+        width: 60%;
+        padding: 10px;
+        margin-left: 20px;
+
+        &__logout {
+            width: 80%;
+            padding: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            &:hover {
+                border: solid #84b5ff;
+                border-width: 1px;
+                border-radius: 8px;
+                background-color: #ebf3ff;
+            }
+        }
+    }
 }

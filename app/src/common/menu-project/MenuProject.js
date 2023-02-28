@@ -46,7 +46,7 @@ const MenuProject = ({ prefixPath }) => {
                     children: []
                 },
                 {
-                    title: "Quản lý",
+                    title: "Quản lý nhân viên",
                     url: `${prefixPath}/manager/manager-list`,
                     children: []
                 },

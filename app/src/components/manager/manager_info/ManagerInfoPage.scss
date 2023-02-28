@@ -1,0 +1,97 @@
+.do-an__info-manager-container {
+    display: flex;
+    background-color: #ebf3ff;
+    height: 96vh;
+    padding: 10px;
+    border-radius: 10px;
+
+
+    &__info {
+        background-color: white;
+        width: 30%;
+        margin-right: 10px;
+        border-radius: 10px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+
+        &__avatar {
+            height: 30%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        &__name {
+            height: 10%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 25px;
+        }
+
+        &__list-action {
+
+            &__item {
+                height: 40px;
+                justify-content: center;
+                display: flex;
+                align-items: center;
+                font-size: 20px;
+                border-bottom: solid #adadad;
+                border-width: 0.5px;
+                cursor: pointer;
+
+                &:hover{
+                    background-color: #dddddd;
+                }
+            }
+        }
+    }
+
+    &__action {
+        background-color: white;
+        width: 70%;
+        border-radius: 10px;
+
+        &__update{
+
+            &__title{
+
+            }
+
+            &__content{
+                &__group-input {
+                    display: flex;
+                    margin: 12px;
+        
+                    &__key {
+                        width: 15%;
+                    }
+        
+                    &__input {
+                        width: 85%;
+                    }
+        
+                    &__input-add-image{
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+
+        &__change{
+
+            &__title{
+
+            }
+        }
+    }
+
+    .item-active {
+        background-color: #ebf3ff;
+        color: #141ed2;
+    }
+}

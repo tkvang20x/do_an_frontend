@@ -371,7 +371,7 @@ const ManagerPage = ({ prefixPath }) => {
                 onCancel={handleCancelConfirmDialog}
                 onOk={handleDeleteConfirmDialog}
             >
-                <p>Nếu xóa {codeManagerDelete} thì dữ liệu thông tin và mượn sách của quản lý sẽ mất hết, xác nhận xóa?</p>
+                <p>Nếu xóa {codeManagerDelete} thì dữ liệu thông tin của quản lý sẽ mất hết, xác nhận xóa?</p>
             </Confirm>
         </div>
     )
