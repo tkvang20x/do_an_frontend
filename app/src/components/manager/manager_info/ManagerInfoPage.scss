@@ -15,6 +15,11 @@
         display: flex;
         flex-direction: column;
 
+        &__button-back{
+            padding: 10px 0px 0px 10px;
+            text-align: start;
+        }
+
         &__avatar {
             height: 30%;
             display: flex;
@@ -53,11 +58,12 @@
         background-color: white;
         width: 70%;
         border-radius: 10px;
-
+        padding: 10px;
         &__update{
 
             &__title{
-
+                font-size: 20px;
+                color: #141ed2;
             }
 
             &__content{
@@ -93,5 +99,9 @@
     .item-active {
         background-color: #ebf3ff;
         color: #141ed2;
+    }
+
+    .do-an-update-manager-button{
+        text-align: end;
     }
 }

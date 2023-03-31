@@ -57,17 +57,17 @@ const Layout = ({ prefixPath }) => {
         <Routes>
           <Route exact path={`${prefixPath}/`} element={<Login prefixPath={prefixPath} showToast={showToast} />} />
           <Route exact path={`${prefixPath}/manager`} element={<LayoutProject prefixPath={prefixPath} />} >
-            <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
-            <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
-            <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
-            <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
-            <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
-            <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
-            <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
-            <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
-            <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
+          <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
+          <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
+          <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
+          <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
+          <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
+          <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
+          <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
+          <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
+          <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
           </Route>
-          <Route exact path={`${prefixPath}/info-manager`}  element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
+          <Route exact path={`${prefixPath}/info-manager`} element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
         </Routes>
       </Router>
       <Toasts toastList={toastList} setList={setToastList}></Toasts>

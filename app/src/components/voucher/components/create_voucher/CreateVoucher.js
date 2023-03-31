@@ -326,7 +326,7 @@ const CreateVoucher = ({ prefixPath }) => {
                     >
                         Xác nhận
                     </Button> */}
-                    <button type="submit">
+                    <button className="button-search" type="submit">
                         Xác nhận
                     </button>
                 </div>

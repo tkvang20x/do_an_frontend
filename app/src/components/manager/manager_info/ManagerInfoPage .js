@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import './ManagerInfoPage.scss';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleUser, faInfoCircle, faKey } from "@fortawesome/free-solid-svg-icons";
+import { faCircleUser, faInfoCircle, faKey, faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import ManagerAction from "../../../redux/action/ManagerAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import DropDown from "../../../share/ecm-base/components/dropdown-v2/DropDown";
+import { useNavigate } from 'react-router-dom';
 
 const ManagerInfoPage = ({ prefixPath }) => {
 
@@ -27,11 +28,11 @@ const ManagerInfoPage = ({ prefixPath }) => {
     const [listDefaultDropDown, setListDefaultDropDown] = useState([
         {
             title: "Nam",
-            value:"MALE"
+            value: "MALE"
         },
         {
-            title:"Nữ",
-            value:"FEMALE"
+            title: "Nữ",
+            value: "FEMALE"
         }
     ])
 
@@ -46,13 +47,12 @@ const ManagerInfoPage = ({ prefixPath }) => {
 
     const [formUpdate, setFormUpdate] = useState({})
     const ditpatch = useDispatch()
+    const navigate = useNavigate()
 
 
     useEffect(() => {
         ManagerAction.getDetailManagerAction(ditpatch, tokenDecode?.code)
     }, [tokenDecode?.code])
-
-    console.log(tokenDecode);
 
     useEffect(() => {
         setValue("name", detailManager?.name)
@@ -72,16 +72,23 @@ const ManagerInfoPage = ({ prefixPath }) => {
             "email": detailManager?.email
         })
     }, [detailManager])
-    console.log(formUpdate);
 
     const handleChangeInput = (field, value) => {
         const newFormData = { ...formUpdate, [field]: value };
         setFormUpdate(newFormData)
     }
 
+    const handleSubmitForm = () => {
+        ManagerAction.updateManagerAction(ditpatch, tokenDecode?.code, formUpdate)
+    }
+
     return (
         <div className="do-an__info-manager-container">
             <div className="do-an__info-manager-container__info">
+                <div className="do-an__info-manager-container__info__button-back">
+                <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px", cursor:"pointer"}} onClick= {() => navigate(-1)} />
+
+                </div>
                 <div className="do-an__info-manager-container__info__avatar">
                     <FontAwesomeIcon style={{ height: "150px", marginBottom: "10px", cursor: "pointer" }} icon={faCircleUser}></FontAwesomeIcon>
                 </div>
@@ -103,7 +110,7 @@ const ManagerInfoPage = ({ prefixPath }) => {
             </div>
             <div className="do-an__info-manager-container__action">
                 {isActive === "update" &&
-                    <form className="do-an__info-manager-container__action__update">
+                    <form className="do-an__info-manager-container__action__update" onSubmit={handleSubmit(handleSubmitForm)}>
                         <div className="do-an__info-manager-container__action__update__title">
                             Chỉnh sửa thông tin
                         </div>
@@ -160,11 +167,11 @@ const ManagerInfoPage = ({ prefixPath }) => {
                                     <input
                                         className={`do-an__input do-an-input-name`}
                                         {...register("course",
-                                        {
-                                            required: true,
-                                            onChange: (e) => handleChangeInput("course", e.target.value)
-                                        }
-                                    )}
+                                            {
+                                                required: true,
+                                                onChange: (e) => handleChangeInput("course", e.target.value)
+                                            }
+                                        )}
                                     />
                                 </div>
                             </div>
@@ -176,11 +183,11 @@ const ManagerInfoPage = ({ prefixPath }) => {
                                     <input
                                         className={`do-an__input do-an-input-name`}
                                         {...register("university",
-                                        {
-                                            required: true,
-                                            onChange: (e) => handleChangeInput("university", e.target.value)
-                                        }
-                                    )}
+                                            {
+                                                required: true,
+                                                onChange: (e) => handleChangeInput("university", e.target.value)
+                                            }
+                                        )}
                                     />
                                 </div>
                             </div>
@@ -192,11 +199,11 @@ const ManagerInfoPage = ({ prefixPath }) => {
                                     <input
                                         className={`do-an__input do-an-input-name`}
                                         {...register("phone",
-                                        {
-                                            required: true,
-                                            onChange: (e) => handleChangeInput("phone", e.target.value)
-                                        }
-                                    )}
+                                            {
+                                                required: true,
+                                                onChange: (e) => handleChangeInput("phone", e.target.value)
+                                            }
+                                        )}
                                     />
                                 </div>
                             </div>
@@ -208,14 +215,17 @@ const ManagerInfoPage = ({ prefixPath }) => {
                                     <input
                                         className={`do-an__input do-an-input-name`}
                                         {...register("email",
-                                        {
-                                            required: true,
-                                            onChange: (e) => handleChangeInput("email", e.target.value)
-                                        }
-                                    )}
+                                            {
+                                                required: true,
+                                                onChange: (e) => handleChangeInput("email", e.target.value)
+                                            }
+                                        )}
                                     />
                                 </div>
                             </div>
+                        </div>
+                        <div className="do-an-update-manager-button">
+                            <button className="button-search" type="submit">Xác nhận</button>
                         </div>
                     </form>
                 }

@@ -68,6 +68,27 @@ const ManagerService = {
             console.log("[Manager - create]", error);
         }
     },
+
+    uodate: (code, formData) => {
+        try {
+            const managerData = JSON.stringify(
+                {
+                    name: formData.name,
+                    date_of_birth: formData.date_of_birth,
+                    gender: formData.gender,
+                    course: formData.course,
+                    university: formData.university,
+                    phone: formData.phone,
+                    email: formData.email,
+                });
+            const formDataManager = new FormData();
+            formDataManager.append("data_update", managerData);
+            return axiosClient.put(process.env.REACT_APP_RUD_MANAGERS.replace('{code}', code), formDataManager,
+                { headers: { "Content-Type": "multipart/form-data" } });
+        } catch (error) {
+            console.log("[Manager - update]", error);
+        }
+    },
 }
 
 export default ManagerService;

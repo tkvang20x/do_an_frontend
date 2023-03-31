@@ -142,6 +142,28 @@ const removeManager = async (dispatch, code, filter) => {
     }
   };
 
+  const updateManagerAction = async (dispatch,code, formData) => {
+    try {
+      const response = await ManagerService.uodate(code, formData)
+      if (response.data.status === 200){
+        openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
+        dispatch(
+              ManagerSlice.actions.saveDetailManager(
+                response.data.data
+              )
+        )
+        return true
+    }else{
+        openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
+    }
+      return false;
+    } catch (err) {
+      console.log("UpdateManager Action - error: ", err);
+      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+      return null;
+    }
+  }
+
 
 const ManagerAction = {
     getListManagerAction,
@@ -149,7 +171,8 @@ const ManagerAction = {
     updateManagerPagination,
     getDetailManagerAction,
     removeManager,
-    createManagerAction
+    createManagerAction,
+    updateManagerAction
 }
 
 export default ManagerAction;

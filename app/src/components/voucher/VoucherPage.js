@@ -58,6 +58,7 @@ const VoucherPage = ({ prefixPath }) => {
         {
             title: "Trạng thái",
             dataIndex: "status_voucher",
+            className: "button-center-table",
             render: (text) => {
                 return <div className={`do-an-status-voucher-${text}`}>
                     {text === "WAITING_CONFIRM" ? "Chờ xác nhận" : ""}

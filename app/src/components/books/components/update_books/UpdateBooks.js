@@ -101,12 +101,6 @@ const UpdateBooks = ({ onCloseModal }) => {
         onCloseModal()
     }
 
-    console.log(formUpdateBooks);
-
-
-
-
-
     return (
         <form id="do-an-form-update-books" onSubmit={handleSubmit(handleSubmitForm)}>
             <div className="do-an-form-update-books__body">
