@@ -69,7 +69,7 @@ const ManagerService = {
         }
     },
 
-    uodate: (code, formData) => {
+    update: (code, formData) => {
         try {
             const managerData = JSON.stringify(
                 {

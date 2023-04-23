@@ -6,7 +6,8 @@ import ManagerAction from "../../../redux/action/ManagerAction";
 import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import DropDown from "../../../share/ecm-base/components/dropdown-v2/DropDown";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import ConstAPI from "../../../common/const";
 
 const ManagerInfoPage = ({ prefixPath }) => {
 
@@ -40,10 +41,10 @@ const ManagerInfoPage = ({ prefixPath }) => {
         setIsActive(type)
     }
 
-    const tokenDecode = useSelector(state => state.loginReducer.dataToken)
+    const {code} = useParams()
+
     const detailManager = useSelector(state => state.managerReducer.detailManager)
     const { register, setValue, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
-
 
     const [formUpdate, setFormUpdate] = useState({})
     const ditpatch = useDispatch()
@@ -51,8 +52,8 @@ const ManagerInfoPage = ({ prefixPath }) => {
 
 
     useEffect(() => {
-        ManagerAction.getDetailManagerAction(ditpatch, tokenDecode?.code)
-    }, [tokenDecode?.code])
+        ManagerAction.getDetailManagerAction(ditpatch, code)
+    }, [code])
 
     useEffect(() => {
         setValue("name", detailManager?.name)
@@ -79,18 +80,40 @@ const ManagerInfoPage = ({ prefixPath }) => {
     }
 
     const handleSubmitForm = () => {
-        ManagerAction.updateManagerAction(ditpatch, tokenDecode?.code, formUpdate)
+        ManagerAction.updateManagerAction(ditpatch, code, formUpdate)
     }
+
+    const [formChangePass, setFormChangePass] = useState({
+        oldpass: "",
+        newpass: ""
+    })
+
+    const handleChangePassInput = (name, value) => {
+        setFormChangePass({
+            ...formChangePass,
+            [name] : value
+        })
+    }
+
+    const handleChangePassword = () => {
+        ManagerAction.changePasswordManagerAction(formChangePass)
+        setFormChangePass({
+            oldpass: "",
+        newpass: ""
+        })
+    }
+
 
     return (
         <div className="do-an__info-manager-container">
             <div className="do-an__info-manager-container__info">
                 <div className="do-an__info-manager-container__info__button-back">
-                <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px", cursor:"pointer"}} onClick= {() => navigate(-1)} />
+                    <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px", cursor: "pointer" }} onClick={() => navigate(-1)} />
 
                 </div>
                 <div className="do-an__info-manager-container__info__avatar">
-                    <FontAwesomeIcon style={{ height: "150px", marginBottom: "10px", cursor: "pointer" }} icon={faCircleUser}></FontAwesomeIcon>
+                    {/* <FontAwesomeIcon style={{ height: "150px", marginBottom: "10px", cursor: "pointer" }} icon={faCircleUser}></FontAwesomeIcon> */}
+                    <img style={{ height: "180px", width: "180px", borderRadius: "50%" }} src={`${ConstAPI.BASE_HOST_API}${detailManager?.avatar}`}></img>
                 </div>
                 <div className="do-an__info-manager-container__info__name">
                     kienlt
@@ -234,6 +257,34 @@ const ManagerInfoPage = ({ prefixPath }) => {
                         <div className="do-an__info-manager-container__action__change__title">
                             Thay đổi mật khẩu
                         </div>
+                        <div className="do-an__info-manager-container__action__change__group-input">
+                            <div className="do-an__info-manager-container__action__change__group-input__key">
+                                <span>Mật khẩu cũ: <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an__info-manager-container__action__change__group-input__input">
+                                <input
+                                    className={`do-an__input do-an-input-name`}
+                                    onChange={(e) => handleChangePassInput("oldpass", e.target.value)}
+                                    value={formChangePass.oldpass}
+                                />
+                            </div>
+                        </div>
+                        <div className="do-an__info-manager-container__action__change__group-input">
+                            <div className="do-an__info-manager-container__action__change__group-input__key">
+                                <span>Mật khẩu mới: <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an__info-manager-container__action__change__group-input__input">
+                                <input
+                                    className={`do-an__input do-an-input-name`}
+                                    onChange={(e) => handleChangePassInput("newpass", e.target.value)}
+                                    value={formChangePass.newpass}
+                                />
+                            </div>
+                        </div>
+                        <div className="do-an-update-manager-button">
+                            <button className="button-search" type="button" onClick={handleChangePassword}>Xác nhận</button>
+                        </div>
+
                     </div>
                 }
             </div>

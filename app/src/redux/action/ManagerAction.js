@@ -1,5 +1,6 @@
 import { openNotificationCommon } from "../../common/const";
 import Utils from "../../common/utils";
+import LoginService from "../service/LoginService";
 import ManagerService from "../service/ManagerService";
 import { ManagerSlice } from "../slice/ManagerSlice";
 
@@ -144,7 +145,7 @@ const removeManager = async (dispatch, code, filter) => {
 
   const updateManagerAction = async (dispatch,code, formData) => {
     try {
-      const response = await ManagerService.uodate(code, formData)
+      const response = await ManagerService.update(code, formData)
       if (response.data.status === 200){
         openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
         dispatch(
@@ -164,6 +165,25 @@ const removeManager = async (dispatch, code, filter) => {
     }
   }
 
+  const changePasswordManagerAction = async ( formData) => {
+    try {
+      const response = await LoginService.changePassword( formData)
+      console.log(response);
+      if (response.data.status === 200){
+        openNotificationCommon("success", "Thông báo", `Cập nhật mật khẩu thành công!`)
+
+        return true
+    }else{
+        openNotificationCommon("error", "Thông báo", `Mật khẩu cũ không chính xác!`)
+    }
+      return false;
+    } catch (err) {
+      console.log("UpdateManager Action - error: ", err);
+      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+      return null;
+    }
+  }
+
 
 const ManagerAction = {
     getListManagerAction,
@@ -172,7 +192,8 @@ const ManagerAction = {
     getDetailManagerAction,
     removeManager,
     createManagerAction,
-    updateManagerAction
+    updateManagerAction,
+    changePasswordManagerAction
 }
 
 export default ManagerAction;

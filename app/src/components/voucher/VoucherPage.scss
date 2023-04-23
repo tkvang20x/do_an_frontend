@@ -40,11 +40,15 @@
                 margin-right: 10px;
                 display: flex;
                 align-items: center;
-                width: 25%;
+                width: 20%;
             }
 
             &__input-container {
                 width: 80%;
+            }
+
+            &__datepicker{
+                width: 74%;
             }
 
             &__input {

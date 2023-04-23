@@ -2,8 +2,6 @@ import React, { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom';
 import "./LayoutProject.scss"
 import { useDispatch, useSelector } from "react-redux";
-
-
 import MenuProject from "../../common/menu-project/MenuProject";
 import LoginAction from '../../redux/action/LoginAction';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -45,7 +43,7 @@ const LayoutProject = ({ prefixPath }) => {
   }
 
   const handleOpenInfoManager = () => {
-    navigate(`${prefixPath}/info-manager`)
+    navigate(`${prefixPath}/info-manager/${tokenDecode.code}`)
   }
 
   return (

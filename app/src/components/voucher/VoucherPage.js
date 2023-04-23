@@ -7,9 +7,11 @@ import VoucherAction from "../../redux/action/VoucherAction";
 import { useSelector, useDispatch } from "react-redux";
 import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import DropDown from '../../share/ecm-base/components/dropdown-v2/DropDown';
-import { ListButton, ListButtonVoucher } from '../../common/utils';
-import ConstAPI from '../../common/const';
+import { DatePicker, } from 'antd';
 import Confirm from '../../share/ecm-base/components/confirm/Confirm';
+import moment from 'moment';
+
+const { RangePicker } = DatePicker;
 
 const VoucherPage = ({ prefixPath }) => {
 
@@ -24,7 +26,7 @@ const VoucherPage = ({ prefixPath }) => {
             width: "5%"
         },
         {
-            title: "Thời gian mượn",
+            title: "Thời gian tạo phiếu",
             dataIndex: "start_date",
             render: (text) => {
                 return <span>{text}</span>
@@ -82,11 +84,11 @@ const VoucherPage = ({ prefixPath }) => {
             title: "Thao tác",
             dataIndex: "voucher_id",
             render: (text, index) => {
-                return <div className="do-an-action-list-button" style={{display:"flex",justifyContent:"space-around"}}>
+                return <div className="do-an-action-list-button" style={{ display: "flex", justifyContent: "space-around" }}>
                     {index.status_voucher === "WAITING_CONFIRM" && <button className="do-an-status-voucher-CONFIRMED" onClick={() => handleUpdateStatusVoucher(text, index.status_voucher)}>Xác nhận</button>}
                     {index.status_voucher === "CONFIRMED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text, index.status_voucher)}>Trả phiếu</button>}
                     {index.status_voucher === "EXPIRED" && <button className="do-an-status-voucher-PAYED" onClick={() => handleUpdateStatusVoucher(text, index.status_voucher)}>Trả phiếu</button>}
-                    {index.status_voucher !== "CANCELLED" &&<button className="do-an-status-voucher-CANCELLED" onClick={() => handleUpdateStatusVoucher(text, "CANCELLED")}>Hủy</button>}
+                    {index.status_voucher !== "CANCELLED" && <button className="do-an-status-voucher-CANCELLED" onClick={() => handleUpdateStatusVoucher(text, "CANCELLED")}>Hủy</button>}
                 </div>
             },
             width: "10%"
@@ -202,17 +204,13 @@ const VoucherPage = ({ prefixPath }) => {
         VoucherAction.getListVoucherAction(dispatch, urlParams)
     }, [])
 
-    const onCancel = () => {
-        setIsHiddenModalCreateVoucher(!isHiddenModalCreateVoucher)
-    }
-
 
     const handleChangeInputSearch = (field, value) => {
-        let newSearchFilter = { ...filter }
+        let newSearchFilter = { ...filter, page: 1 }
         if (field === "status_voucher" && value === "ALL") {
             delete newSearchFilter.status_voucher
         } else {
-            newSearchFilter = { ...filter, [field]: value }
+            newSearchFilter = { ...filter, page: 1, [field]: value }
         }
         // const newSearchFilter = { ...filter, [field]: value }
 
@@ -291,6 +289,46 @@ const VoucherPage = ({ prefixPath }) => {
 
     }
 
+    const handleChangeDebut = (range) => {
+        console.log(range);
+        if (range === null || range === undefined) {
+            let newSearchFilter = {
+                ...filter
+            }
+            delete newSearchFilter.start_date
+            delete newSearchFilter.due_date
+
+            VoucherAction.updateVoucherFilterAction(dispatch, newSearchFilter)
+            VoucherAction.updateVoucherPagination(dispatch, {
+                ...pagination,
+                page: 1
+            })
+        }
+
+        else {
+            const valueOfInput1 = range[0].format("YYYY-MM-DD-HH:mm:ss");
+            const valueOfInput2 = range[1].format("YYYY-MM-DD-HH:mm:ss");
+
+            console.log('start date', valueOfInput1);
+            console.log("end date", valueOfInput2);
+
+            let newSearchFilter = {
+                ...filter,
+                page: 1,
+                start_date: valueOfInput1,
+                due_date: valueOfInput2
+            }
+
+            VoucherAction.updateVoucherFilterAction(dispatch, newSearchFilter)
+            VoucherAction.updateVoucherPagination(dispatch, {
+                ...pagination,
+                page: 1
+            })
+        }
+
+
+    }
+
     return (
         <div className="do-an__voucher">
             <div className="do-an__voucher__image-cover">
@@ -312,7 +350,7 @@ const VoucherPage = ({ prefixPath }) => {
                     </div>
                     <div className="do-an__voucher__group-search__item">
                         <div className="do-an__voucher__group-search__item__title">
-                            Tên người dùng:
+                            Tên bạn đọc:
                         </div>
                         <div className="do-an__voucher__group-search__item__input-container">
                             <input className="do-an__voucher__group-search__item__input"
@@ -323,7 +361,7 @@ const VoucherPage = ({ prefixPath }) => {
                     </div>
                     <div className="do-an__voucher__group-search__item">
                         <div className="do-an__voucher__group-search__item__title">
-                            Sắp xếp theo:
+                            Sắp xếp:
                         </div>
                         <div className="do-an__voucher__group-search__item__input-container">
                             <DropDown className="do-an__voucher__group-search__item__input"
@@ -349,7 +387,7 @@ const VoucherPage = ({ prefixPath }) => {
                     </div>
                     <div className="do-an__voucher__group-search__item">
                         <div className="do-an__voucher__group-search__item__title">
-                            Trạng thái thẻ:
+                            Trạng thái:
                         </div>
                         <div className="do-an__voucher__group-search__item__input-container">
                             <DropDown className="do-an__voucher__group-search__item__input"
@@ -362,11 +400,18 @@ const VoucherPage = ({ prefixPath }) => {
                     </div>
                     <div className="do-an__voucher__group-search__item">
                         <div className="do-an__voucher__group-search__item__title">
-                            Thời gian:
+                            Thời gian tạo phiếu:
                         </div>
-                        <div className="do-an__voucher__group-search__item__input-container">
-                            <input className="do-an__voucher__group-search__item__input"
-                            />
+                        <div className="do-an__voucher__group-search__item__datepicker">
+                            {/* <input className="do-an__voucher__group-search__item__input"
+                            /> */}
+                            <RangePicker showTime
+                                onChange={(event) => handleChangeDebut(event)}
+                                placeholder={["Từ ngày", " Đến ngày"]}
+                                // defaultPickerValue={[moment(searchParams?.start_date), moment(searchParams?.due_date)]}
+                            >
+
+                            </RangePicker>
                         </div>
                     </div>
                 </div>

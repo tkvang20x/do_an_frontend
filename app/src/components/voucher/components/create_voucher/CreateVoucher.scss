@@ -3,7 +3,7 @@
 
     &__header {
         display: flex;
-        border-radius: 8px;
+        border-radius: 8px 8px 0px 0px;
         background-color: white;
 
 
@@ -30,7 +30,7 @@
         background-color: white;
         padding: 10px 8px 10px 8px;
         margin-top: 2px;
-        border-radius: 8px;
+        border-radius: 0px 0px 8px 8px;
 
 
         &__user-info {

@@ -67,7 +67,7 @@ const Layout = ({ prefixPath }) => {
           <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
           <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
           </Route>
-          <Route exact path={`${prefixPath}/info-manager`} element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
+          <Route exact path={`${prefixPath}/info-manager/:code`} element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
         </Routes>
       </Router>
       <Toasts toastList={toastList} setList={setToastList}></Toasts>

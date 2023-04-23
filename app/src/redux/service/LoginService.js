@@ -1,4 +1,4 @@
-import { httpAccess, JSON_CONTENT_TYPE } from "../../common/http-commons";
+import { axiosClient, httpAccess, JSON_CONTENT_TYPE } from "../../common/http-commons";
 import Utils from "../../common/utils";
 import CommonService from "./commonService";
 
@@ -16,9 +16,23 @@ const login = async (dataLogin) => {
 
 }
 
+const changePassword = async (dataPassChange) => {
+    try {
+        const dataPassword = {
+            oldpass: dataPassChange.oldpass,
+            newpass: dataPassChange.newpass
+        }
+
+        return axiosClient.put(process.env.REACT_APP_CHANGE_PASSWORD_PATH, dataPassword);
+    } catch (error) {
+        console.log("[Manager - ChangePassword]", error);
+    }
+}
+
 
 const LoginService = {
-    login
+    login,
+    changePassword
 }
 
 export default LoginService;

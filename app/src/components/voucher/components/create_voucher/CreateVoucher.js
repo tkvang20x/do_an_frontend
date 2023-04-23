@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import BookAction from "../../../../redux/action/BookAction";
 import ConstAPI from "../../../../common/const";
 import VoucherAction from "../../../../redux/action/VoucherAction";
+import { DatePicker } from 'antd';
 
 
 const CreateVoucher = ({ prefixPath }) => {
@@ -74,18 +75,36 @@ const CreateVoucher = ({ prefixPath }) => {
         }
     ]
 
-    const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
+    const {setValue, register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
 
     const [listBookCreate, setListBookCreate] = useState([])
     const [listBookTable, setListBookTable] = useState([])
     const [openModalUser, setOpenModaluser] = useState(false)
-    const [formCreate, setFormCreate] = useState({})
     const [valueInput, setValueInput] = useState("")
     const [dataUser, setDataUser] = useState({})
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
+   
+
     // const detailUser = useSelector(state => state.userReducer.detailUser)
+
+    var currentdate = new Date();
+    var datetime = currentdate.getFullYear() + "-"
+        + (currentdate.getMonth() + 1 > 9 ? currentdate.getMonth() + 1 : ("0" + (currentdate.getMonth() + 1))) + "-"
+        + (currentdate.getDate() < 10 ? ("0" + currentdate.getDate()) : currentdate.getDate()) + "-"
+        + (currentdate.getHours() < 10 ? ("0" + currentdate.getHours()) : currentdate.getHours()) + ":"
+        + (currentdate.getMinutes() < 10 ? ("0" + currentdate.getMinutes()) : currentdate.getMinutes()) + ":"
+        + (currentdate.getSeconds() < 10 ? ("0" + currentdate.getSeconds()) : currentdate.getSeconds());
+
+    const [formCreate, setFormCreate] = useState({due_date: ""})
+
+    useEffect(() => {
+        console.log("thay doi");
+        setValue("check_due_date" , formCreate?.due_date)
+    }, [formCreate?.due_date])
+
+    console.log(formCreate);
 
     var initPagingFilter = {
         page: 1,
@@ -119,7 +138,12 @@ const CreateVoucher = ({ prefixPath }) => {
     }
 
     const handleChangeInputForm = (field, value) => {
-        const newFormData = {...formCreate, [field]: value}
+        let newFormData = {}
+        if (field === "due_date") {
+            newFormData = { ...formCreate, [field]: value.format("YYYY-MM-DD-HH:mm:ss") }
+        } else {
+            newFormData = { ...formCreate, [field]: value }
+        }
         setFormCreate(newFormData)
     }
 
@@ -133,33 +157,35 @@ const CreateVoucher = ({ prefixPath }) => {
                             "code_id": valueInput,
                             "name": response.data.data.books.name,
                             "avatar": response.data.data.books.avatar,
-                            "author": response.data.data.books.author,
-                            "title": response.data.data.books.title
+                            "author": response.data.data.books.author
+                            // "title": response.data.data.books.title
                         }
                     ])
+
                 }
             })
-
-            setListBookCreate([
-                ...listBookCreate,
-                valueInput
-            ])
+            // setListBookCreate([
+            //     ...listBookCreate,
+            //     valueInput
+            // ])
+            
             setValueInput("")
         }
     }
 
-    console.log(formCreate);
     const managerToken = useSelector(state => state.loginReducer.dataToken)
 
     const handleSubmitFormCreate = () => {
         const formCreateVoucher = {
             ...formCreate,
-            books_borrowed: listBookCreate
+            books_borrowed: listBookTable
         }
 
-        VoucherAction.createVoucherAction(formCreateVoucher,dispatch, initPagingFilter)
+        VoucherAction.createVoucherAction(formCreateVoucher, dispatch, initPagingFilter)
         navigate(`${prefixPath}/manager/voucher/list`)
     }
+
+    console.log(errors);
 
 
     return (
@@ -236,11 +262,13 @@ const CreateVoucher = ({ prefixPath }) => {
                             <div className="do-an__create-voucher-container__body__user-info__group-info__group-second">
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-start-date">
                                     <div>
-                                        Thời gian bắt đầu<i className="do-an__input-require">*</i>
+                                        Thời gian tạo<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
                                         <input
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
+                                            disabled={true}
+                                            value={datetime}
                                         />
                                     </div>
                                 </div>
@@ -249,15 +277,21 @@ const CreateVoucher = ({ prefixPath }) => {
                                         Thời gian hẹn trả<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
+
+                                        <DatePicker showTime onChange={(e) => handleChangeInputForm("due_date", e)}
+                                            placeholder="Ngày hẹn trả"
+                                        />
+
                                         <input
-                                            className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
-                                            {...register("due_date",
+                                            hidden={true}
+                                            {...register("check_due_date",
                                                 {
-                                                    required: true,
-                                                    onChange: (e) => handleChangeInputForm("due_date", e.target.value)
+                                                   required: true
                                                 }
                                             )}
                                         />
+                                        {errors.check_due_date?.type === "required" &&
+                                            <div className="input-value-error">Ngày hạn trả không được trống!</div>}
                                     </div>
                                 </div>
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-description">
