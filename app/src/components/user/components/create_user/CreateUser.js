@@ -22,13 +22,13 @@ const CreateUser = ({ onCloseModal }) => {
             name: "",
             code: "",
             date_of_birth: "",
-            gender: "",
+            gender: "MALE",
             course: "",
             university: "",
             phone: "",
             email: "",
             user_name: "",
-            password:"",
+            password: "",
             avatar: null
         }
     )
@@ -36,11 +36,11 @@ const CreateUser = ({ onCloseModal }) => {
     const [listDefaultDropDown, setListDefaultDropDown] = useState([
         {
             title: "Nam",
-            value:"MALE"
+            value: "MALE"
         },
         {
-            title:"Nữ",
-            value:"FEMALE"
+            title: "Nữ",
+            value: "FEMALE"
         }
     ])
 
@@ -102,12 +102,15 @@ const CreateUser = ({ onCloseModal }) => {
                                     {...register("name",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("name", e.target.value)
                                         }
                                     )}
                                 />
                                 {errors.name?.type === "required" &&
                                     <div className="input-value-error">Tên bạn đọc không được trống!</div>}
+                                {errors.name?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên bạn đọc không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -149,12 +152,15 @@ const CreateUser = ({ onCloseModal }) => {
                                     {...register("course",
                                         {
                                             required: true,
+                                            maxLength: 10,
                                             onChange: (e) => handleChangeInput("course", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.title?.type === "required" &&
+                                {errors.course?.type === "required" &&
                                     <div className="input-value-error">Niên khóa không được trống!</div>}
+                                {errors.course?.type === "maxLength" &&
+                                    <div className="input-value-error">Biên khóa không được vượt quá 10 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -167,12 +173,15 @@ const CreateUser = ({ onCloseModal }) => {
                                     {...register("university",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("university", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.author?.type === "required" &&
+                                {errors.university?.type === "required" &&
                                     <div className="input-value-error">Tên đại học không được trống!</div>}
+                                {errors.university?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên đại học không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -185,12 +194,16 @@ const CreateUser = ({ onCloseModal }) => {
                                     {...register("phone",
                                         {
                                             required: true,
+                                            maxLength: 10,
                                             onChange: (e) => handleChangeInput("phone", e.target.value)
                                         }
                                     )}
+                                    type="number"
                                 />
-                                {errors.name_university?.type === "required" &&
+                                {errors.phone?.type === "required" &&
                                     <div className="input-value-error">Số điện thoại không được trống!</div>}
+                                {errors.phone?.type === "maxLength" &&
+                                    <div className="input-value-error">Số điện thoại không được vượt quá 10 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -203,12 +216,16 @@ const CreateUser = ({ onCloseModal }) => {
                                     {...register("email",
                                         {
                                             required: true,
-                                            onChange: (e) => handleChangeInput("email", e.target.value)
+                                            maxLength: 100,
+                                            onChange: (e) => handleChangeInput("email", e.target.value),
+                                            // validate: (value) => handleCheckEmail(value)
                                         }
                                     )}
                                 />
-                                {errors.publishing_year?.type === "required" &&
+                                {errors.email?.type === "required" &&
                                     <div className="input-value-error">Tên email không được trống!</div>}
+                                {errors.email?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên email không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -220,13 +237,16 @@ const CreateUser = ({ onCloseModal }) => {
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("user_name",
                                         {
-                                            required:true,
+                                            required: true,
+                                            maxLength: 50,
                                             onChange: (e) => handleChangeInput("user_name", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.author?.type === "required" &&
+                                {errors.user_name?.type === "required" &&
                                     <div className="input-value-error">Tên tài khoản không được trống!</div>}
+                                {errors.user_name?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên tài khoản không được vượt quá 50 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -238,11 +258,14 @@ const CreateUser = ({ onCloseModal }) => {
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("password",
                                         {
+                                            required: true,
                                             onChange: (e) => handleChangeInput("password", e.target.value)
                                         }
                                     )}
+                                    type="password"
                                 />
-
+                                    {errors.password?.type === "required" &&
+                                    <div className="input-value-error">Mật khẩu không được trống!</div>}
                             </div>
                         </div>
                     </div>

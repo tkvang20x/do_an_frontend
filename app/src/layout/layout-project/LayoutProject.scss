@@ -1,18 +1,18 @@
-.ocr-designer__layout-project__container {
+.do-an__layout-project__container {
     width: 100%;
     height: 100%;
 
     display: flex;
     flex-direction: row-reverse;
     position: relative;
-
     &__menu {
-        width: 190px;
+        width: 210px;
         height: 100%;
+        background-color: #202020;
     }
 
-    &__view {
-        width: calc(100% - 190px);
+    &__view-expand {
+        width: calc(100% - 210px);
         height: 100%;
         background-color: #efefef;
     }
@@ -28,12 +28,85 @@
             padding: 10px;
             cursor: pointer;
             margin-top: 10px;
+            color: white;
             &:hover {
-                border: solid #84b5ff;
+                font-weight: 500;
+                border: solid #141ed2;
                 border-width: 1px;
                 border-radius: 8px;
-                background-color: #ebf3ff;
+                background-color: #141ed2;
             }
         }
+
+        &__username{
+            color: white;
+        }
+
+        &__icon{
+            color: white;
+            padding-top: 10px;
+
+            &:hover{
+                background-color: #141ed2;
+                border-radius: 50px;
+            }
+        }
+
+        &__icon-inexpand{
+            color: white;
+            display: contents;
+
+            &:hover{
+                cursor: pointer;
+            }
+        }
+
     }
+
+    &__view-inexpand {
+        width: 95%;
+        height: 100%;
+        background-color: #efefef;
+    }
+
+    &__logo{
+        display: flex;
+        margin-top: 10px;
+        justify-content: center;
+        &__image{
+            width: 80px;
+        }
+
+        &__title{
+            font-style: normal;
+            font-size: 20px;
+            display: flex;
+            text-align: start;
+            align-items: center;
+            margin-left: 10px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+    }
+}
+
+.inexpand{
+    width: 5% !important;
+
+}
+
+.manager-info-inexpand{
+    margin-left: 0px !important;
+}
+
+.username-inexpand{
+
+}
+
+.logout-inexpand{
+   padding: 5px !important;
+}
+
+.logo-inexpand{
+    width: 50px;
 }

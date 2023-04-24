@@ -1,31 +1,41 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useParams } from 'react-router-dom'
-import './MenuProject.scss'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import './MenuProject.scss';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBook, faUser, faTicket, faUserSecret } from "@fortawesome/free-solid-svg-icons";
 
-const MenuProject = ({ prefixPath }) => {
+const MenuProject = ({ prefixPath, isExpand }) => {
 
     const [menus, setMenus] = useState([])
     const [isActive, setIsActive] = useState()
     const decode = useSelector(state => state.loginReducer.dataToken)
-    
+    const navigate = useNavigate();
+
+    const location = useLocation()
+
+    console.log(location);
+
     useEffect(() => {
         if (decode.role === "MANAGER"){
             setMenus([
                 {
                     title: "Quản lý sách",
                     url: `${prefixPath}/manager/books/list`,
-                    children: []
+                    children: [],
+                    icon: faBook
                 },
                 {
                     title: "Quản lý bạn đọc",
                     url: `${prefixPath}/manager/user/list`,
-                    children: []
+                    children: [],
+                    icon: faUser
                 },
                 {
                     title: "Quản lý phiếu mượn",
                     url: `${prefixPath}/manager/voucher/list`,
-                    children: []
+                    children: [],
+                    icon: faTicket
                 },
             ])
         }else if(decode.role === "ADMIN"){
@@ -33,30 +43,39 @@ const MenuProject = ({ prefixPath }) => {
                 {
                     title: "Quản lý sách",
                     url: `${prefixPath}/manager/books/list`,
-                    children: []
+                    children: [],
+                    icon: faBook
                 },
                 {
                     title: "Quản lý bạn đọc",
                     url: `${prefixPath}/manager/user/list`,
-                    children: []
+                    children: [],
+                    icon: faUser
                 },
                 {
                     title: "Quản lý phiếu mượn",
                     url: `${prefixPath}/manager/voucher/list`,
-                    children: []
+                    children: [],
+                    icon: faTicket
                 },
                 {
                     title: "Quản lý nhân viên",
                     url: `${prefixPath}/manager/manager-list`,
-                    children: []
+                    children: [],
+                    icon: faUserSecret
                 },
             ])
         }
     }, [decode])
 
+    useEffect(() => {
+        setIsActive(`${prefixPath}${location?.pathname}`)
+    }, [menus])
+
 
     const handleChangeURL = (url) => {
         setIsActive(url)
+        navigate(url)
         }
 
     const createMenu = (listMenu) => {
@@ -67,10 +86,10 @@ const MenuProject = ({ prefixPath }) => {
                     if (menuItem.children && menuItem.children.length > 0) {
                         dataHtml = createMenu(menuItem.children)
                     }
-                    return <div key={index}>
-                        <li className={`ocr-designer__menu-project__li ${isActive === menuItem.url ? "ocr-designer__menu-project__active" : ""}`}>
+                    return <div onClick={(event) => handleChangeURL(menuItem.url)} className={`ocr-designer__menu-project__row ${isActive === menuItem.url ? "active-row" : ""} ${isExpand === true ? "" : "row-inexpand" }`} key={index}>
+                        <FontAwesomeIcon className='do-an-icon' icon={menuItem?.icon} bounce={isActive === menuItem.url}/>
+                        <li className={`ocr-designer__menu-project__li ${isActive === menuItem.url ? "ocr-designer__menu-project__active" : ""} ${isExpand === true ? "" : "li-inexpand" }`}>
                             {menuItem.url ? <Link to={menuItem.url}
-                                onClick={(event) => handleChangeURL(menuItem.url)}
                             >
                                 {menuItem.title}
                             </Link> : menuItem.title}
@@ -82,13 +101,6 @@ const MenuProject = ({ prefixPath }) => {
         )
     }
 
-    const beautifyName = (nameProject) => {
-        if (nameProject?.length > 40) {
-            return nameProject.slice(0, 40).trim() + "..."
-        }
-
-        return nameProject
-    }
 
     return (
         <div className='ocr-designer__menu-project'>

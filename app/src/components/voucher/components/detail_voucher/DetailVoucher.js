@@ -244,10 +244,10 @@ const DetailVoucher = ({ prefixPath }) => {
                         </div>
 
                     </div>
-                    <div className='do-an__view-voucher-container__info__user-voucher-status'>
+                    {/* <div className='do-an__view-voucher-container__info__user-voucher-status'> */}
                         {/* <img className="do-an-preview-image" src={image}></img> */}
 
-                        <div className="do-an__view-voucher-container__info__user-voucher-status__history-voucher">
+                        {/* <div className="do-an__view-voucher-container__info__user-voucher-status__history-voucher">
                             <div className="do-an__view-voucher-container__info__user-voucher-status__history-voucher__icon">
                                 <FontAwesomeIcon icon={faBook} style={{ height: "50px", color: "#00089b" }} />
                             </div>
@@ -257,7 +257,7 @@ const DetailVoucher = ({ prefixPath }) => {
                                 <span>Đã trả: 9</span>
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <DataTable headerData={columnBook}
                         tableData={listBook}

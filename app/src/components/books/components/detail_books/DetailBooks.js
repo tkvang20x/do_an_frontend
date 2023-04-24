@@ -81,12 +81,17 @@ const DetailBooks = ({ prefixPath }) => {
             value: "ALL"
         },
         {
-            title: "Đang được mượn",
-            value: "BORROWING"
+            title: "Đang chờ duyệt",
+            value: "WAITING"
         },
+        ,
         {
             title: "Chưa được mượn",
             value: "READY"
+        },
+        {
+            title: "Đang được mượn",
+            value: "BORROWING"
         }
     ]
 
@@ -333,7 +338,7 @@ const DetailBooks = ({ prefixPath }) => {
 
             {openModalUpdate &&
                 <Modal
-                    title="Tạo mới sách"
+                    title="Cập nhật thông tin sách"
                     width="70%"
                     onCancel={onCancel}
                     visible={openModalUpdate}

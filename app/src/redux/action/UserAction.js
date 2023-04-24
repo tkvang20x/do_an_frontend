@@ -120,13 +120,36 @@ const removeUser = async (dispatch, code, filter) => {
     }
   }
 
+  export const createUserAction = async (formData, dispatch, filter) => {
+    try {
+      const response = await UserService.create(
+        formData
+      );
+  
+      if (response.data.status === 201) {
+        openNotificationCommon("success", "Thông báo", "Thêm mới người dùng thành công!")
+        getListUserAction(dispatch, filter)
+        return true
+      } else {
+        openNotificationCommon("error", "Thông báo", "Thêm mới người dùng thất bại!")
+        return false
+      }
+    //   return response
+    } catch (err) {
+      console.log("createUserAction - error: ", err);
+      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+      return null;
+    }
+  };
+
 
 const UserAction = {
     getListUserAction,
     updateUserFilterAction,
     updateUserPagination,
     getDetailUserAction,
-    removeUser
+    removeUser,
+    createUserAction
 }
 
 export default UserAction;

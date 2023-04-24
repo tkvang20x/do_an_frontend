@@ -13,7 +13,7 @@ import GroupsAction from "../../../../redux/action/GroupsAction";
 
 const CreateBooks = ({ onCloseModal }) => {
 
-    const { register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
+    const { setValue, register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
     const dispatch = useDispatch()
     const [image, setImage] = useState(image2)
     const filter = useSelector(state => state.booksReducer.paginationFilter)
@@ -29,13 +29,14 @@ const CreateBooks = ({ onCloseModal }) => {
             publishing_year: "",
             origin: "",
             group_code: "GROUPS_1673458766",
-            amount: 0,
+            amount: 1,
             avatar: null
         }
     )
 
     useEffect(() => {
         GroupsAction.getListGroupsAction(dispatch)
+        setValue("amount", formCreate.amount)
     }, [])
 
 
@@ -114,12 +115,15 @@ const CreateBooks = ({ onCloseModal }) => {
                                     {...register("name",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("name", e.target.value)
                                         }
                                     )}
                                 />
                                 {errors.name?.type === "required" &&
                                     <div className="input-value-error">Tên sách không được trống!</div>}
+                                {errors.name?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên sách không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">
@@ -145,11 +149,13 @@ const CreateBooks = ({ onCloseModal }) => {
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("description",
                                         {
+                                            maxLength: 500,
                                             onChange: (e) => handleChangeInput("description", e.target.value)
                                         }
                                     )}
                                 />
-
+                                {errors.description?.type === "maxLength" &&
+                                    <div className="input-value-error">Mô tả sách không được vượt quá 500 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">
@@ -162,12 +168,15 @@ const CreateBooks = ({ onCloseModal }) => {
                                     {...register("title",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("title", e.target.value)
                                         }
                                     )}
                                 />
                                 {errors.title?.type === "required" &&
                                     <div className="input-value-error">Tiêu đề sách không được trống!</div>}
+                                {errors.title?.type === "maxLength" &&
+                                    <div className="input-value-error">Tiêu đề sách không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">
@@ -180,12 +189,15 @@ const CreateBooks = ({ onCloseModal }) => {
                                     {...register("author",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("author", e.target.value)
                                         }
                                     )}
                                 />
                                 {errors.author?.type === "required" &&
                                     <div className="input-value-error">Tác giả sách không được trống!</div>}
+                                {errors.author?.type === "maxLength" &&
+                                    <div className="input-value-error">Tác giả sách không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">
@@ -198,10 +210,13 @@ const CreateBooks = ({ onCloseModal }) => {
                                     {...register("name_university",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("name_university", e.target.value)
                                         }
                                     )}
                                 />
+                                {errors.name_university?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên đại học sở hữu sách không được vượt quá 100 ký tự!</div>}
                                 {errors.name_university?.type === "required" &&
                                     <div className="input-value-error">Tên đại học sở hữu sách không được trống!</div>}
                             </div>
@@ -216,12 +231,16 @@ const CreateBooks = ({ onCloseModal }) => {
                                     {...register("publishing_year",
                                         {
                                             required: true,
+                                            maxLength: 4,
                                             onChange: (e) => handleChangeInput("publishing_year", e.target.value)
                                         }
                                     )}
+                                    type="number"
                                 />
                                 {errors.publishing_year?.type === "required" &&
                                     <div className="input-value-error">Năm xuất bản sách không được trống!</div>}
+                                {errors.publishing_year?.type === "maxLength" &&
+                                    <div className="input-value-error">Năm xuất bản sách không được vượt quá 4 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">
@@ -233,13 +252,16 @@ const CreateBooks = ({ onCloseModal }) => {
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("origin",
                                         {
-                                            required:true,
+                                            required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("origin", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.author?.type === "required" &&
+                                {errors.origin?.type === "required" &&
                                     <div className="input-value-error">Nhà xuất bản sách không được trống!</div>}
+                                {errors.origin?.type === "maxLength" &&
+                                    <div className="input-value-error">Nhà xuất bản sách không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">
@@ -248,15 +270,17 @@ const CreateBooks = ({ onCloseModal }) => {
                             </div>
                             <div className="do-an-form-create-books__body__group-input__input">
                                 <input
-                                type={"number"}
-                                    className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
+                                    type={"number"}
+                                    className={`do-an__input do-an-input-name input-number ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("amount",
                                         {
+                                            min: 1,
                                             onChange: (e) => handleChangeInput("amount", e.target.value)
                                         }
                                     )}
                                 />
-
+                                {errors.amount?.type === "min" &&
+                                    <div className="input-value-error">Số lượng sách không được nhỏ hơn 0!</div>}
                             </div>
                         </div>
                     </div>
