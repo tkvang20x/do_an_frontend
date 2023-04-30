@@ -59,11 +59,10 @@ const UserService = {
                     password: formData.password,
                     role: formData.role
                 });
-            const formDataUser = new FormData();
-            formDataUser.append("data", user);
-            formDataUser.append("avatar", formData.avatar);
-            return axiosClient.post(process.env.REACT_APP_GET_LIST_AND_CREATE_USERS, formDataUser,
-                { headers: { "Content-Type": "multipart/form-data" } });
+            // const formDataUser = new FormData();
+            // formDataUser.append("data", user);
+            // formDataUser.append("avatar", formData.avatar);
+            return axiosClient.post(process.env.REACT_APP_GET_LIST_AND_CREATE_USERS, user);
         } catch (error) {
             console.log("[User - create]", error);
         }

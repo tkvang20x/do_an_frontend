@@ -90,7 +90,7 @@ const DetailUser = ({ prefixPath }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => navigate(-1)}
                     >
-                        <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px" }} />
+                        <FontAwesomeIcon icon={faArrowLeft} style={{ height: "20px", marginTop: "12px", marginLeft: "5px" }} />
                     </button>
                     <div className='do-an__view-user-container__header__title'>Thông tin chi tiết người dùng</div>
                 </div>
@@ -183,7 +183,7 @@ const DetailUser = ({ prefixPath }) => {
                     </div>
                 </div>
                 <div className='do-an__view-user-container__info__avatar'>
-                    <img className="do-an-preview-image" src={`${ConstAPI.BASE_HOST_API}${userDetail.avatar}`}></img>
+                    <img className="do-an-preview-image" src={userDetail.avatar === null ? image : `${ConstAPI.BASE_HOST_API}${userDetail.avatar}`}></img>
                 </div>
             </div>
             <div className='do-an__view-user-container__table'>

@@ -35,6 +35,9 @@ const LayoutProject = ({ prefixPath }) => {
   //   ManagerAction.getDetailManagerAction(dispatch, tokenDecode?.code)
   // }, [tokenDecode])
 
+  const location = useLocation()
+
+  console.log(location);
 
 
   const handleLogout = () => {
@@ -56,7 +59,9 @@ const LayoutProject = ({ prefixPath }) => {
   return (
     <div className="do-an__layout-project__container">
       <div className={isExpand ? "do-an__layout-project__container__view-expand" : "do-an__layout-project__container__view-inexpand"}>
-        <Outlet></Outlet>
+        {location.pathname === '/manager' ? 
+            <iframe style={{width:"100%", height:"100%"}} src='http://thuvienso.actvn.edu.vn/'></iframe> : <Outlet></Outlet>
+      }
       </div>
       <div className={`do-an__layout-project__container__menu ${isExpand ? "" : "inexpand"}`}>
       <div className='do-an__layout-project__container__logo'>

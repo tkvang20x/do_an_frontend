@@ -47,7 +47,7 @@
 
             &__title {
                 display: table-cell;
-                font-size: 18px;
+                font-size: 14px;
                 font-weight: bold;
                 vertical-align: middle;
                 width: 30%;
@@ -103,5 +103,10 @@
             }
         }
     }
-
+    .do-an-preview-image{
+        height: 160px;
+        width: 140px;
+        object-fit: contain;
+        margin-top: 10px;
+    }
 }

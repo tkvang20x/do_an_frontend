@@ -89,6 +89,17 @@ const ManagerService = {
             console.log("[Manager - update]", error);
         }
     },
+
+    changeAvatar: (code, avatar) => {
+        try {
+            const imageForm = new FormData();
+            imageForm.append("avatar", avatar);
+            return axiosClient.put(process.env.REACT_APP_CHANGE_AVATAR_MANAGER.replace('{code}', code), imageForm,
+            { headers: { "Content-Type": "multipart/form-data" } });
+        } catch (error) {
+            console.log("[Manager - updateAvatar]", error);
+        }
+    },
 }
 
 export default ManagerService;

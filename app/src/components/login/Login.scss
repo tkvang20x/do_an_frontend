@@ -5,7 +5,6 @@
     justify-content: center;
 
     &__form-login {
-        width: 28%;
         height: 40%;
         background-color: white;
         border-radius: 10px;
@@ -20,6 +19,16 @@
             display: flex;
             flex-direction: column;
         }
+
+        &__forget-pass{
+            color: #141ed2;
+            margin-top: 8px;
+
+            &:hover{
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        }
     }
 
     .do-an-title {
@@ -31,7 +40,7 @@
 
     .do-an-input {
         height: 38px;
-        margin-bottom: 12px;
+        margin-bottom: 8px;
         font-size: 16px;
         border-radius: 8px;
         padding: 0px 10px 0px 10px;

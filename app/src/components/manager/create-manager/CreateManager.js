@@ -8,7 +8,7 @@ import ConstAPI from '../../../common/const';
 import constImage from "../../../common/constImage";
 import ManagerAction from "../../../redux/action/ManagerAction";
 import DropDown from '../../../share/ecm-base/components/dropdown-v2/DropDown';
-
+import { DatePicker } from 'antd';
 
 const CreateManager = ({ onCloseModal }) => {
 
@@ -27,8 +27,8 @@ const CreateManager = ({ onCloseModal }) => {
             phone: "",
             email: "",
             user_name: "",
-            password:"",
-            role:"MANAGER",
+            password: "",
+            role: "MANAGER",
             avatar: null
         }
     )
@@ -36,11 +36,11 @@ const CreateManager = ({ onCloseModal }) => {
     const [listDefaultDropDown, setListDefaultDropDown] = useState([
         {
             title: "Nam",
-            value:"MALE"
+            value: "MALE"
         },
         {
-            title:"Nữ",
-            value:"FEMALE"
+            title: "Nữ",
+            value: "FEMALE"
         }
     ])
 
@@ -72,8 +72,15 @@ const CreateManager = ({ onCloseModal }) => {
     }
 
     const handleChangeInput = (field, value) => {
-        const newFormData = { ...formCreate, [field]: value };
-        setFormCreate(newFormData)
+
+            let newFormData = {}
+            if (field === "date_of_birth") {
+                newFormData = { ...formCreate, [field]: value.format("YYYY-MM-DD") }
+            } else {
+                newFormData = { ...formCreate, [field]: value };
+    
+            }
+            setFormCreate(newFormData)
     }
 
     const handleSubmitForm = () => {
@@ -85,15 +92,11 @@ const CreateManager = ({ onCloseModal }) => {
     return (
         <form id="do-an-form-create-manager" onSubmit={handleSubmit(handleSubmitForm)}>
             <div className="do-an-form-create-manager__body">
-                {/* <div className="do-an-form-create-manager__body__title">
-                    Thông tin:
-                </div> */}
-
                 <div className="do-an-form-create-manager__body__content">
                     <div className="do-an-form-create-manager__body__content__info">
                         <div className="do-an-form-create-manager__body__group-input">
                             <div className="do-an-form-create-manager__body__group-input__key">
-                                <span>Tên bạn đọc: <i className="do-an__input-require">*</i></span>
+                                <span>Tên người dùng: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-manager__body__group-input__input">
                                 <input
@@ -101,12 +104,15 @@ const CreateManager = ({ onCloseModal }) => {
                                     {...register("name",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("name", e.target.value)
                                         }
                                     )}
                                 />
                                 {errors.name?.type === "required" &&
-                                    <div className="input-value-error">Tên bạn đọc không được trống!</div>}
+                                    <div className="input-value-error">Tên người dùng không được trống!</div>}
+                                {errors.name?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên người dùng không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -128,14 +134,20 @@ const CreateManager = ({ onCloseModal }) => {
                                 <span>Ngày sinh:</span>
                             </div>
                             <div className="do-an-form-create-manager__body__group-input__input">
-                                <input
+                                {/* <input
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("date_of_birth",
                                         {
                                             onChange: (e) => handleChangeInput("date_of_birth", e.target.value)
                                         }
                                     )}
-                                />
+                                /> */}
+                                <DatePicker
+                                placeholder="Ngày sinh"
+                                    onChange={(e) => handleChangeInput("date_of_birth", e)}
+                                >
+
+                                </DatePicker>
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -148,12 +160,15 @@ const CreateManager = ({ onCloseModal }) => {
                                     {...register("course",
                                         {
                                             required: true,
+                                            maxLength: 10,
                                             onChange: (e) => handleChangeInput("course", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.title?.type === "required" &&
+                                {errors.course?.type === "required" &&
                                     <div className="input-value-error">Niên khóa không được trống!</div>}
+                                {errors.course?.type === "maxLength" &&
+                                    <div className="input-value-error">Biên khóa không được vượt quá 10 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -166,12 +181,15 @@ const CreateManager = ({ onCloseModal }) => {
                                     {...register("university",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("university", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.author?.type === "required" &&
+                               {errors.university?.type === "required" &&
                                     <div className="input-value-error">Tên đại học không được trống!</div>}
+                                {errors.university?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên đại học không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -184,12 +202,16 @@ const CreateManager = ({ onCloseModal }) => {
                                     {...register("phone",
                                         {
                                             required: true,
+                                            maxLength: 10,
                                             onChange: (e) => handleChangeInput("phone", e.target.value)
                                         }
                                     )}
+                                    type="number"
                                 />
-                                {errors.name_university?.type === "required" &&
+                                {errors.phone?.type === "required" &&
                                     <div className="input-value-error">Số điện thoại không được trống!</div>}
+                                {errors.phone?.type === "maxLength" &&
+                                    <div className="input-value-error">Số điện thoại không được vượt quá 10 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -202,12 +224,15 @@ const CreateManager = ({ onCloseModal }) => {
                                     {...register("email",
                                         {
                                             required: true,
+                                            maxLength: 100,
                                             onChange: (e) => handleChangeInput("email", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.publishing_year?.type === "required" &&
+                                {errors.email?.type === "required" &&
                                     <div className="input-value-error">Tên email không được trống!</div>}
+                                {errors.email?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên email không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -219,13 +244,16 @@ const CreateManager = ({ onCloseModal }) => {
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("user_name",
                                         {
-                                            required:true,
+                                            required: true,
+                                            maxLength: 50,
                                             onChange: (e) => handleChangeInput("user_name", e.target.value)
                                         }
                                     )}
                                 />
-                                {errors.author?.type === "required" &&
+                                {errors.user_name?.type === "required" &&
                                     <div className="input-value-error">Tên tài khoản không được trống!</div>}
+                                {errors.user_name?.type === "maxLength" &&
+                                    <div className="input-value-error">Tên tài khoản không được vượt quá 50 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-manager__body__group-input">
@@ -237,15 +265,18 @@ const CreateManager = ({ onCloseModal }) => {
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("password",
                                         {
+                                            required: true,
                                             onChange: (e) => handleChangeInput("password", e.target.value)
                                         }
                                     )}
+                                    type="password"
                                 />
-
+                                {errors.password?.type === "required" &&
+                                    <div className="input-value-error">Mật khẩu không được trống!</div>}
                             </div>
                         </div>
                     </div>
-                    <div className="do-an-form-create-manager__body__content__avatar">
+                    {/* <div className="do-an-form-create-manager__body__content__avatar">
                         <div className="do-an-form-create-manager__body__group-input__input-add-image">
                             <div>
                                 <input type="file" accept="image/*" className={`ocr-designer-input-add-image ${errors.image ? 'is-invalid' : ''}`}
@@ -266,7 +297,7 @@ const CreateManager = ({ onCloseModal }) => {
                                 Ảnh đại diện
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <button id="do-an-form-create-manager-button" type="submit" hidden={true}></button>
                 </div>
             </div>

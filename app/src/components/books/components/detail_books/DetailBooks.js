@@ -84,7 +84,6 @@ const DetailBooks = ({ prefixPath }) => {
             title: "Đang chờ duyệt",
             value: "WAITING"
         },
-        ,
         {
             title: "Chưa được mượn",
             value: "READY"
@@ -167,7 +166,7 @@ const DetailBooks = ({ prefixPath }) => {
                         style={{ cursor: "pointer" }}
                         onClick={() => navigate(-1)}
                     >
-                        <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px" }} />
+                        <FontAwesomeIcon icon={faArrowLeft} style={{ height: "18px", marginTop: "5px", marginLeft: "5px" }} />
                     </button>
                     <div className='do-an__view-books-container__header__title'>Thông tin chi tiết sách</div>
                 </div>

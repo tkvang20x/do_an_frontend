@@ -14,8 +14,6 @@ const MenuProject = ({ prefixPath, isExpand }) => {
 
     const location = useLocation()
 
-    console.log(location);
-
     useEffect(() => {
         if (decode.role === "MANAGER"){
             setMenus([
@@ -26,7 +24,7 @@ const MenuProject = ({ prefixPath, isExpand }) => {
                     icon: faBook
                 },
                 {
-                    title: "Quản lý bạn đọc",
+                    title: "Quản lý người dùng",
                     url: `${prefixPath}/manager/user/list`,
                     children: [],
                     icon: faUser
@@ -47,7 +45,7 @@ const MenuProject = ({ prefixPath, isExpand }) => {
                     icon: faBook
                 },
                 {
-                    title: "Quản lý bạn đọc",
+                    title: "Quản lý người dùng",
                     url: `${prefixPath}/manager/user/list`,
                     children: [],
                     icon: faUser

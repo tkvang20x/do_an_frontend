@@ -331,7 +331,7 @@ const ManagerPage = ({ prefixPath }) => {
             </div>
             <Modal
                 title="Tạo mới quản lý"
-                width="70%"
+                width="50%"
                 onCancel={onCancel}
                 visible={isHiddenModalCreateManager}
                 footer={

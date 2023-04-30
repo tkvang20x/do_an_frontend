@@ -106,11 +106,11 @@ const getDetailManagerAction = async (dispatch, code) => {
 const removeManager = async (dispatch, code, filter) => {
     try {
         const response = await ManagerService.remove(code)
-        if (response.data.status === 204){
+        if (response.data.status === 204) {
             openNotificationCommon("success", "Thông báo", `Xóa người dùng ${code} thành công!`)
             getListManagerAction(dispatch, filter)
             return true
-        }else{
+        } else {
             openNotificationCommon("error", "Thông báo", `Xóa người dùng ${code} thất bại!`)
         }
         return false
@@ -119,70 +119,87 @@ const removeManager = async (dispatch, code, filter) => {
         console.log("BooksAction || remove || Cause by ", error)
         return false
     }
-  }
+}
 
-  export const createManagerAction = async (formData, dispatch, filter) => {
+export const createManagerAction = async (formData, dispatch, filter) => {
     try {
-      const response = await ManagerService.create(
-        formData
-      );
-  
-      if (response.data.status === 201) {
-        openNotificationCommon("success", "Thông báo", "Thêm mới người quản lý thành công!")
-        getListManagerAction(dispatch, filter)
-        return true
-      } else {
-        openNotificationCommon("error", "Thông báo", "Thêm mới quản lý thất bại!")
-        return false
-      }
-    //   return response
-    } catch (err) {
-      console.log("createManagerAction - error: ", err);
-      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
-      return null;
-    }
-  };
+        const response = await ManagerService.create(
+            formData
+        );
 
-  const updateManagerAction = async (dispatch,code, formData) => {
+        if (response.data.status === 201) {
+            openNotificationCommon("success", "Thông báo", "Thêm mới người quản lý thành công!")
+            getListManagerAction(dispatch, filter)
+            return true
+        } else {
+            openNotificationCommon("error", "Thông báo", "Thêm mới quản lý thất bại!")
+            return false
+        }
+        //   return response
+    } catch (err) {
+        console.log("createManagerAction - error: ", err);
+        openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+        return null;
+    }
+};
+
+const updateManagerAction = async (dispatch, code, formData) => {
     try {
-      const response = await ManagerService.update(code, formData)
-      if (response.data.status === 200){
-        openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
-        dispatch(
-              ManagerSlice.actions.saveDetailManager(
-                response.data.data
-              )
-        )
-        return true
-    }else{
-        openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
-    }
-      return false;
+        const response = await ManagerService.update(code, formData)
+        if (response.data.status === 200) {
+            openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
+            dispatch(
+                ManagerSlice.actions.saveDetailManager(
+                    response.data.data
+                )
+            )
+            return true
+        } else {
+            openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
+        }
+        return false;
     } catch (err) {
-      console.log("UpdateManager Action - error: ", err);
-      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
-      return null;
+        console.log("UpdateManager Action - error: ", err);
+        openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+        return null;
     }
-  }
+}
 
-  const changePasswordManagerAction = async ( formData) => {
+const changePasswordManagerAction = async (formData) => {
     try {
-      const response = await LoginService.changePassword( formData)
-      console.log(response);
-      if (response.data.status === 200){
-        openNotificationCommon("success", "Thông báo", `Cập nhật mật khẩu thành công!`)
+        const response = await LoginService.changePassword(formData)
+        console.log(response);
+        if (response.data.status === 200) {
+            openNotificationCommon("success", "Thông báo", `Cập nhật mật khẩu thành công!`)
 
-        return true
-    }else{
-        openNotificationCommon("error", "Thông báo", `Mật khẩu cũ không chính xác!`)
-    }
-      return false;
+            return true
+        } else {
+            openNotificationCommon("error", "Thông báo", `Mật khẩu cũ không chính xác!`)
+        }
+        return false;
     } catch (err) {
-      console.log("UpdateManager Action - error: ", err);
-      openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
-      return null;
+        console.log("UpdateManager Action - error: ", err);
+        openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+        return null;
     }
-  }
+}
+
+const changeAvatarManager = async (code, avatar) => {
+    try {
+        const response = await ManagerService.changeAvatar(code, avatar)
+        if (response.data.status === 200) {
+            openNotificationCommon("success", "Thông báo", `Cập nhật avatar thành công!`)
+
+            return true
+        }
+        openNotificationCommon("error", "Thông báo", `Cập nhật avatar thất bại!`)
+        return false;
+    } catch (err) {
+        console.log("UpdateAvatarManager Action - error: ", err);
+        openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+        return null;
+    }
+}
 
 
 const ManagerAction = {
@@ -193,7 +210,8 @@ const ManagerAction = {
     removeManager,
     createManagerAction,
     updateManagerAction,
-    changePasswordManagerAction
+    changePasswordManagerAction,
+    changeAvatarManager
 }
 
 export default ManagerAction;

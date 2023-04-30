@@ -29,10 +29,23 @@ const changePassword = async (dataPassChange) => {
     }
 }
 
+const forgetPassword = async (email, role) => {
+    try {
+        // const dataPassword = {
+        //     oldpass: dataPassChange.oldpass,
+        //     newpass: dataPassChange.newpass
+        // }
+
+        return axiosClient.put(process.env.REACT_APP_FORGOT_PASSWORD_PATH.replace("{role}", role) ,email);
+    } catch (error) {
+        console.log("[Manager - ChangePassword]", error);
+    }
+}
 
 const LoginService = {
     login,
-    changePassword
+    changePassword,
+    forgetPassword
 }
 
 export default LoginService;

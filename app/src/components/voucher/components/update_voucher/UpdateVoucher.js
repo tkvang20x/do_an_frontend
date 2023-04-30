@@ -101,6 +101,7 @@ const UpdateVoucher = ({ prefixPath }) => {
         setValue("user_id", detailVoucher?.user_id)
         setValue("due_date", detailVoucher?.due_date)
         setValue("description", detailVoucher?.description)
+        setValue("start_date", detailVoucher?.start_date)
 
         setUserDataUpdate(detailVoucher?.users)
 
@@ -201,7 +202,7 @@ const UpdateVoucher = ({ prefixPath }) => {
             books_borrowed: listBookUpdate
         }
 
-        VoucherAction.updateVoucherAction(dispatch,voucher_id ,formUpdateVoucher).then(response => {
+        VoucherAction.updateVoucherAction(dispatch, voucher_id, formUpdateVoucher).then(response => {
             navigate(`${prefixPath}/manager/voucher/list`)
         })
     }
@@ -210,18 +211,18 @@ const UpdateVoucher = ({ prefixPath }) => {
         console.log(code_id);
         let index = listBookUpdate.findIndex(item => item === code_id)
         console.log(index);
-        if(index > -1){
-           let newListUpdate = [...listBookUpdate]
-           newListUpdate.splice(index, 1)
-           setListBookUpdate(newListUpdate)
-           setFormUpdate({
-            ...formUpdate,
-            "books_borrowed": newListUpdate
-           })
+        if (index > -1) {
+            let newListUpdate = [...listBookUpdate]
+            newListUpdate.splice(index, 1)
+            setListBookUpdate(newListUpdate)
+            setFormUpdate({
+                ...formUpdate,
+                "books_borrowed": newListUpdate
+            })
 
-           let newListTable = [...listBookTable]
-           newListTable.splice(index, 1)
-           setListBookTable(newListTable)
+            let newListTable = [...listBookTable]
+            newListTable.splice(index, 1)
+            setListBookTable(newListTable)
         }
     }
 
@@ -243,6 +244,20 @@ const UpdateVoucher = ({ prefixPath }) => {
                         </button>
                         <div className='do-an__update-voucher-container__header__title'>Chỉnh sửa phiếu mượn</div>
                     </div>
+
+                    <div className="do-an__update-voucher-container__footer">
+                        <button
+                        style={{marginRight:"10px", marginBottom:"10px"}}
+                            className="button-cancel"
+                            type="button"
+                            onClick={() => navigate(-1)}
+                        >
+                            Hủy
+                        </button>
+                        <button className="button-search" type="submit">
+                            Xác nhận
+                        </button>
+                    </div>
                 </div>
                 <div className="do-an__update-voucher-container__body">
                     <div className="do-an__update-voucher-container__body__user-info">
@@ -250,7 +265,7 @@ const UpdateVoucher = ({ prefixPath }) => {
                             <div className="do-an__update-voucher-container__body__user-info__group-info__group-first">
                                 <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-name">
                                     <div>
-                                        Tên bạn đọc<i className="do-an__input-require">*</i>
+                                        Tên người dùng<i className="do-an__input-require">*</i>
                                     </div>
                                     <div style={{ display: "flex" }}>
                                         <input
@@ -270,7 +285,7 @@ const UpdateVoucher = ({ prefixPath }) => {
                                 </div>
                                 <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-code">
                                     <div>
-                                        Mã bạn đọc<i className="do-an__input-require">*</i>
+                                        Mã người dùng<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
                                         <input
@@ -285,7 +300,7 @@ const UpdateVoucher = ({ prefixPath }) => {
                                             )}
                                         />
                                         {errors.name?.type === "required" &&
-                                            <div className="input-value-error">Mã bạn đọc không được trống!</div>}
+                                            <div className="input-value-error">Mã người dùng không được trống!</div>}
                                     </div>
                                 </div>
                                 <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-course">
@@ -308,6 +323,8 @@ const UpdateVoucher = ({ prefixPath }) => {
                                     </div>
                                     <div>
                                         <input
+                                            value={detailVoucher?.start_date}
+                                            disabled
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
                                         />
                                     </div>
@@ -326,27 +343,31 @@ const UpdateVoucher = ({ prefixPath }) => {
                                                 }
                                             )}
                                         />
+                                        {errors.due_date?.type === "required" &&
+                                            <div className="input-value-error">Ngày hạn trả không được trống!</div>}
                                     </div>
                                 </div>
                                 <div className="do-an__update-voucher-container__body__user-info__group-info__group-input-description">
                                     <div>
-                                        Ghi chú<i className="do-an__input-require">*</i>
+                                        Ghi chú
                                     </div>
                                     <div>
                                         <input
                                             className={`do-an__input do-an-input-description-update-voucher ${errors.name ? 'is-invalid' : ''}`}
                                             {...register("description",
                                                 {
-                                                    required: true,
+                                                    maxLength: 200,
                                                     onChange: (e) => handleChangeInputForm("description", e.target.value)
                                                 }
                                             )}
                                         />
+                                        {errors.description?.type === "maxLength" &&
+                                            <div className="input-value-error">Mô tả phiếu mượn không được vượt quá 200 ký tự!</div>}
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="do-an__update-voucher-container__body__user-info__history-voucher">
+                        {/* <div className="do-an__update-voucher-container__body__user-info__history-voucher">
                             <div className="do-an__update-voucher-container__body__user-info__history-voucher__icon">
                                 <FontAwesomeIcon icon={faBook} style={{ height: "50px", color: "#00089b" }} />
                             </div>
@@ -355,7 +376,7 @@ const UpdateVoucher = ({ prefixPath }) => {
                                 <span>Quá hạn</span>
                                 <span>Đã trả</span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="do-an__update-voucher-container__body__table-borrow">
                         <div className="do-an__update-voucher-container__body__table-borrow__header">
@@ -387,21 +408,13 @@ const UpdateVoucher = ({ prefixPath }) => {
                             </DataTable>
                         </div>
                     </div>
+
                 </div>
-                <div className="do-an__update-voucher-container__footer">
-                    {/* <Button
-                        type={"normal-blue"}
-                    >
-                        Xác nhận
-                    </Button> */}
-                    <button type="submit">
-                        Xác nhận
-                    </button>
-                </div>
+
 
                 {openModalUser &&
                     <Modal
-                        title="Chọn bạn đọc"
+                        title="Chọn người dùng"
                         width="70%"
                         onCancel={handleCloseModalUser}
                         visible={openModalUser}

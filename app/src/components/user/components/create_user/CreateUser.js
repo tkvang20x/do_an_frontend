@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import './CreateUser.scss';
 import image2 from '../../../../share/image/123.jpg';
-import ConstAPI from '../../../../common/const';
+import ConstAPI, { openNotificationCommon } from '../../../../common/const';
 import constImage from "../../../../common/constImage";
 import UserAction from "../../../../redux/action/UserAction";
 import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
-
+import { DatePicker } from 'antd';
 
 const CreateUser = ({ onCloseModal }) => {
 
@@ -72,29 +72,38 @@ const CreateUser = ({ onCloseModal }) => {
     }
 
     const handleChangeInput = (field, value) => {
-        const newFormData = { ...formCreate, [field]: value };
+        let newFormData = {}
+
+        if (field === "date_of_birth") {
+            newFormData = { ...formCreate, [field]: value.format("YYYY-MM-DD") }
+        } else {
+            newFormData = { ...formCreate, [field]: value };
+
+        }
+
         setFormCreate(newFormData)
     }
 
     const handleSubmitForm = () => {
-        UserAction.createUserAction(formCreate, dispatch, filter)
-        onCloseModal()
+        UserAction.createUserAction(formCreate, dispatch, filter).then(response => {
+           if (response === true){
+            onCloseModal()
+           }
+           else{
+            openNotificationCommon("error", "Thông báo", `Tài khoản hoặc email người dùng đã được đăng ký!`)
+            return
+        }
+        })
     }
-
-    console.log(formCreate);
 
     return (
         <form id="do-an-form-create-user" onSubmit={handleSubmit(handleSubmitForm)}>
             <div className="do-an-form-create-user__body">
-                {/* <div className="do-an-form-create-user__body__title">
-                    Thông tin:
-                </div> */}
-
                 <div className="do-an-form-create-user__body__content">
                     <div className="do-an-form-create-user__body__content__info">
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Tên bạn đọc: <i className="do-an__input-require">*</i></span>
+                                <span>Tên người dùng: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
                                 <input
@@ -108,9 +117,9 @@ const CreateUser = ({ onCloseModal }) => {
                                     )}
                                 />
                                 {errors.name?.type === "required" &&
-                                    <div className="input-value-error">Tên bạn đọc không được trống!</div>}
+                                    <div className="input-value-error">Tên người dùng không được trống!</div>}
                                 {errors.name?.type === "maxLength" &&
-                                    <div className="input-value-error">Tên bạn đọc không được vượt quá 100 ký tự!</div>}
+                                    <div className="input-value-error">Tên người dùng không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -132,14 +141,20 @@ const CreateUser = ({ onCloseModal }) => {
                                 <span>Ngày sinh:</span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
-                                <input
+                                {/* <input
                                     className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
                                     {...register("date_of_birth",
                                         {
                                             onChange: (e) => handleChangeInput("date_of_birth", e.target.value)
                                         }
                                     )}
-                                />
+                                /> */}
+                                <DatePicker
+                                placeholder="Ngày sinh"
+                                    onChange={(e) => handleChangeInput("date_of_birth", e)}
+                                >
+
+                                </DatePicker>
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
@@ -264,12 +279,12 @@ const CreateUser = ({ onCloseModal }) => {
                                     )}
                                     type="password"
                                 />
-                                    {errors.password?.type === "required" &&
+                                {errors.password?.type === "required" &&
                                     <div className="input-value-error">Mật khẩu không được trống!</div>}
                             </div>
                         </div>
                     </div>
-                    <div className="do-an-form-create-user__body__content__avatar">
+                    {/* <div className="do-an-form-create-user__body__content__avatar">
                         <div className="do-an-form-create-user__body__group-input__input-add-image">
                             <div>
                                 <input type="file" accept="image/*" className={`ocr-designer-input-add-image ${errors.image ? 'is-invalid' : ''}`}
@@ -290,7 +305,7 @@ const CreateUser = ({ onCloseModal }) => {
                                 Ảnh đại diện
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                     <button id="do-an-form-create-user-button" type="submit" hidden={true}></button>
                 </div>
             </div>

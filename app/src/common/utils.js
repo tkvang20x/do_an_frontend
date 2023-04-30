@@ -125,8 +125,8 @@ export const ListButton = ({
     removeDisable = false,
   }) => {
     return (
-      <div className="do-an-list-action" style={{display:"grid",gridTemplateColumns:"repeat(2,1fr)"}}>
-        <div className="do-an-list-action-item">
+      <div className="do-an-list-action" style={{display:"grid",gridTemplateColumns:"repeat(1,1fr)"}}>
+        {/* <div className="do-an-list-action-item">
           <button
               className="mb-btn mb-btn-outline-blue"
               name={editButtonName}
@@ -141,7 +141,7 @@ export const ListButton = ({
             >
               <FontAwesomeIcon icon={faPencilAlt}></FontAwesomeIcon>
           </button>
-        </div>
+        </div> */}
         <div className="do-an-list-action-item">
           <button
               className="mb-btn mb-btn-outline-red"

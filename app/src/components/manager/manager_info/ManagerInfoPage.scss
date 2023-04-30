@@ -15,16 +15,86 @@
         display: flex;
         flex-direction: column;
 
-        &__button-back{
+        &__button-back {
             padding: 10px 0px 0px 10px;
             text-align: start;
         }
 
-        &__avatar {
-            height: 30%;
+        &__group-avatar {
             display: flex;
-            align-items: center;
+            flex-direction: column;
+            height: 200px;
+        }
+
+        &__avatar {
+            // height: 30%;
+            // display: flex;
+            // align-items: center;
+            // justify-content: center;
+
+            display: flex;
             justify-content: center;
+            height: 200px;
+            position: relative;
+
+            &:hover {
+                .do-an__info-manager-container__info__avatar__overlay {
+                    display: flex;
+                }
+            }
+
+            &__overlay {
+                position: absolute;
+                top: 0;
+                right: 120px;
+                bottom: 0;
+                left: 120px;
+                // height: 100%;
+                // width: 100%;
+                background-color: rgba(0, 0, 0, 0.4);
+
+                display: flex;
+                justify-content: center;
+                align-items: center;
+
+                display: none;
+
+                &__button {
+                    height: 30px;
+                    width: 60px;
+
+                    background-color: transparent;
+                    color: #f7f7f7;
+                    // border: 1px solid $color-gray-100;
+                    font-size: 12px;
+
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    align-items: center;
+
+                    &__title {
+                        margin-top: 5px;
+                    }
+                }
+            }
+
+            &__select {
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                left: 0;
+                opacity: 0;
+
+                &::-webkit-file-upload-button {
+                    visibility: hidden;
+                }
+            }
+
+            .hidden {
+                display: none;
+            }
         }
 
         &__name {
@@ -47,7 +117,7 @@
                 border-width: 0.5px;
                 cursor: pointer;
 
-                &:hover{
+                &:hover {
                     background-color: #dddddd;
                 }
             }
@@ -59,27 +129,28 @@
         width: 70%;
         border-radius: 10px;
         padding: 10px;
-        &__update{
 
-            &__title{
+        &__update {
+
+            &__title {
                 font-size: 20px;
                 color: #141ed2;
             }
 
-            &__content{
+            &__content {
                 &__group-input {
                     display: flex;
                     margin: 12px;
-        
+
                     &__key {
                         width: 15%;
                     }
-        
+
                     &__input {
                         width: 85%;
                     }
-        
-                    &__input-add-image{
+
+                    &__input-add-image {
                         display: flex;
                         flex-direction: column;
                         align-items: center;
@@ -88,21 +159,19 @@
             }
         }
 
-        &__change{
+        &__change {
 
-            &__title{
-
+            &__title {
+                font-size: 20px;
+                color: #141ed2;
             }
 
-            &__group-input{
+            &__group-input {
                 margin-top: 20px;
-                &__key{
 
-                }
+                &__key {}
 
-                &__key{
-
-                }
+                &__key {}
             }
         }
     }
@@ -112,7 +181,14 @@
         color: #141ed2;
     }
 
-    .do-an-update-manager-button{
+    .do-an-update-manager-button {
         text-align: end;
+        margin-top: 10px;
+    }
+
+    .do-an-avatar-info{
+        border: solid #141ed2;
+        padding: 3px;
+        
     }
 }

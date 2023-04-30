@@ -37,7 +37,7 @@
             display: flex;
 
             &__group-info {
-                width: 80%;
+                width: 100%;
 
 
                 &__group-first {
@@ -154,5 +154,9 @@
         &:hover{
             background-color: #ebf3ff;
         }
+    }
+
+    .ant-picker{
+        width: 100%;
     }
 }

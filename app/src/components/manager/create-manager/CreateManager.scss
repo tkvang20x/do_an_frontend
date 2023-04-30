@@ -6,7 +6,7 @@
             display: flex;
 
             &__info {
-                width: 80%;
+                width: 100%;
             }
 
             &__avatar {
@@ -19,7 +19,7 @@
             margin: 12px;
 
             &__key {
-                width: 15%;
+                width: 20%;
             }
 
             &__input {
@@ -33,20 +33,17 @@
             }
         }
     }  
+
+    // .do-an-preview-image{
+    //     height: 160px;
+    //     width: 140px;
+    //     object-fit: contain;
+    //     margin-top: 10px;
+    // }
 }
 
-.ocr-designer-input-add-image {
-    height: 30px;
-    width: 180px;
-    cursor: pointer;
-}
 
-.do-an-preview-image{
-    height: 160px;
-    width: 140px;
-    object-fit: contain;
-    margin-top: 10px;
-}
+
 
 .do-an-title-avatar{
     font-size: 14px;

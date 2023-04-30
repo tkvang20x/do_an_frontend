@@ -1,7 +1,7 @@
 const THUMBNAIL = "THUMBNAIL"
 const ORIGINAL = "ORIGINAL"
 
-const LIST_FILE_TYPE_AVATAR = ["JPG", "JPEG", "PNG", "TIFF", "JFIF"]
+const LIST_FILE_TYPE_AVATAR = ["JPG", "JPEG", "PNG", "JFIF"]
 
 const JPG = "JPG"
 const JPEG = "JPEG"

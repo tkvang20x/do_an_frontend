@@ -33,20 +33,16 @@
             }
         }
     }  
+    .do-an-preview-image{
+        height: 160px;
+        width: 140px;
+        object-fit: contain;
+        margin-top: 10px;
+    }
 }
 
-.ocr-designer-input-add-image {
-    height: 30px;
-    width: 180px;
-    cursor: pointer;
-}
 
-.do-an-preview-image{
-    height: 160px;
-    width: 140px;
-    object-fit: contain;
-    margin-top: 10px;
-}
+
 
 .do-an-title-avatar{
     font-size: 14px;

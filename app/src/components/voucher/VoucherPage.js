@@ -139,11 +139,11 @@ const VoucherPage = ({ prefixPath }) => {
             value: "PAYED"
         },
         {
-            title: "Đến hạn trả",
+            title: "Đã quá hạn",
             value: "EXPIRED"
         },
         {
-            title: "Hủy",
+            title: "Đã hủy",
             value: "CANCELLED"
         },
     ]
@@ -344,13 +344,13 @@ const VoucherPage = ({ prefixPath }) => {
                         <div className="do-an__voucher__group-search__item__input-container">
                             <input className="do-an__voucher__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("voucher_id", event.target.value)}
-                                value={filter?.name || ""}
+                                value={filter?.voucher_id || ""}
                             />
                         </div>
                     </div>
                     <div className="do-an__voucher__group-search__item">
                         <div className="do-an__voucher__group-search__item__title">
-                            Tên bạn đọc:
+                            Tên người dùng:
                         </div>
                         <div className="do-an__voucher__group-search__item__input-container">
                             <input className="do-an__voucher__group-search__item__input"

@@ -19,7 +19,7 @@ const UserPage = ({ prefixPath }) => {
 
     const columnUser = [
         {
-            title: "Mã bạn đọc",
+            title: "Mã người dùng",
             dataIndex: "code",
             render: (text) => {
                 return <Link to={`${prefixPath}/manager/user/${text}`}>{text}</Link>;
@@ -27,7 +27,7 @@ const UserPage = ({ prefixPath }) => {
             width: "15%"
         },
         {
-            title: "Tên bạn đọc",
+            title: "Tên người dùng",
             dataIndex: "name",
             render: (text) => {
                 return <span>{text}</span>
@@ -46,7 +46,7 @@ const UserPage = ({ prefixPath }) => {
             title: "Giới tính",
             dataIndex: "gender",
             render: (text) => {
-                return <span>{text}</span>;
+                return <span>{text === "MALE" ? "Nam" : "Nữ"}</span>;
             },
             width: "10%"
         },
@@ -139,6 +139,9 @@ const UserPage = ({ prefixPath }) => {
         }
         if (searchParams.get('code')) {
             urlParams["code"] = searchParams.get('code')
+        }
+        if (searchParams.get('course')) {
+            urlParams["course"] = searchParams.get('course')
         }
         if (searchParams.get('page')) {
             urlParams["page"] = parseInt(searchParams.get('page'))
@@ -242,13 +245,13 @@ const UserPage = ({ prefixPath }) => {
         <div className="do-an__user">
             <div className="do-an__user__image-cover">
                 {/* <img className="image-cover" src={imageCover}></img> */}
-                <h3 style={{ margin: "10px 0px 10px 10px" }}>Danh sách bạn đọc</h3>
+                <h3 style={{ margin: "10px 0px 10px 10px" }}>Danh sách người dùng</h3>
             </div>
             <div className="do-an__user__group-search">
                 <div className="do-an__user__group-search__filter">
                     <div className="do-an__user__group-search__item">
                         <div className="do-an__user__group-search__item__title">
-                            Tên bạn đọc:
+                            Tên người dùng:
                         </div>
                         <div className="do-an__user__group-search__item__input-container">
                             <input className="do-an__user__group-search__item__input"
@@ -259,7 +262,7 @@ const UserPage = ({ prefixPath }) => {
                     </div>
                     <div className="do-an__user__group-search__item">
                         <div className="do-an__user__group-search__item__title">
-                            Mã bạn đọc:
+                            Mã người dùng:
                         </div>
                         <div className="do-an__user__group-search__item__input-container">
                             <input className="do-an__user__group-search__item__input"
@@ -294,6 +297,18 @@ const UserPage = ({ prefixPath }) => {
                             />
                         </div>
                     </div>
+
+                    <div className="do-an__user__group-search__item">
+                        <div className="do-an__user__group-search__item__title">
+                            Khóa:
+                        </div>
+                        <div className="do-an__user__group-search__item__input-container">
+                            <input className="do-an__user__group-search__item__input"
+                                onChange={(event) => handleChangeInputSearch("course", event.target.value)}
+                                value={filter?.course || ""}
+                            />
+                        </div>
+                    </div>
                 </div>
                 <div className="do-an__user__group-search__button-search">
                     <button className="button-search" onClick={handleSearch}>Tìm kiếm</button>
@@ -317,8 +332,8 @@ const UserPage = ({ prefixPath }) => {
                 </div>
             </div>
             <Modal
-                title="Tạo mới bạn đọc"
-                width="70%"
+                title="Tạo mới người dùng"
+                width="50%"
                 onCancel={onCancel}
                 visible={isHiddenModalCreateUser}
                 footer={
@@ -342,13 +357,13 @@ const UserPage = ({ prefixPath }) => {
             </Modal>
 
             <Confirm
-                title="Xoá bạn đọc"
+                title="Xoá người dùng"
                 width="45%"
                 visible={isOpenConfirmDialog}
                 onCancel={handleCancelConfirmDialog}
                 onOk={handleDeleteConfirmDialog}
             >
-                <p>Nếu xóa {codeUserDelete} thì dữ liệu thông tin và mượn sách của bạn đọc sẽ mất hết, xác nhận xóa?</p>
+                <p>Nếu xóa {codeUserDelete} thì dữ liệu thông tin và mượn sách của người dùng sẽ mất hết, xác nhận xóa?</p>
             </Confirm>
         </div>
     )

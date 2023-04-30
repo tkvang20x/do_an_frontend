@@ -13,7 +13,7 @@
         }
 
         &__title {
-            font-size: 18px;
+            font-size: 16px;
             margin-left: 10px;
             font-weight: bold;
             padding-top: 14px;
@@ -131,5 +131,10 @@
     .do-an-view-info-user{
         height: 170px !important;
     }
-
+    .do-an-preview-image{
+        height: 160px;
+        width: 140px;
+        object-fit: contain;
+        margin-top: 10px;
+    }
 }

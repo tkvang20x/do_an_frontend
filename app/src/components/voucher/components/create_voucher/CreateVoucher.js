@@ -13,9 +13,10 @@ import UserPageVoucher from "../user_voucher/UserPageVoucher";
 import UserAction from "../../../../redux/action/UserAction";
 import { useSelector, useDispatch } from "react-redux";
 import BookAction from "../../../../redux/action/BookAction";
-import ConstAPI from "../../../../common/const";
+import ConstAPI, { openNotificationCommon } from "../../../../common/const";
 import VoucherAction from "../../../../redux/action/VoucherAction";
 import { DatePicker } from 'antd';
+import moment from 'moment';
 
 
 const CreateVoucher = ({ prefixPath }) => {
@@ -75,9 +76,8 @@ const CreateVoucher = ({ prefixPath }) => {
         }
     ]
 
-    const {setValue, register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
+    const { setValue, register, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
 
-    const [listBookCreate, setListBookCreate] = useState([])
     const [listBookTable, setListBookTable] = useState([])
     const [openModalUser, setOpenModaluser] = useState(false)
     const [valueInput, setValueInput] = useState("")
@@ -85,7 +85,7 @@ const CreateVoucher = ({ prefixPath }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-   
+
 
     // const detailUser = useSelector(state => state.userReducer.detailUser)
 
@@ -97,11 +97,10 @@ const CreateVoucher = ({ prefixPath }) => {
         + (currentdate.getMinutes() < 10 ? ("0" + currentdate.getMinutes()) : currentdate.getMinutes()) + ":"
         + (currentdate.getSeconds() < 10 ? ("0" + currentdate.getSeconds()) : currentdate.getSeconds());
 
-    const [formCreate, setFormCreate] = useState({due_date: ""})
+    const [formCreate, setFormCreate] = useState({ due_date: "" })
 
     useEffect(() => {
-        console.log("thay doi");
-        setValue("check_due_date" , formCreate?.due_date)
+        setValue("check_due_date", formCreate?.due_date)
     }, [formCreate?.due_date])
 
     console.log(formCreate);
@@ -123,13 +122,15 @@ const CreateVoucher = ({ prefixPath }) => {
 
     const handleSelectUser = (user_id) => {
         UserAction.getDetailUserAction(dispatch, user_id).then(response => {
-            console.log(response);
             setDataUser(response)
             setFormCreate({
                 ...formCreate,
                 "user_id": response.code
             })
+            setValue("name", response?.name)
+
         })
+        delete errors.name
         setOpenModaluser(false)
     }
 
@@ -139,8 +140,11 @@ const CreateVoucher = ({ prefixPath }) => {
 
     const handleChangeInputForm = (field, value) => {
         let newFormData = {}
-        if (field === "due_date") {
+        if (field === "due_date" && value !== '') {
             newFormData = { ...formCreate, [field]: value.format("YYYY-MM-DD-HH:mm:ss") }
+            if (errors.check_due_date?.type) {
+                delete errors.check_due_date
+            }
         } else {
             newFormData = { ...formCreate, [field]: value }
         }
@@ -168,7 +172,7 @@ const CreateVoucher = ({ prefixPath }) => {
             //     ...listBookCreate,
             //     valueInput
             // ])
-            
+
             setValueInput("")
         }
     }
@@ -176,6 +180,10 @@ const CreateVoucher = ({ prefixPath }) => {
     const managerToken = useSelector(state => state.loginReducer.dataToken)
 
     const handleSubmitFormCreate = () => {
+        if (listBookTable.length === 0) {
+            openNotificationCommon("error", "Thông báo", "Danh sách sách mượn không được để trống!")
+            return
+        }
         const formCreateVoucher = {
             ...formCreate,
             books_borrowed: listBookTable
@@ -185,7 +193,7 @@ const CreateVoucher = ({ prefixPath }) => {
         navigate(`${prefixPath}/manager/voucher/list`)
     }
 
-    console.log(errors);
+    console.log(errors.name);
 
 
     return (
@@ -209,13 +217,18 @@ const CreateVoucher = ({ prefixPath }) => {
                             <div className="do-an__create-voucher-container__body__user-info__group-info__group-first">
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-name">
                                     <div>
-                                        Tên bạn đọc<i className="do-an__input-require">*</i>
+                                        Tên người dùng<i className="do-an__input-require">*</i>
                                     </div>
                                     <div style={{ display: "flex" }}>
                                         <input
                                             value={dataUser?.name}
                                             readOnly={true}
                                             className={`do-an__input do-an-input-name-create-voucher ${errors.name ? 'is-invalid' : ''}`}
+                                            {...register("name",
+                                                {
+                                                    required: true
+                                                }
+                                            )}
                                         />
                                         <button
                                             className="do-an__create-voucher-container__body__button"
@@ -225,25 +238,25 @@ const CreateVoucher = ({ prefixPath }) => {
                                             <FontAwesomeIcon icon={faPencil} style={{ color: "#141ed2", cursor: "pointer" }}></FontAwesomeIcon>
                                         </button>
                                     </div>
+                                    {errors.name?.type === "required" &&
+                                        <div className="input-value-error">Tên người dùng không được trống!</div>}
+
                                 </div>
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-code">
                                     <div>
-                                        Mã bạn đọc<i className="do-an__input-require">*</i>
+                                        Mã người dùng<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
                                         <input
                                             value={dataUser?.code}
                                             readOnly={true}
                                             className={`do-an__input ${errors.name ? 'is-invalid' : ''}`}
-                                            {...register("user_id",
-                                                {
-                                                    // required: true,
-                                                    // onChange: (e) => handleChangeInputForm("user_id", e.target.value)
-                                                }
-                                            )}
+                                        // {...register("user_id",
+                                        //     {
+                                        //         required: true
+                                        //     }
+                                        // )}
                                         />
-                                        {/* {errors.name?.type === "required" &&
-                                            <div className="input-value-error">Mã bạn đọc không được trống!</div>} */}
                                     </div>
                                 </div>
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-course">
@@ -277,16 +290,17 @@ const CreateVoucher = ({ prefixPath }) => {
                                         Thời gian hẹn trả<i className="do-an__input-require">*</i>
                                     </div>
                                     <div>
-
                                         <DatePicker showTime onChange={(e) => handleChangeInputForm("due_date", e)}
                                             placeholder="Ngày hẹn trả"
+                                            clearIcon={true}
                                         />
 
                                         <input
                                             hidden={true}
+                                            onChange={(e) => handleChangeInputForm("due_date", e)}
                                             {...register("check_due_date",
                                                 {
-                                                   required: true
+                                                    required: true
                                                 }
                                             )}
                                         />
@@ -296,14 +310,13 @@ const CreateVoucher = ({ prefixPath }) => {
                                 </div>
                                 <div className="do-an__create-voucher-container__body__user-info__group-info__group-input-description">
                                     <div>
-                                        Ghi chú<i className="do-an__input-require">*</i>
+                                        Ghi chú
                                     </div>
                                     <div>
                                         <input
                                             className={`do-an__input do-an-input-description-create-voucher ${errors.name ? 'is-invalid' : ''}`}
                                             {...register("description",
                                                 {
-                                                    required: true,
                                                     onChange: (e) => handleChangeInputForm("description", e.target.value)
                                                 }
                                             )}
@@ -312,7 +325,7 @@ const CreateVoucher = ({ prefixPath }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="do-an__create-voucher-container__body__user-info__history-voucher">
+                        {/* <div className="do-an__create-voucher-container__body__user-info__history-voucher">
                             <div className="do-an__create-voucher-container__body__user-info__history-voucher__icon">
                                 <FontAwesomeIcon icon={faBook} style={{ height: "50px", color: "#00089b" }} />
                             </div>
@@ -321,7 +334,7 @@ const CreateVoucher = ({ prefixPath }) => {
                                 <span>Quá hạn</span>
                                 <span>Đã trả</span>
                             </div>
-                        </div>
+                        </div> */}
                     </div>
                     <div className="do-an__create-voucher-container__body__table-borrow">
                         <div className="do-an__create-voucher-container__body__table-borrow__header">
@@ -367,7 +380,7 @@ const CreateVoucher = ({ prefixPath }) => {
 
                 {openModalUser &&
                     <Modal
-                        title="Chọn bạn đọc"
+                        title="Chọn người dùng"
                         width="70%"
                         onCancel={handleCloseModalUser}
                         visible={openModalUser}

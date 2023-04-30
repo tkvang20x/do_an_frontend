@@ -138,7 +138,7 @@ const removeUser = async (dispatch, code, filter) => {
     } catch (err) {
       console.log("createUserAction - error: ", err);
       openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
-      return null;
+      return false;
     }
   };
 

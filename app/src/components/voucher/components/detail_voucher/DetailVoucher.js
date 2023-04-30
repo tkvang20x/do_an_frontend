@@ -102,7 +102,7 @@ const DetailVoucher = ({ prefixPath }) => {
                 <div className='do-an__view-voucher-container__info__group-info do-an-view-info-user'>
                     <div className='do-an__view-voucher-container__info__row'>
                         <div className='do-an__view-voucher-container__info__row__title'>
-                            Tên bạn đọc:
+                            Tên người dùng:
                         </div>
                         <div className='do-an__view-voucher-container__info__row__value'>
                             {detailVoucher?.users?.name}
@@ -110,7 +110,7 @@ const DetailVoucher = ({ prefixPath }) => {
                     </div>
                     <div className='do-an__view-voucher-container__info__row'>
                         <div className='do-an__view-voucher-container__info__row__title'>
-                            Mã bạn đọc:
+                            Mã người dùng:
                         </div>
                         <div className='do-an__view-voucher-container__info__row__value'>
                         {detailVoucher?.users?.code}
