@@ -239,7 +239,7 @@ const ManagerInfoPage = ({ prefixPath }) => {
                                     />
                                 </div>
                             </div>
-                            <div className="do-an__info-manager-container__action__update__content__group-input">
+                            {/* <div className="do-an__info-manager-container__action__update__content__group-input">
                                 <div className="do-an__info-manager-container__action__update__content__group-input__key">
                                     <span>Khóa: <i className="do-an__input-require">*</i></span>
                                 </div>
@@ -254,7 +254,7 @@ const ManagerInfoPage = ({ prefixPath }) => {
                                         )}
                                     />
                                 </div>
-                            </div>
+                            </div> */}
                             <div className="do-an__info-manager-container__action__update__content__group-input">
                                 <div className="do-an__info-manager-container__action__update__content__group-input__key">
                                     <span>Đại học: <i className="do-an__input-require">*</i></span>

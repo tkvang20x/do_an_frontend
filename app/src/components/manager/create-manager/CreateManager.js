@@ -22,7 +22,6 @@ const CreateManager = ({ onCloseModal }) => {
             name: "",
             date_of_birth: "",
             gender: "MALE",
-            course: "",
             university: "",
             phone: "",
             email: "",
@@ -150,7 +149,7 @@ const CreateManager = ({ onCloseModal }) => {
                                 </DatePicker>
                             </div>
                         </div>
-                        <div className="do-an-form-create-manager__body__group-input">
+                        {/* <div className="do-an-form-create-manager__body__group-input">
                             <div className="do-an-form-create-manager__body__group-input__key">
                                 <span>Sinh viên khóa: <i className="do-an__input-require">*</i></span>
                             </div>
@@ -170,7 +169,7 @@ const CreateManager = ({ onCloseModal }) => {
                                 {errors.course?.type === "maxLength" &&
                                     <div className="input-value-error">Biên khóa không được vượt quá 10 ký tự!</div>}
                             </div>
-                        </div>
+                        </div> */}
                         <div className="do-an-form-create-manager__body__group-input">
                             <div className="do-an-form-create-manager__body__group-input__key">
                                 <span>Đại học: <i className="do-an__input-require">*</i></span>

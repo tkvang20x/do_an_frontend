@@ -55,7 +55,7 @@
 
             &__value {
                 display: table-cell;
-                margin-left: 20px;
+                // margin-left: 20px;
                 vertical-align: middle;
             }
         }
@@ -136,5 +136,15 @@
         width: 140px;
         object-fit: contain;
         margin-top: 10px;
+    }
+
+    .do-an-status-voucher-detail{
+        display: flex !important;
+        width: 100%;
+        &__span{
+            margin-right: 20px;
+            display: flex;
+            align-items: center;
+        }
     }
 }

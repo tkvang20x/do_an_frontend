@@ -14,6 +14,7 @@ import CreateBooks from './components/create_books/CreateBooks';
 import { ListButton } from '../../common/utils';
 import ConstAPI from '../../common/const';
 import Confirm from '../../share/ecm-base/components/confirm/Confirm';
+import UpdateBooks from './components/update_books/UpdateBooks';
 
 const BooksPage = ({ prefixPath }) => {
 
@@ -31,7 +32,16 @@ const BooksPage = ({ prefixPath }) => {
             title: "Tên sách",
             dataIndex: "name",
             render: (text) => {
-                return <span>{text}</span>
+                return <span
+                    title={text}
+                    style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        display: "inline-block",
+                        width: "200px"
+                    }}
+                >{text}</span>
             },
             width: "15%"
         },
@@ -55,7 +65,16 @@ const BooksPage = ({ prefixPath }) => {
             title: "Tiêu đề",
             dataIndex: "title",
             render: (text) => {
-                return <span>{text}</span>;
+                return <span
+                title={text}
+                style={{
+                    textOverflow: "ellipsis",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    display: "inline-block",
+                    width: "150px"
+                }}
+                >{text}</span>;
             },
             width: "10%"
         },
@@ -83,6 +102,7 @@ const BooksPage = ({ prefixPath }) => {
                     <ListButton
                         onRemoveAction={() => handleDeleteBooks(code)}
                         removeButtonName="btnDeleteBooks"
+                        onEditAction={() => {handleEditBooks(code)}}
                     ></ListButton>
                 );
             },
@@ -208,6 +228,19 @@ const BooksPage = ({ prefixPath }) => {
         BooksAction.updateBooksFilterAction(dispatch, newSearchFilter)
     }
 
+    const handleSelectDropdown = (field, value) => {
+        let newSearchFilter = { ...filter }
+        if (field === "group_code" && value === "ALL") {
+            delete newSearchFilter.group_code
+        } else {
+            newSearchFilter = { ...filter, [field]: value }
+        }
+        // const newSearchFilter = { ...filter, [field]: value }
+        setSearchParams(newSearchFilter)
+        BooksAction.updateBooksFilterAction(dispatch, newSearchFilter)
+        BooksAction.getListBooksAction(dispatch, newSearchFilter)
+    }
+
     const handleSearch = () => {
         setSearchParams(filter)
         BooksAction.getListBooksAction(dispatch, filter)
@@ -270,6 +303,30 @@ const BooksPage = ({ prefixPath }) => {
         handleCancelConfirmDialog()
     }
 
+    const [openModalUpdate, setOpenModalUpdate] = useState(false)
+    const [idUpdate, setIdUpdate] = useState(null)
+
+    const handleEditBooks = (code) => {
+        setIdUpdate(code)
+        setOpenModalUpdate(true)
+    }
+
+    const onSubmitFormUpdate = () => {
+        document.getElementById("do-an-form-update-books-button").click();
+        
+    }
+
+    const onCancelUpdate = () =>{
+        setOpenModalUpdate(false)
+        setIdUpdate(null)
+    }
+
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSearch()
+        }
+    }
+
     return (
         <div className="do-an__books">
             <div className="do-an__books__image-cover">
@@ -286,6 +343,7 @@ const BooksPage = ({ prefixPath }) => {
                             <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("name", event.target.value)}
                                 value={filter?.name || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -297,6 +355,7 @@ const BooksPage = ({ prefixPath }) => {
                             <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("code", event.target.value)}
                                 value={filter?.code || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -308,6 +367,7 @@ const BooksPage = ({ prefixPath }) => {
                             <input className="do-an__books__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("author", event.target.value)}
                                 value={filter?.author || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -323,7 +383,7 @@ const BooksPage = ({ prefixPath }) => {
                                 listItem={listDefaultDropDown}
                                 selected={filter?.group_code || "ALL"}
                                 name="group_code"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleSelectDropdown}
                             />
                         </div>
                     </div>
@@ -336,7 +396,7 @@ const BooksPage = ({ prefixPath }) => {
                                 listItem={listOrderBy}
                                 selected={filter?.order_by || "created_time"}
                                 name="order_by"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleSelectDropdown}
                             />
                         </div>
                     </div>
@@ -349,7 +409,7 @@ const BooksPage = ({ prefixPath }) => {
                                 listItem={listOrder}
                                 selected={filter?.order || -1}
                                 name="order"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleSelectDropdown}
                             />
                         </div>
                     </div>
@@ -409,6 +469,34 @@ const BooksPage = ({ prefixPath }) => {
             >
                 <p>Nếu xóa {codeBooksDelete} thì dữ liệu sách sẽ mất hết, xác nhận xóa?</p>
             </Confirm>
+
+            {openModalUpdate &&
+                <Modal
+                    title="Cập nhật thông tin sách"
+                    width="70%"
+                    onCancel={onCancelUpdate}
+                    visible={openModalUpdate}
+                    footer={
+                        <div className='do-an__modal__footer'>
+                            <Button
+                                type={"normal-blue"}
+                                onClick={onSubmitFormUpdate}
+                            >
+                                Cập nhật
+                            </Button>
+                            <Button
+                                type={"normal-gray"}
+                                onClick={onCancelUpdate}
+                            >
+                                Hủy bỏ
+                            </Button>
+                        </div>
+                    }
+                >
+                    <UpdateBooks onCloseModal={onCancelUpdate} codeBooks={idUpdate}>
+
+                    </UpdateBooks>
+                </Modal>}
         </div>
     )
 }

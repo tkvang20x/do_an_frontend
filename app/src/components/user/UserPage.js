@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import './UserPage.scss';
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileCirclePlus, faFilter, faSearch } from "@fortawesome/free-solid-svg-icons";
 import DataTable from "../../share/ecm-base/components/data-table/DataTable";
 import UserAction from "../../redux/action/UserAction";
 import { useSelector, useDispatch } from "react-redux";
@@ -13,6 +11,7 @@ import { ListButton, ListButtonUser } from '../../common/utils';
 import ConstAPI from '../../common/const';
 import Confirm from '../../share/ecm-base/components/confirm/Confirm';
 import CreateUser from './components/create_user/CreateUser';
+import { event } from 'jquery';
 
 const UserPage = ({ prefixPath }) => {
 
@@ -51,10 +50,10 @@ const UserPage = ({ prefixPath }) => {
             width: "10%"
         },
         {
-            title: "Khóa",
-            dataIndex: "course",
+            title: "Phân quyền",
+            dataIndex: "role",
             render: (text) => {
-                return <span>{text}</span>;
+                return <span>{text === "STUDENT" ? "Sinh viên" : "Giảng viên"}</span>;
             },
             width: "10%"
         },
@@ -99,6 +98,21 @@ const UserPage = ({ prefixPath }) => {
             title: "Giảm dần",
             value: -1
         },
+    ]
+
+    const listRole= [
+        {
+            title: "Tất cả",
+            value: "ALL"
+        },
+        {
+            title: "Sinh viên",
+            value: "STUDENT"
+        },
+        {
+            title: "Giảng viên",
+            value: "TEACHER"
+        }
     ]
 
     let listOrderBy = [
@@ -155,6 +169,9 @@ const UserPage = ({ prefixPath }) => {
         if (searchParams.get('order')) {
             urlParams["order"] = parseInt(searchParams.get('order'))
         }
+        if (searchParams.get('role')) {
+            urlParams["role"] = parseInt(searchParams.get('role'))
+        }
 
         setSearchParams(urlParams)
         UserAction.updateUserFilterAction(dispatch, urlParams)
@@ -172,11 +189,30 @@ const UserPage = ({ prefixPath }) => {
 
 
     const handleChangeInputSearch = (field, value) => {
-        let newSearchFilter = { ...filter ,[field]: value }
-        console.log(newSearchFilter);
+        let newSearchFilter = {}
+        if(field === "role" && value === "ALL"){
+            newSearchFilter = { ...filter ,[field]: "" }
+        }
+         else{
+            newSearchFilter = { ...filter ,[field]: value }
+         }
         // const newSearchFilter = { ...filter, [field]: value }
 
         UserAction.updateUserFilterAction(dispatch, newSearchFilter)
+    }
+
+    const handleChangeDropdownSearch= (field, value) => {
+        let newSearchFilter = {}
+        if(field === "role" && value === "ALL"){
+            newSearchFilter = { ...filter ,[field]: "" }
+        }
+         else{
+            newSearchFilter = { ...filter ,[field]: value }
+         }
+        // const newSearchFilter = { ...filter, [field]: value }
+         setSearchParams(newSearchFilter);
+        UserAction.updateUserFilterAction(dispatch, newSearchFilter);
+        UserAction.getListUserAction(dispatch, newSearchFilter);
     }
 
     const handleSearch = () => {
@@ -185,7 +221,6 @@ const UserPage = ({ prefixPath }) => {
     }
 
     const handleNumberItemChange = (newSize, newPage) => {
-        console.log(newSize);
         let newSearchFilter = {
             ...filter,
             size: newSize,
@@ -241,6 +276,12 @@ const UserPage = ({ prefixPath }) => {
         handleCancelConfirmDialog()
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSearch()
+        }
+    }
+
     return (
         <div className="do-an__user">
             <div className="do-an__user__image-cover">
@@ -257,6 +298,7 @@ const UserPage = ({ prefixPath }) => {
                             <input className="do-an__user__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("name", event.target.value)}
                                 value={filter?.name || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -268,6 +310,7 @@ const UserPage = ({ prefixPath }) => {
                             <input className="do-an__user__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("code", event.target.value)}
                                 value={filter?.code || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -280,7 +323,7 @@ const UserPage = ({ prefixPath }) => {
                                 listItem={listOrderBy}
                                 selected={filter?.order_by || "created_time"}
                                 name="order_by"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>
@@ -293,19 +336,25 @@ const UserPage = ({ prefixPath }) => {
                                 listItem={listOrder}
                                 selected={filter?.order || -1}
                                 name="order"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>
 
                     <div className="do-an__user__group-search__item">
                         <div className="do-an__user__group-search__item__title">
-                            Khóa:
+                            Phân quyền:
                         </div>
                         <div className="do-an__user__group-search__item__input-container">
-                            <input className="do-an__user__group-search__item__input"
+                            {/* <input className="do-an__user__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("course", event.target.value)}
                                 value={filter?.course || ""}
+                            /> */}
+                            <DropDown className="do-an__user__group-search__item__input"
+                                listItem={listRole}
+                                selected={filter?.role || "ALL"}
+                                name="role"
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>
@@ -313,7 +362,6 @@ const UserPage = ({ prefixPath }) => {
                 <div className="do-an__user__group-search__button-search">
                     <button className="button-search" onClick={handleSearch}>Tìm kiếm</button>
                 </div>
-
             </div>
 
             <div className="do-an__user__group-table">
@@ -327,7 +375,6 @@ const UserPage = ({ prefixPath }) => {
                         pagination={pagination}
                         onPageChange={handleNumberPagehange}
                     >
-
                     </DataTable>
                 </div>
             </div>

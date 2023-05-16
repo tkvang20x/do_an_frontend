@@ -44,20 +44,24 @@ const UserService = {
     },
 
     create: (formData) => {
-        console.log(formData);
+        // console.log(formData);
         try {
             const user = JSON.stringify(
                 {
+                    code: formData.code,
                     name: formData.name,
                     date_of_birth: formData.date_of_birth,
                     gender: formData.gender,
-                    course: formData.course,
                     university: formData.university,
                     phone: formData.phone,
                     email: formData.email,
                     user_name: formData.user_name,
                     password: formData.password,
-                    role: formData.role
+                    role: formData.role,
+                    course: formData.course,
+                    department: formData.department,
+                    specialized: formData.specialized
+
                 });
             // const formDataUser = new FormData();
             // formDataUser.append("data", user);

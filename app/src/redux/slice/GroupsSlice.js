@@ -24,7 +24,7 @@ const initialGroupsState = {
 
     /** ------- detail ---------- */
     // init details data
-    detailsProject: {},
+    detailGroup: {},
     /** ------- detail - end ---------- */
 };
 
@@ -37,6 +37,13 @@ export const GroupsSlice = createSlice({
         // load list reducer
         loadListGroupsReducer: (state, action) => {
             state.listGroups = action.payload;
+        },
+        // load paging 
+        loadPaginationFilter: (state, action) => {
+            state.paginationFilter = action.payload;
+        },
+        setPagination: (state, action) => {
+            state.pagination = action.payload;
         },
     },
 });

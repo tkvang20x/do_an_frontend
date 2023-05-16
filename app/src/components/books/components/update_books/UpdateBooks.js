@@ -12,7 +12,14 @@ import GroupsAction from "../../../../redux/action/GroupsAction";
 import { useParams } from 'react-router-dom';
 
 
-const UpdateBooks = ({ onCloseModal }) => {
+const UpdateBooks = ({ onCloseModal , codeBooks}) => {
+
+    const paginationFilter = {
+        page: 1,
+        size: 20,
+        order_by: "created_time",
+        order: -1,
+    }
 
     const { register, setValue, formState: { errors }, handleSubmit } = useForm({ mode: "onChange" });
     const dispatch = useDispatch()
@@ -24,8 +31,12 @@ const UpdateBooks = ({ onCloseModal }) => {
     const { code } = useParams()
 
     useEffect(() => {
-        BooksAction.getDetailBooksAction(dispatch, code)
-        GroupsAction.getListGroupsAction(dispatch)
+        if(codeBooks === null || codeBooks === undefined){
+            BooksAction.getDetailBooksAction(dispatch, code)
+        }else{
+            BooksAction.getDetailBooksAction(dispatch, codeBooks)
+        }
+        GroupsAction.getListGroupsAction(dispatch, paginationFilter)
     }, [])
 
     const [formUpdateBooks, setFormUpdateBooks] = useState({})
@@ -97,7 +108,12 @@ const UpdateBooks = ({ onCloseModal }) => {
     }
 
     const handleSubmitForm = () => {
-        BooksAction.updateBooksAction(dispatch, code, formUpdateBooks)
+        if(codeBooks === null || codeBooks === undefined){
+            BooksAction.updateBooksAction(dispatch, code, formUpdateBooks)
+        }else{
+            BooksAction.updateBooksAction(dispatch, codeBooks, formUpdateBooks)
+        }
+        BooksAction.getListBooksAction(dispatch, filter)
         onCloseModal()
     }
 

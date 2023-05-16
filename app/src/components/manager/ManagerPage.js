@@ -47,13 +47,13 @@ const ManagerPage = ({ prefixPath }) => {
             title: "Giới tính",
             dataIndex: "gender",
             render: (text) => {
-                return <span>{text}</span>;
+                return <span>{text==="MALE" ? "Nam" : "Nữ"}</span>;
             },
             width: "10%"
         },
         {
-            title: "Khóa",
-            dataIndex: "course",
+            title: "Tài khoản",
+            dataIndex: "user_name",
             render: (text) => {
                 return <span>{text}</span>;
             },

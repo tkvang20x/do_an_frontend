@@ -23,13 +23,16 @@ const CreateUser = ({ onCloseModal }) => {
             code: "",
             date_of_birth: "",
             gender: "MALE",
-            course: "",
             university: "",
             phone: "",
             email: "",
             user_name: "",
             password: "",
-            avatar: null
+            avatar: "\\storage\\avatar_null.jpg",
+            role: "STUDENT",
+            course: "",
+            department: "",
+            specialized: ""
         }
     )
 
@@ -43,6 +46,17 @@ const CreateUser = ({ onCloseModal }) => {
             value: "FEMALE"
         }
     ])
+
+    const listRole= [
+        {
+            title: "Sinh viên",
+            value: "STUDENT"
+        },
+        {
+            title: "Giảng viên",
+            value: "TEACHER"
+        }
+    ]
 
 
     const checkFileTypeAvatar = (files) => {
@@ -84,15 +98,17 @@ const CreateUser = ({ onCloseModal }) => {
         setFormCreate(newFormData)
     }
 
+    console.log(formCreate);
+
     const handleSubmitForm = () => {
         UserAction.createUserAction(formCreate, dispatch, filter).then(response => {
-           if (response === true){
-            onCloseModal()
-           }
-           else{
-            openNotificationCommon("error", "Thông báo", `Tài khoản hoặc email người dùng đã được đăng ký!`)
-            return
-        }
+            if (response === true) {
+                onCloseModal()
+            }
+            else {
+                openNotificationCommon("error", "Thông báo", `Tài khoản hoặc email người dùng đã được đăng ký!`)
+                return
+            }
         })
     }
 
@@ -124,6 +140,110 @@ const CreateUser = ({ onCloseModal }) => {
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
+                                <span>{formCreate.role === "STUDENT" ? "Mã sinh viên:" : "Mã giảng viên"} <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an-form-create-user__body__group-input__input">
+                                <input
+                                    className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
+                                    {...register("code",
+                                        {
+                                            required: true,
+                                            maxLength: 32,
+                                            onChange: (e) => handleChangeInput("code", e.target.value)
+                                        }
+                                    )}
+                                />
+                                {errors.code?.type === "required" &&
+                                    <div className="input-value-error">Mã người dùng không được trống!</div>}
+                                {errors.code?.type === "maxLength" &&
+                                    <div className="input-value-error">Mã người dùng không được vượt quá 32 ký tự!</div>}
+                            </div>
+                        </div>
+                        <div className="do-an-form-create-user__body__group-input">
+                            <div className="do-an-form-create-user__body__group-input__key">
+                                <span>Phân quyền: <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an-form-create-user__body__group-input__input">
+                                <DropDown className="do-an-dropdown-create"
+                                    listItem={listRole}
+                                    selected={formCreate.role || listDefaultDropDown[0]?.value}
+                                    name="role"
+                                    onSelected={handleChangeInput}
+                                />
+
+                            </div>
+                        </div>
+                        {formCreate?.role === "STUDENT" &&
+                            <div className="do-an-form-create-user__body__group-input">
+                                <div className="do-an-form-create-user__body__group-input__key">
+                                    <span>Khóa: <i className="do-an__input-require">*</i></span>
+                                </div>
+                                <div className="do-an-form-create-user__body__group-input__input">
+                                    <input
+                                        className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
+                                        {...register("course",
+                                            {
+                                                required: true,
+                                                maxLength: 10,
+                                                onChange: (e) => handleChangeInput("course", e.target.value)
+                                            }
+                                        )}
+                                    />
+                                    {errors.course?.type === "required" &&
+                                        <div className="input-value-error">Khóa không được trống!</div>}
+                                    {errors.course?.type === "maxLength" &&
+                                        <div className="input-value-error">Khóa không được vượt quá 10 ký tự!</div>}
+                                </div>
+                            </div>
+                        }
+                        {formCreate?.role === "TEACHER" &&
+                            <div className="do-an-form-create-user__body__group-input">
+                                <div className="do-an-form-create-user__body__group-input__key">
+                                    <span>Phòng ban: <i className="do-an__input-require">*</i></span>
+                                </div>
+                                <div className="do-an-form-create-user__body__group-input__input">
+                                    <input
+                                        className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
+                                        {...register("department",
+                                            {
+                                                required: true,
+                                                maxLength: 100,
+                                                onChange: (e) => handleChangeInput("department", e.target.value)
+                                            }
+                                        )}
+                                    />
+                                    {errors.department?.type === "required" &&
+                                        <div className="input-value-error">Phòng ban không được trống!</div>}
+                                    {errors.department?.type === "maxLength" &&
+                                        <div className="input-value-error">Phòng ban không được vượt quá 100 ký tự!</div>}
+                                </div>
+                            </div>  
+                        }
+                         {formCreate?.role === "TEACHER" &&
+                            <div className="do-an-form-create-user__body__group-input">
+                                <div className="do-an-form-create-user__body__group-input__key">
+                                    <span>Chuyên ngành: <i className="do-an__input-require">*</i></span>
+                                </div>
+                                <div className="do-an-form-create-user__body__group-input__input">
+                                    <input
+                                        className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
+                                        {...register("specialized",
+                                            {
+                                                required: true,
+                                                maxLength: 100,
+                                                onChange: (e) => handleChangeInput("specialized", e.target.value)
+                                            }
+                                        )}
+                                    />
+                                    {errors.specialized?.type === "required" &&
+                                        <div className="input-value-error">Chuyên ngành không được trống!</div>}
+                                    {errors.specialized?.type === "maxLength" &&
+                                        <div className="input-value-error">Chuyên ngành không được vượt quá 100 ký tự!</div>}
+                                </div>
+                            </div>  
+                        }
+                        <div className="do-an-form-create-user__body__group-input">
+                            <div className="do-an-form-create-user__body__group-input__key">
                                 <span>Giới tính: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
@@ -150,32 +270,11 @@ const CreateUser = ({ onCloseModal }) => {
                                     )}
                                 /> */}
                                 <DatePicker
-                                placeholder="Ngày sinh"
+                                    placeholder="Ngày sinh"
                                     onChange={(e) => handleChangeInput("date_of_birth", e)}
                                 >
 
                                 </DatePicker>
-                            </div>
-                        </div>
-                        <div className="do-an-form-create-user__body__group-input">
-                            <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Sinh viên khóa: <i className="do-an__input-require">*</i></span>
-                            </div>
-                            <div className="do-an-form-create-user__body__group-input__input">
-                                <input
-                                    className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
-                                    {...register("course",
-                                        {
-                                            required: true,
-                                            maxLength: 10,
-                                            onChange: (e) => handleChangeInput("course", e.target.value)
-                                        }
-                                    )}
-                                />
-                                {errors.course?.type === "required" &&
-                                    <div className="input-value-error">Niên khóa không được trống!</div>}
-                                {errors.course?.type === "maxLength" &&
-                                    <div className="input-value-error">Biên khóa không được vượt quá 10 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-user__body__group-input">

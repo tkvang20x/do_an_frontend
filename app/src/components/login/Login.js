@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import image from '../../share/image/DRBS.jpg';
+import image from '../../share/image/cover.jpg';
 import "./Login.scss";
 import { Input, Button } from 'antd';
 import LoginService from '../../redux/service/LoginService';
@@ -75,7 +75,8 @@ const Login = ({ prefixPath, showToast }) => {
 
 
   return (
-    <div className='do-an-login__container' id="do-an-login" style={{ backgroundImage: `url(${image})` }}>
+    <div className='do-an-login__container' id="do-an-login" style={{ backgroundImage: `url(${image})`,backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 100%" }}>
       {loginActive &&
         <form style={{ width: "30%" }} onSubmit={handleSubmit(handleSubmitLogin)}>
           <div className="do-an-login__container__form-login">

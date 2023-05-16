@@ -17,6 +17,7 @@ import DetailVoucher from "../components/voucher/components/detail_voucher/Detai
 import UpdateVoucher from "../components/voucher/components/update_voucher/UpdateVoucher";
 import ManagerPage from "../components/manager/ManagerPage";
 import ManagerInfoPage from "../components/manager/manager_info/ManagerInfoPage ";
+import GroupPage from "../components/group/GroupPage";
 
 export let openNotification = null
 export let openLoading = null
@@ -57,15 +58,16 @@ const Layout = ({ prefixPath }) => {
         <Routes>
           <Route exact path={`${prefixPath}/`} element={<Login prefixPath={prefixPath} showToast={showToast} />} />
           <Route exact path={`${prefixPath}/manager`} element={<LayoutProject prefixPath={prefixPath} />} >
-          <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
-          <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
-          <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
-          <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
-          <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
-          <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
-          <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
-          <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
-          <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
+            <Route exact path={`books/list`} element={<BooksPage prefixPath={prefixPath} />} />
+            <Route exact path={`books/:code`} element={<DetailBooks prefixPath={prefixPath} />} />
+            <Route exact path={`user/list`} element={<UserPage prefixPath={prefixPath} />} />
+            <Route exact path={`user/:code`} element={<DetailUser prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/list`} element={<VoucherPage prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/create`} element={<CreateVoucher prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/:voucher_id`} element={<DetailVoucher prefixPath={prefixPath} />} />
+            <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
+            <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
+            <Route exact path={`group/list`} element={<GroupPage prefixPath={prefixPath} />}/>
           </Route>
           <Route exact path={`${prefixPath}/info-manager/:code`} element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
         </Routes>

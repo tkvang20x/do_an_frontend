@@ -303,7 +303,7 @@ const CreateBooks = ({ onCloseModal }) => {
                                 {errors.avatar?.message &&
                                     <div className="input-value-error">{errors.avatar?.message}</div>}
                             </div>
-                            <img className="do-an-preview-image" src={image}></img>
+                            <img className="do-an-preview-image1" src={image}></img>
                             <div className="do-an-title-avatar">
                                 Ảnh đại diện
                             </div>

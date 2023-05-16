@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import './MenuProject.scss';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faBook, faUser, faTicket, faUserSecret } from "@fortawesome/free-solid-svg-icons";
+import { faBook, faUser, faTicket, faUserSecret , faBookOpen, faChartSimple} from "@fortawesome/free-solid-svg-icons";
 
 const MenuProject = ({ prefixPath, isExpand }) => {
 
@@ -18,50 +18,74 @@ const MenuProject = ({ prefixPath, isExpand }) => {
         if (decode.role === "MANAGER"){
             setMenus([
                 {
-                    title: "Quản lý sách",
+                    title: "Quản trị sách",
                     url: `${prefixPath}/manager/books/list`,
                     children: [],
                     icon: faBook
                 },
                 {
-                    title: "Quản lý người dùng",
+                    title: "Quản trị người dùng",
                     url: `${prefixPath}/manager/user/list`,
                     children: [],
                     icon: faUser
                 },
                 {
-                    title: "Quản lý phiếu mượn",
+                    title: "Quản trị phiếu mượn",
                     url: `${prefixPath}/manager/voucher/list`,
                     children: [],
                     icon: faTicket
+                },
+                {
+                    title: "Quản trị thể loại",
+                    url: `${prefixPath}/manager/group/list`,
+                    children: [],
+                    icon: faBookOpen
+                },
+                {
+                    title: "Thống kê",
+                    url: `${prefixPath}/manager/chart`,
+                    children: [],
+                    icon: faChartSimple
                 },
             ])
         }else if(decode.role === "ADMIN"){
             setMenus([
                 {
-                    title: "Quản lý sách",
+                    title: "Quản trị sách",
                     url: `${prefixPath}/manager/books/list`,
                     children: [],
                     icon: faBook
                 },
                 {
-                    title: "Quản lý người dùng",
+                    title: "Quản trị người dùng",
                     url: `${prefixPath}/manager/user/list`,
                     children: [],
                     icon: faUser
                 },
                 {
-                    title: "Quản lý phiếu mượn",
+                    title: "Quản trị phiếu mượn",
                     url: `${prefixPath}/manager/voucher/list`,
                     children: [],
                     icon: faTicket
                 },
                 {
-                    title: "Quản lý nhân viên",
+                    title: "Quản trị thể loại",
+                    url: `${prefixPath}/manager/group/list`,
+                    children: [],
+                    icon: faBookOpen
+                },
+                {
+                    title: "Quản trị nhân viên",
                     url: `${prefixPath}/manager/manager-list`,
                     children: [],
                     icon: faUserSecret
                 },
+                {
+                    title: "Thống kê",
+                    url: `${prefixPath}/manager/chart`,
+                    children: [],
+                    icon: faChartSimple
+                }
             ])
         }
     }, [decode])

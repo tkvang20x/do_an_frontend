@@ -120,7 +120,7 @@ const removeUser = async (dispatch, code, filter) => {
     }
   }
 
-  export const createUserAction = async (formData, dispatch, filter) => {
+const createUserAction = async (formData, dispatch, filter) => {
     try {
       const response = await UserService.create(
         formData

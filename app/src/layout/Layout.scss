@@ -184,3 +184,11 @@
     background-color: #00c70a;
   }
 }
+
+.do-an-list-action{
+
+  // style={{display:"grid",gridTemplateColumns:"repeat(1,1fr)"}}
+
+  display: flex;
+  justify-content: center;
+}

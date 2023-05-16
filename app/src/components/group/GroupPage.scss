@@ -1,0 +1,68 @@
+.do-an__group {
+
+    &__header {}
+
+    &__group-table {
+
+        &__title {
+            background-color: white;
+            padding: 10px;
+            margin: 0px 10px 10px 10px;
+            border-radius: 8px;
+            display: flex;
+
+            &__group-search {
+                width: 90%;
+                display: flex;
+
+                &__input-group {
+                    display: flex;
+                    width: 30%;
+
+                    &__span {
+                        width: 45%;
+                        justify-content: center;
+                        align-items: center;
+                        display: flex;
+                        font-weight: bold;
+                        font-size: 14px;
+                    }
+
+                    &__input {}
+                }
+            }
+        }
+
+        &__table-data {
+
+            margin: 0px 10px 0px 10px;
+        }
+    }
+
+    .button-create-new {
+        width: 130px;
+        height: 28px;
+        border-radius: 8px;
+        background-color: #00c70a;
+        color: white;
+        border-width: 0px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #02e01f;
+        }
+    }
+
+
+    .button-search-group {
+        width: 3%;
+        background-color: #141ed2;
+        color: white;
+        border-radius: 8px;
+        margin-left: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+}
