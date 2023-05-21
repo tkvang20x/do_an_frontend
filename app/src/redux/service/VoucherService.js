@@ -1,4 +1,4 @@
-import { data } from 'jquery';
+import { data, param } from 'jquery';
 import {axiosClient} from '../../common/http-commons';
 import Utils from '../../common/utils';
 
@@ -85,6 +85,17 @@ const VoucherService = {
             console.log("VoucherService || Update status || Cause by ", error)
         }
     },
+
+     getChart: (paging) => {
+        try {
+            // Get data with default
+                return axiosClient.get(
+                    process.env.REACT_APP_GET_CHART, {params: paging}
+                );
+        } catch (error) {
+            console.log("[VoucherService - Get chart]", error);
+        }
+     }
 }
 
 export default VoucherService;

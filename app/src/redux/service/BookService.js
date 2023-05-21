@@ -30,7 +30,22 @@ const bookService = {
         } catch (error) {
             console.log("[Book - Get detail]", error);
         }
-    }
+    },
+
+    createBook: (formData) => {
+        try {
+            const booksData = JSON.stringify(
+                {
+                    code_books : formData.code_books ,
+                    amount : formData.amount,
+                    compartment : formData.compartment,
+                });
+
+            return axiosClient.post(process.env.REACT_APP_CREATE_BOOK, booksData)
+        } catch (error) {
+            console.log("[Project - create]", error);
+        }
+    },
 }
 
 export default bookService;

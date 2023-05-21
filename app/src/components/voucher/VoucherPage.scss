@@ -79,20 +79,6 @@
         }
     }
 
-    .button-create-new {
-        width: 130px;
-        height: 28px;
-        border-radius: 8px;
-        background-color: #00c70a;
-        color: white;
-        border-width: 0px;
-        cursor: pointer;
-
-        &:hover{
-            background-color: #02e01f;
-        }
-    }
-
     .button-center-table{
         display: flex;
         justify-content: center;

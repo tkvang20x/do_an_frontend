@@ -102,12 +102,36 @@ const getDetailBookAction = async (dispatch, code_id) => {
   
 }
 
+const createBookAction = async (dispatch,formCreate, filter) => {
+  try {
+      const response = await BookService.createBook(formCreate)
+    console.log(response);
+      if (
+          Utils.isNotNullOrUndefined(response) &&
+          Utils.isNotNullOrUndefined(response.data) &&
+          Utils.isNotNullOrUndefined(response.data.data) 
+      ){
+        getListBookAction(dispatch, formCreate.code_books, filter)
+        openNotificationCommon("success", "Thông báo", "Thêm mới sách thành công!")
+          return true
+      }
+      else{
+        openNotificationCommon("error", "Thông báo", "Thêm mới sách thành công!")
+        return false
+      }
+  } catch (error) {
+      console.log("BooksAction || getDetail || Cause by ", error)
+  }
+  
+}
+
 
  const BookAction = {
     getListBookAction,
     updateBookFilterAction,
     updateBookPagination,
-    getDetailBookAction
+    getDetailBookAction,
+    createBookAction
  } 
 
  export default BookAction;

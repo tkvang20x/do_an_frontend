@@ -14,6 +14,8 @@ import Modal from '../../../../share/ecm-base/components/modal/Modal';
 import Button from '../../../../share/ecm-base/components/button/Button';
 import UpdateBooks from '../update_books/UpdateBooks';
 import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
+import CreateBook from '../create_book_single/CreateBook';
+import { ListButtonUser } from '../../../../common/utils';
 
 const DetailBooks = ({ prefixPath }) => {
 
@@ -51,6 +53,22 @@ const DetailBooks = ({ prefixPath }) => {
             width: "20%"
         },
         {
+            title: "Ngăn số",
+            dataIndex: "compartment",
+            render: (text) => {
+                return <span>{text}</span>
+            },
+            width: "20%"
+        },
+        {
+            title: "Vị trí",
+            dataIndex: "serial",
+            render: (text) => {
+                return <span>{text}</span>
+            },
+            width: "20%"
+        },
+        {
             title: "Mã QR Code",
             dataIndex: "qr_code_data",
             render: (text) => {
@@ -58,6 +76,20 @@ const DetailBooks = ({ prefixPath }) => {
             },
             width: "15%"
         },
+        {
+            title: "Thao tác",
+            dataIndex: "code_id",
+            render: (code) => {
+                return (
+                    <ListButtonUser
+                        editDisable = {true}
+                        // onRemoveAction={() => handleDeleteBook(code)}
+                        removeButtonName="btnDeleteUser"
+                    ></ListButtonUser>
+                );
+            },
+            width: "15%"
+        }
     ]
 
     let listStatusBook = [
@@ -141,9 +173,9 @@ const DetailBooks = ({ prefixPath }) => {
 
     const handleChangeDropDown = (field, value) => {
         let new_filter_book = {}
-        if(value === "ALL"){
+        if (value === "ALL") {
             new_filter_book = { ...filterBook, [field]: "" }
-        }else{
+        } else {
             new_filter_book = { ...filterBook, [field]: value }
         }
         setFilterBook(new_filter_book)
@@ -155,6 +187,20 @@ const DetailBooks = ({ prefixPath }) => {
         if (event.key === "Enter") {
             BookAction.getListBookAction(dispatch, code, filterBook)
         }
+    }
+
+    const [openModalCreate, setOpenModalCreate] = useState(false)
+
+    const handleOpenModalCreate = () => {
+        setOpenModalCreate(true)
+    }
+
+    const handleCancelModalCreate = () => {
+        setOpenModalCreate(false)
+    }
+
+    const onSubmitFormCreate = () => {
+        document.getElementById("do-an-form-create-book-button").click();
     }
 
     return (
@@ -270,6 +316,15 @@ const DetailBooks = ({ prefixPath }) => {
                     <img className="do-an-preview-image" src={`${ConstAPI.BASE_HOST_API}${booksDetail.avatar}`}></img>
                 </div>
             </div>
+            <div className='do-an__view-books-container__button-add'>
+                <button
+                    className="do-an__view-books-container__button-add__button button-create-new"
+                    style={{ float: "right", margin: "10pxs" }}
+                    onClick={handleOpenModalCreate}
+                >
+                    Thêm mới
+                </button>
+            </div>
             <div className='do-an__view-books-container__table'>
                 <div className='do-an__view-books-container__table__search'>
                     <div className="do-an__view-books-container__table__search__filter">
@@ -361,7 +416,35 @@ const DetailBooks = ({ prefixPath }) => {
                     <UpdateBooks onCloseModal={onCancel}>
 
                     </UpdateBooks>
-                </Modal>}
+                </Modal>
+            }
+
+            {openModalCreate &&
+                <Modal
+                    title="Tạo thêm sách"
+                    width="50%"
+                    onCancel={handleCancelModalCreate}
+                    visible={openModalCreate}
+                    footer={
+                        <div className='do-an__modal__footer'>
+                            <Button
+                                type={"normal-blue"}
+                                onClick={onSubmitFormCreate}
+                            >
+                                Thêm mới
+                            </Button>
+                            <Button
+                                type={"normal-gray"}
+                                onClick={handleCancelModalCreate}
+                            >
+                                Hủy bỏ
+                            </Button>
+                        </div>
+                    }
+                >
+                    <CreateBook codeBooks={code} onCloseModal={handleCancelModalCreate}></CreateBook>
+                </Modal>
+            }
         </div>
     )
 

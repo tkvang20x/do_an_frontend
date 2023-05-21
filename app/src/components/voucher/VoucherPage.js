@@ -51,7 +51,7 @@ const VoucherPage = ({ prefixPath }) => {
         },
         {
             title: "Người duyệt",
-            dataIndex: "created_by",
+            dataIndex: "manager_name",
             render: (text) => {
                 return <span>{text}</span>
             },

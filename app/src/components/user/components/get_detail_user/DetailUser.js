@@ -43,19 +43,34 @@ const DetailUser = ({ prefixPath }) => {
         },
         {
             title: "Người duyệt",
-            dataIndex: "created_by",
+            dataIndex: "manager_name",
             render: (text) => {
                 return <span>{text}</span>
             },
             width: "20%"
         },
         {
-            title: "Số lượng",
+            title: "Số lượng sách",
             dataIndex: "books_borrowed",
             render: (text) => {
                 return <span>{text.length}</span>
             },
             width: "20%"
+        },
+        {
+            title: "Trạng thái",
+            dataIndex: "status_voucher",
+            className: "button-center-table",
+            render: (text) => {
+                return <div className={`do-an-status-voucher-${text}`}>
+                    {text === "WAITING_CONFIRM" ? "Chờ xác nhận" : ""}
+                    {text === "CONFIRMED" ? "Đã xác nhận" : ""}
+                    {text === "PAYED" ? "Đã trả" : ""}
+                    {text === "EXPIRED" ? "Quá hạn" : ""}
+                    {text === "CANCELLED" ? "Đã hủy" : ""}
+                </div>
+            },
+            width: "10%"
         },
     ]
 

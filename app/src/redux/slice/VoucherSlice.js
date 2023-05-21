@@ -26,6 +26,7 @@ const initialVoucherState = {
     // init details data
     detailVoucher: {},
     /** ------- detail - end ---------- */
+    detailChart : {}
 };
 
 // List Project Slice
@@ -47,6 +48,9 @@ export const VoucherSlice = createSlice({
         },
         saveDetailVoucher: (state, action) => {
             state.detailVoucher = action.payload;
+        },
+        saveDetailChart: (state, action) => {
+            state.detailChart = action.payload;
         }
     },
 });

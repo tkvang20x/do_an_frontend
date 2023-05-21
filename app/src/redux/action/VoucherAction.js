@@ -125,17 +125,17 @@ const getDetailVoucherAction = async (dispatch, voucher_id) => {
 const updateVoucherAction = async (dispatch, voucher_id, formData) => {
   try {
     const response = await VoucherService.updateVoucher(voucher_id, formData)
-    if (response.data.status === 200){
+    if (response.data.status === 200) {
       openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
       dispatch(
-            VoucherSlice.actions.saveDetailVoucher(
-              response.data.data
-            )
+        VoucherSlice.actions.saveDetailVoucher(
+          response.data.data
+        )
       )
       return true
-  }else{
+    } else {
       openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
-  }
+    }
     return false;
   } catch (err) {
     console.log("UpdateBooks Action - error: ", err);
@@ -165,6 +165,28 @@ const updateStatusVoucher = async (dispatch, voucher_id, status_update, filter) 
   };
 }
 
+const getChartVoucher = async (dispatch,month, year) => {
+  try {
+    let paging = {
+      month: month,
+      year: year
+    }
+    const response = await VoucherService.getChart(paging)
+    if (
+      Utils.isNotNullOrUndefined(response) &&
+      Utils.isNotNullOrUndefined(response.data) &&
+      Utils.isNotNullOrUndefined(response.data.data)
+    ) {
+      dispatch(
+        VoucherSlice.actions.saveDetailChart(response.data.data)
+      )
+      return response.data.data
+    }
+  } catch (error) {
+    console.log("VoucherAction || getChart || Cause by ", error)
+  };
+}
+
 const VoucherAction = {
   getListVoucherAction,
   updateVoucherFilterAction,
@@ -172,7 +194,8 @@ const VoucherAction = {
   createVoucherAction,
   getDetailVoucherAction,
   updateStatusVoucher,
-  updateVoucherAction
+  updateVoucherAction,
+  getChartVoucher
 }
 
 export default VoucherAction;

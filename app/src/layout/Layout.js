@@ -18,6 +18,7 @@ import UpdateVoucher from "../components/voucher/components/update_voucher/Updat
 import ManagerPage from "../components/manager/ManagerPage";
 import ManagerInfoPage from "../components/manager/manager_info/ManagerInfoPage ";
 import GroupPage from "../components/group/GroupPage";
+import ChartVoucher from "../components/chart/ChartVoucher";
 
 export let openNotification = null
 export let openLoading = null
@@ -68,6 +69,7 @@ const Layout = ({ prefixPath }) => {
             <Route exact path={`voucher/:voucher_id/update`} element={<UpdateVoucher prefixPath={prefixPath} />} />
             <Route exact path={`manager-list`} element={<ManagerPage prefixPath={prefixPath} />} />
             <Route exact path={`group/list`} element={<GroupPage prefixPath={prefixPath} />}/>
+            <Route exact path={`chart`} element={<ChartVoucher prefixPath={prefixPath} />}/>
           </Route>
           <Route exact path={`${prefixPath}/info-manager/:code`} element={<ManagerInfoPage prefixPath={prefixPath}></ManagerInfoPage>}></Route>
         </Routes>
