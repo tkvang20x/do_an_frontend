@@ -217,6 +217,19 @@ const VoucherPage = ({ prefixPath }) => {
         VoucherAction.updateVoucherFilterAction(dispatch, newSearchFilter)
     }
 
+    const handleChangeInputDropDownSearch = (field, value) => {
+        let newSearchFilter = { ...filter, page: 1 }
+        if (field === "status_voucher" && value === "ALL") {
+            delete newSearchFilter.status_voucher
+        } else {
+            newSearchFilter = { ...filter, page: 1, [field]: value }
+        }
+        // const newSearchFilter = { ...filter, [field]: value }
+
+        VoucherAction.updateVoucherFilterAction(dispatch, newSearchFilter)
+        VoucherAction.getListVoucherAction(dispatch, newSearchFilter)
+    }
+
     const handleSearch = () => {
         setSearchParams(filter)
         VoucherAction.getListVoucherAction(dispatch, filter)
@@ -290,7 +303,6 @@ const VoucherPage = ({ prefixPath }) => {
     }
 
     const handleChangeDebut = (range) => {
-        console.log(range);
         if (range === null || range === undefined) {
             let newSearchFilter = {
                 ...filter
@@ -325,8 +337,12 @@ const VoucherPage = ({ prefixPath }) => {
                 page: 1
             })
         }
+    }
 
-
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSearch()
+        }
     }
 
     return (
@@ -345,6 +361,7 @@ const VoucherPage = ({ prefixPath }) => {
                             <input className="do-an__voucher__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("voucher_id", event.target.value)}
                                 value={filter?.voucher_id || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -356,6 +373,7 @@ const VoucherPage = ({ prefixPath }) => {
                             <input className="do-an__voucher__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("user_id", event.target.value)}
                                 value={filter?.user_id || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -368,7 +386,7 @@ const VoucherPage = ({ prefixPath }) => {
                                 listItem={listOrderBy}
                                 selected={filter?.order_by || "created_time"}
                                 name="order_by"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeInputDropDownSearch}
                             />
                         </div>
                     </div>
@@ -381,7 +399,7 @@ const VoucherPage = ({ prefixPath }) => {
                                 listItem={listOrder}
                                 selected={filter?.order || -1}
                                 name="order"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeInputDropDownSearch}
                             />
                         </div>
                     </div>
@@ -394,7 +412,7 @@ const VoucherPage = ({ prefixPath }) => {
                                 listItem={listStatus}
                                 selected={filter?.status_voucher || "ALL"}
                                 name="status_voucher"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeInputDropDownSearch}
                             />
                         </div>
                     </div>

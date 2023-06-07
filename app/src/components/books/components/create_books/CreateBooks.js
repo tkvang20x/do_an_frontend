@@ -30,7 +30,8 @@ const CreateBooks = ({ onCloseModal }) => {
             origin: "",
             group_code: "GROUPS_1673458766",
             amount: 1,
-            avatar: null
+            avatar: null,
+            cabinet: 1
         }
     )
 
@@ -262,6 +263,28 @@ const CreateBooks = ({ onCloseModal }) => {
                                     <div className="input-value-error">Nhà xuất bản sách không được trống!</div>}
                                 {errors.origin?.type === "maxLength" &&
                                     <div className="input-value-error">Nhà xuất bản sách không được vượt quá 100 ký tự!</div>}
+                            </div>
+                        </div>
+                        <div className="do-an-form-create-books__body__group-input">
+                            <div className="do-an-form-create-books__body__group-input__key">
+                                <span>Tủ số: <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an-form-create-books__body__group-input__input">
+                                <input
+                                    type={"number"}
+                                    className={`do-an__input do-an-input-name input-number ${errors.name ? 'is-invalid' : ''}`}
+                                    {...register("cabinet",
+                                        {
+                                            min: 1,
+                                            max: 1000,
+                                            onChange: (e) => handleChangeInput("cabinet", e.target.value)
+                                        }
+                                    )}
+                                />
+                                {errors.cabinet?.type === "min" &&
+                                    <div className="input-value-error">Tủ đựng sách không được nhỏ hơn 1!</div>}
+                                {errors.cabinet?.type === "max" &&
+                                    <div className="input-value-error">Tủ đựng sách không được lớn hơn 1000!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-books__body__group-input">

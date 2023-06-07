@@ -89,7 +89,7 @@ const ChartVoucher = ({ prefixPath }) => {
             value: "11"
         },
         {
-            title: "Tháng 10",
+            title: "Tháng 12",
             value: "12"
         },
     ]

@@ -58,9 +58,9 @@ const CreateGroup = ({ onCloseModal }) => {
                                         }
                                     )}
                                 />
-                                {errors.name?.type === "required" &&
+                                {errors.group_name?.type === "required" &&
                                     <div className="input-value-error">Tên người dùng không được trống!</div>}
-                                {errors.name?.type === "maxLength" &&
+                                {errors.group_name?.type === "maxLength" &&
                                     <div className="input-value-error">Tên người dùng không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>

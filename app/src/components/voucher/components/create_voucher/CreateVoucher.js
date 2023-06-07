@@ -58,7 +58,15 @@ const CreateVoucher = ({ prefixPath }) => {
             title: "Tiêu đề",
             dataIndex: "title",
             render: (text) => {
-                return <span>{text}</span>
+                return <span
+                    style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        display: "inline-block",
+                        width: "150px"
+                    }}
+                >{text}</span>
             },
             width: "15%"
         },
@@ -161,8 +169,8 @@ const CreateVoucher = ({ prefixPath }) => {
                             "code_id": valueInput,
                             "name": response.data.data.books.name,
                             "avatar": response.data.data.books.avatar,
-                            "author": response.data.data.books.author
-                            // "title": response.data.data.books.title
+                            "author": response.data.data.books.author,
+                            "title": response.data.data.books.title
                         }
                     ])
 
@@ -205,6 +213,7 @@ const CreateVoucher = ({ prefixPath }) => {
                             className="do-an__create-voucher-container__header__button"
                             style={{ cursor: "pointer" }}
                             onClick={() => navigate(-1)}
+                            type="button"
                         >
                             <FontAwesomeIcon icon={faArrowLeft} style={{ height: "22px", marginTop: "5px", marginLeft: "5px" }} />
                         </button>
@@ -293,6 +302,10 @@ const CreateVoucher = ({ prefixPath }) => {
                                         <DatePicker showTime onChange={(e) => handleChangeInputForm("due_date", e)}
                                             placeholder="Ngày hẹn trả"
                                             clearIcon={true}
+                                            disabledDate={(current) => {
+                                                return moment().add(-1, 'days') >= current ||
+                                                    moment().add(3, 'month') <= current;
+                                            }}
                                         />
 
                                         <input

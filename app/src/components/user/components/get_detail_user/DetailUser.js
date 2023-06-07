@@ -9,10 +9,11 @@ import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom'
 import { useSelector, useDispatch } from "react-redux";
 import ConstAPI from '../../../../common/const';
 import DataTable from '../../../../share/ecm-base/components/data-table/DataTable';
-import Modal from '../../../../share/ecm-base/components/modal/Modal';
-import Button from '../../../../share/ecm-base/components/button/Button';
-import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
 import VoucherAction from '../../../../redux/action/VoucherAction';
+import { DatePicker, } from 'antd';
+import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
+
+const { RangePicker } = DatePicker;
 
 const DetailUser = ({ prefixPath }) => {
 
@@ -21,7 +22,7 @@ const DetailUser = ({ prefixPath }) => {
             title: "Mã thẻ mượn",
             dataIndex: "voucher_id",
             render: (text) => {
-                return <span>{text}</span>
+                return <Link to={`${prefixPath}/manager/voucher/${text}`}>{text}</Link>;
             },
             width: "20%"
         },
@@ -74,9 +75,37 @@ const DetailUser = ({ prefixPath }) => {
         },
     ]
 
+    let listStatus = [
+        {
+            title: "Tất cả trạng thái",
+            value: "ALL"
+        },
+        {
+            title: "Chờ duyệt",
+            value: "WAITING_CONFIRM"
+        },
+        {
+            title: "Đã duyệt",
+            value: "CONFIRMED"
+        },
+        {
+            title: "Đã trả",
+            value: "PAYED"
+        },
+        {
+            title: "Đã quá hạn",
+            value: "EXPIRED"
+        },
+        {
+            title: "Đã hủy",
+            value: "CANCELLED"
+        },
+    ]
+
     const userDetail = useSelector(state => state.userReducer.detailUser)
     const listVoucher = useSelector(state => state.voucherReducer.listVoucher)
-
+    const pagination = useSelector(state => state.voucherReducer.pagination)
+    const [filter, setFilter] = useState({})
     useEffect(() => {
         UserAction.getDetailUserAction(dispatch, code)
 
@@ -89,12 +118,66 @@ const DetailUser = ({ prefixPath }) => {
                 user_id: code
             }
         )
+        setFilter({
+            page: 1,
+            size: 10,
+            order_by: "created_time",
+            order: -1,
+            user_id: code
+        })
     }, [])
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const { code } = useParams()
 
-    console.log(listVoucher);
+    const handleChangeDebut = (range) => {
+        if (range === null || range === undefined) {
+            let newSearchFilter = {
+                ...filter
+            }
+            delete newSearchFilter.start_date
+            delete newSearchFilter.due_date
+
+            VoucherAction.getListVoucherAction(dispatch, filter)
+
+        }
+
+        else {
+            const valueOfInput1 = range[0].format("YYYY-MM-DD-HH:mm:ss");
+            const valueOfInput2 = range[1].format("YYYY-MM-DD-HH:mm:ss");
+
+            console.log('start date', valueOfInput1);
+            console.log("end date", valueOfInput2);
+
+            let newSearchFilter = {
+                ...filter,
+                page: 1,
+                start_date: valueOfInput1,
+                due_date: valueOfInput2
+            }
+
+            VoucherAction.getListVoucherAction(dispatch, newSearchFilter)
+
+        }
+    }
+
+    const handleChangeInputSearch = (field, value) => {
+        console.log(field, value);
+        let newSearchFilter = { ...filter, page: 1 }
+        if (field === "status_voucher" && value === "ALL") {
+            delete newSearchFilter.status_voucher
+        } else {
+            newSearchFilter = { ...filter, page: 1, [field]: value }
+        }
+
+        setFilter(newSearchFilter)
+        VoucherAction.getListVoucherAction(dispatch, newSearchFilter)
+
+    }
+
+    const handleSearch = () => {
+        VoucherAction.getListVoucherAction(dispatch, filter)
+    }
 
     return (
         <div className='do-an__view-user-container'>
@@ -117,7 +200,7 @@ const DetailUser = ({ prefixPath }) => {
                             Tên người dùng:
                         </div>
                         <div className='do-an__view-user-container__info__row__value'>
-                            {userDetail.name}
+                            {userDetail?.name}
                         </div>
                     </div>
                     <div className='do-an__view-user-container__info__row'>
@@ -125,7 +208,7 @@ const DetailUser = ({ prefixPath }) => {
                             Mã người dùng:
                         </div>
                         <div className='do-an__view-user-container__info__row__value'>
-                            {userDetail.code}
+                            {userDetail?.code}
                         </div>
                     </div>
                     <div className='do-an__view-user-container__info__row'>
@@ -133,7 +216,7 @@ const DetailUser = ({ prefixPath }) => {
                             Ngày sinh:
                         </div>
                         <div className='do-an__view-user-container__info__row__value'>
-                            {userDetail.date_of_birth}
+                            {userDetail?.date_of_birth}
                         </div>
                     </div>
                     <div className='do-an__view-user-container__info__row'>
@@ -141,17 +224,39 @@ const DetailUser = ({ prefixPath }) => {
                             Giới tính:
                         </div>
                         <div className='do-an__view-user-container__info__row__value'>
-                            {userDetail.gender}
+                            {userDetail?.gender === "FEMALE" ? "Nữ" : "Nam"}
                         </div>
                     </div>
-                    <div className='do-an__view-user-container__info__row'>
-                        <div className='do-an__view-user-container__info__row__title'>
-                            Khóa:
+                    {userDetail?.role === "STUDENT" &&
+                        <div className='do-an__view-user-container__info__row'>
+                            <div className='do-an__view-user-container__info__row__title'>
+                                Khóa:
+                            </div>
+                            <div className='do-an__view-user-container__info__row__value'>
+                                {userDetail?.course}
+                            </div>
                         </div>
-                        <div className='do-an__view-user-container__info__row__value'>
-                            {userDetail.course}
+                    }
+                    {userDetail?.role === "TEACHER" &&
+                        <div className='do-an__view-user-container__info__row'>
+                            <div className='do-an__view-user-container__info__row__title'>
+                                Chuyên ngành:
+                            </div>
+                            <div className='do-an__view-user-container__info__row__value'>
+                                {userDetail?.specialized}
+                            </div>
                         </div>
-                    </div>
+                    }
+                    {userDetail?.role === "TEACHER" &&
+                        <div className='do-an__view-user-container__info__row'>
+                            <div className='do-an__view-user-container__info__row__title'>
+                                Phòng ban:
+                            </div>
+                            <div className='do-an__view-user-container__info__row__value'>
+                                {userDetail?.department}
+                            </div>
+                        </div>
+                    }
                 </div>
 
                 <div className='do-an__view-user-container__info__group-info'>
@@ -206,40 +311,61 @@ const DetailUser = ({ prefixPath }) => {
                     <div className="do-an__view-user-container__table__search__filter">
                         <div className="do-an__view-user-container__table__search__item">
                             <div className="do-an__view-user-container__table__search__item__title">
-                                Tình trạng thẻ mượn:
+                                Tình trạng phiếu mượn:
                             </div>
                             <div className="do-an__view-user-container__table__search__item__input-container">
-                                <input className="do-an__view-user-container__table__search__item__input" />
+                                {/* <input className="do-an__view-user-container__table__search__item__input" /> */}
+
+                                <DropDown className="do-an__view-user-container__table__search__item__input"
+                                    listItem={listStatus}
+                                    selected={filter?.status_voucher || "ALL"}
+                                    name="status_voucher"
+                                    onSelected={handleChangeInputSearch}
+                                />
                             </div>
                         </div>
                         <div className="do-an__view-user-container__table__search__item">
                             <div className="do-an__view-user-container__table__search__item__title">
-                                Ngày bắt đầu:
+                                Ngày tạo phiếu:
                             </div>
-                            <div className="do-an__view-user-container__table__search__item__input-container">
+                            {/* <div className="do-an__view-user-container__table__search__item__input-container">
                                 <input className="do-an__view-user-container__table__search__item__input" />
+                            </div> */}
+                            <div className="do-an__view-user-container__table__search__item__input-container">
+                                {/* <input className="do-an__voucher__group-search__item__input"
+                            /> */}
+                                <RangePicker showTime
+                                    onChange={(event) => handleChangeDebut(event)}
+                                    placeholder={["Từ ngày", " Đến ngày"]}
+                                // defaultPickerValue={[moment(searchParams?.start_date), moment(searchParams?.due_date)]}
+                                >
+
+                                </RangePicker>
                             </div>
                         </div>
-                        <div className="do-an__view-user-container__table__search__item">
+                        {/* <div className="do-an__view-user-container__table__search__item">
                             <div className="do-an__view-user-container__table__search__item__title">
                                 Ngày kết thúc:
                             </div>
                             <div className="do-an__view-user-container__table__search__item__input-container">
                                 <input className="do-an__view-user-container__table__search__item__input" />
                             </div>
-                        </div>
+                        </div> */}
                         <div className="do-an__view-user-container__table__search__item">
                             <div className="do-an__view-user-container__table__search__item__title">
                                 Người duyệt:
                             </div>
                             <div className="do-an__view-user-container__table__search__item__input-container">
-                                <input className="do-an__view-user-container__table__search__item__input"/>
+                                <input className="do-an__view-user-container__table__search__item__input"
+                                    onChange={(event) => handleChangeInputSearch("manager_name", event.target.value)}
+
+                                />
                             </div>
                         </div>
                     </div>
                 </div>
                 <DataTable headerData={columnVoucher}
-                            tableData={listVoucher}
+                    tableData={listVoucher}
 
                 >
                 </DataTable>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import image from '../../share/image/cover.jpg';
+import image from '../../share/image/anh_bia.jpg';
 import "./Login.scss";
 import { Input, Button } from 'antd';
 import LoginService from '../../redux/service/LoginService';
@@ -31,7 +31,7 @@ const Login = ({ prefixPath, showToast }) => {
         showToast("success", "Thông báo", "Đăng nhập thành công!");
         navigate(`${prefixPath}/manager`);
         stopLoading();
-      } else if (response.data.status === 400) {
+      } else if (response.data.http_code === 400) {
         stopLoading();
         showToast("error", "Thông báo", "Mật khẩu không chính xác, vui lòng thử lại!");
       }

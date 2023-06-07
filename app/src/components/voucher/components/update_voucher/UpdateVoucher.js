@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import BookAction from "../../../../redux/action/BookAction";
 import ConstAPI from "../../../../common/const";
 import VoucherAction from "../../../../redux/action/VoucherAction";
+import bookService from "../../../../redux/service/BookService";
 
 
 const UpdateVoucher = ({ prefixPath }) => {
@@ -202,15 +203,20 @@ const UpdateVoucher = ({ prefixPath }) => {
             books_borrowed: listBookUpdate
         }
 
+        listDeleted.map(item => {
+            bookService.updateUserBook(item, {user_borrow: ""})
+        })
+       
+
         VoucherAction.updateVoucherAction(dispatch, voucher_id, formUpdateVoucher).then(response => {
             navigate(`${prefixPath}/manager/voucher/list`)
         })
     }
 
+    const [listDeleted, setListDeleted]= useState([])
+
     const handleRemoveBook = (code_id) => {
-        console.log(code_id);
         let index = listBookUpdate.findIndex(item => item === code_id)
-        console.log(index);
         if (index > -1) {
             let newListUpdate = [...listBookUpdate]
             newListUpdate.splice(index, 1)
@@ -219,14 +225,13 @@ const UpdateVoucher = ({ prefixPath }) => {
                 ...formUpdate,
                 "books_borrowed": newListUpdate
             })
+            setListDeleted([...listDeleted, listBookUpdate[index]])
 
             let newListTable = [...listBookTable]
             newListTable.splice(index, 1)
             setListBookTable(newListTable)
         }
     }
-
-    console.log(formUpdate);
 
 
     return (

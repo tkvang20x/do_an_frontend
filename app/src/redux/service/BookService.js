@@ -46,6 +46,39 @@ const bookService = {
             console.log("[Project - create]", error);
         }
     },
+
+    deleteBook: (code_id) => {
+        try {
+            // Get data with default
+            return axiosClient.delete(
+                process.env.REACT_APP_RUD_BOOK.replace('{code_id}', code_id)
+            );
+        } catch (error) {
+            console.log("[Book - Delete Book]", error);
+        }
+    },
+
+    updateBook: (code_id, formUpdate) => {
+        try {
+            // Get data with default
+            return axiosClient.put(
+                process.env.REACT_APP_RUD_BOOK.replace('{code_id}', code_id), formUpdate
+            );
+        } catch (error) {
+            console.log("[Book - Update Book]", error);
+        }
+    },
+
+    updateUserBook: (code_id, formUpdate) => {
+        try {
+            // Get data with default
+            return axiosClient.put(
+                process.env.REACT_APP_UPDATE_USER_BOOK.replace('{code_id}', code_id), formUpdate
+            );
+        } catch (error) {
+            console.log("[Book - Update User Book]", error);
+        }
+    },
 }
 
 export default bookService;

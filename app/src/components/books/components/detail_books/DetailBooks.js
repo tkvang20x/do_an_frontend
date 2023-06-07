@@ -7,7 +7,7 @@ import image from '../../../../share/image/123.jpg';
 import BooksAction from '../../../../redux/action/BooksAction';
 import { useParams, useSearchParams, Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from "react-redux";
-import ConstAPI from '../../../../common/const';
+import ConstAPI, { openNotificationCommon } from '../../../../common/const';
 import DataTable from '../../../../share/ecm-base/components/data-table/DataTable';
 import BookAction from '../../../../redux/action/BookAction';
 import Modal from '../../../../share/ecm-base/components/modal/Modal';
@@ -15,7 +15,9 @@ import Button from '../../../../share/ecm-base/components/button/Button';
 import UpdateBooks from '../update_books/UpdateBooks';
 import DropDown from '../../../../share/ecm-base/components/dropdown-v2/DropDown';
 import CreateBook from '../create_book_single/CreateBook';
-import { ListButtonUser } from '../../../../common/utils';
+import { ListButton, ListButtonUser } from '../../../../common/utils';
+import Confirm from '../../../../share/ecm-base/components/confirm/Confirm';
+import UpdateBook from '../update_book_single/UpdateBook';
 
 const DetailBooks = ({ prefixPath }) => {
 
@@ -32,17 +34,21 @@ const DetailBooks = ({ prefixPath }) => {
             title: "Tình trạng sách",
             dataIndex: "status_book",
             render: (text) => {
-                return <span>{text}</span>
+                return <span>{text === "NEW" ? "Mới" : "Cũ"}</span>
             },
-            width: "15%"
+            width: "10%"
         },
         {
             title: "Tình trạng mượn",
             dataIndex: "status_borrow",
             render: (text) => {
-                return <span>{text}</span>
+                return <span>
+                    {text === "BORROWING" ? "Đang cho mượn" : ""}
+                    {text === "READY" ? "Sẵn sàng" : ""}
+                    {text === "WAITING" ? "Đang chờ duyệt" : ""}
+                </span>
             },
-            width: "15%"
+            width: "10%"
         },
         {
             title: "Người mượn",
@@ -50,7 +56,7 @@ const DetailBooks = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "20%"
+            width: "10%"
         },
         {
             title: "Ngăn số",
@@ -58,7 +64,7 @@ const DetailBooks = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "20%"
+            width: "10%"
         },
         {
             title: "Vị trí",
@@ -66,7 +72,7 @@ const DetailBooks = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>
             },
-            width: "20%"
+            width: "10%"
         },
         {
             title: "Mã QR Code",
@@ -79,16 +85,16 @@ const DetailBooks = ({ prefixPath }) => {
         {
             title: "Thao tác",
             dataIndex: "code_id",
-            render: (code) => {
+            render: (code, index) => {
                 return (
-                    <ListButtonUser
-                        editDisable = {true}
-                        // onRemoveAction={() => handleDeleteBook(code)}
+                    <ListButton
+                    onEditAction={() => handleModalUpdateBook(code, index)}
+                        onRemoveAction={() => handleDeleteBook(code, index)}
                         removeButtonName="btnDeleteUser"
-                    ></ListButtonUser>
+                    ></ListButton>
                 );
             },
-            width: "15%"
+            width: "20%"
         }
     ]
 
@@ -117,11 +123,11 @@ const DetailBooks = ({ prefixPath }) => {
             value: "WAITING"
         },
         {
-            title: "Chưa được mượn",
+            title: "Sẵn sàng",
             value: "READY"
         },
         {
-            title: "Đang được mượn",
+            title: "Đang cho mượn",
             value: "BORROWING"
         }
     ]
@@ -138,7 +144,7 @@ const DetailBooks = ({ prefixPath }) => {
     var initPagingFilter = {
         page: 1,
         size: 10,
-        order_by: "created_time",
+        order_by: "serial",
         order: -1,
     };
 
@@ -203,6 +209,74 @@ const DetailBooks = ({ prefixPath }) => {
         document.getElementById("do-an-form-create-book-button").click();
     }
 
+    const handleNumberItemChange = (newSize, newPage) => {
+        console.log(newSize);
+        let newSearchFilter = {
+            ...filter,
+            size: newSize,
+            page: 1
+        }
+        // setSearchParams(newSearchFilter)
+        BookAction.updateBookFilterAction(dispatch, newSearchFilter)
+        BookAction.updateBookPagination(dispatch, {
+            ...pagination,
+            size: newSize,
+            page: 1
+        })
+        BookAction.getListBookAction(dispatch,code ,newSearchFilter)
+    }
+
+    const handleNumberPagehange = (newPage) => {
+        let newSearchFilter = {
+            ...filter,
+            page: newPage
+        }
+        // setSearchParams(newSearchFilter)
+        BookAction.updateBookFilterAction(dispatch, newSearchFilter)
+        BookAction.updateBookPagination(dispatch, {
+            ...pagination,
+            page: newPage
+        })
+        BookAction.getListBookAction(dispatch, code ,newSearchFilter)
+    }
+
+    console.log(filter);
+
+    const [codeDelete, setCodeDelete] = useState(null)
+    const [openModalDelete, setOpenModalDelete] = useState(false)
+
+    const handleDeleteBook = (codeBook, dataBook) => {
+        console.log(dataBook);
+        if(dataBook.user_borrow === null || dataBook.user_borrow === ""){
+            setCodeDelete(codeBook)
+            setOpenModalDelete(true)
+        }
+        else{
+            openNotificationCommon("error", "Thông báo", "Sách đang có người mượn, không thế xóa!")
+        }
+    }
+
+    const handleDeleteConfirmDialog = () => {
+        BookAction.removeBookAction(dispatch, code, codeDelete, filter)
+    }
+
+    const handleCancelConfirmDialog = () => {
+        setCodeDelete("")
+        setOpenModalDelete(false)
+    }
+
+    const [openModalSingle, setOpenModalSingle] = useState(false)
+    const [dataBook, setDataBook] = useState(null)
+
+    const handleModalUpdateBook = (codeBook, dataBook) => {
+        setDataBook(dataBook)
+        setOpenModalSingle(!openModalSingle)
+    }
+
+    const onSubmitFormUpdateBookSingle = () => {
+        document.getElementById("do-an-form-update-book-button").click()
+    }
+
     return (
         <div className='do-an__view-books-container'>
             <div className='do-an__view-books-container__header'>
@@ -253,10 +327,10 @@ const DetailBooks = ({ prefixPath }) => {
                     </div>
                     <div className='do-an__view-books-container__info__row'>
                         <div className='do-an__view-books-container__info__row__title'>
-                            Ngày tạo:
+                            Tủ số:
                         </div>
                         <div className='do-an__view-books-container__info__row__value'>
-                            {booksDetail.created_time}
+                            {booksDetail?.cabinet}
                         </div>
                     </div>
                     <div className='do-an__view-books-container__info__row'>
@@ -386,6 +460,8 @@ const DetailBooks = ({ prefixPath }) => {
                 <DataTable headerData={columnBook}
                     tableData={listBook}
                     pagination={pagination}
+                    onNumberItemChange={handleNumberItemChange}
+                    onPageChange={handleNumberPagehange}
                 >
                 </DataTable>
             </div>
@@ -443,6 +519,44 @@ const DetailBooks = ({ prefixPath }) => {
                     }
                 >
                     <CreateBook codeBooks={code} onCloseModal={handleCancelModalCreate}></CreateBook>
+                </Modal>
+            }
+            <Confirm
+                title="Xoá sách đơn"
+                width="45%"
+                visible={openModalDelete}
+                onCancel={handleCancelConfirmDialog}
+                onOk={handleDeleteConfirmDialog}
+            >
+                <p>Xác nhận xóa sách {codeDelete}?</p>
+            </Confirm>
+
+            {openModalSingle &&
+                <Modal
+                    title="Cập nhật thông tin sách"
+                    width="40%"
+                    onCancel={handleModalUpdateBook}
+                    visible={openModalSingle}
+                    footer={
+                        <div className='do-an__modal__footer'>
+                            <Button
+                                type={"normal-blue"}
+                                onClick={onSubmitFormUpdateBookSingle}
+                            >
+                                Cập nhật
+                            </Button>
+                            <Button
+                                type={"normal-gray"}
+                                onClick={handleModalUpdateBook}
+                            >
+                                Hủy bỏ
+                            </Button>
+                        </div>
+                    }
+                >
+                    <UpdateBook codeBooks={code} dataBook={dataBook} onCloseModal={handleModalUpdateBook}>
+
+                    </UpdateBook>
                 </Modal>
             }
         </div>

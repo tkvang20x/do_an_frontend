@@ -33,7 +33,8 @@ const booksService = {
                     publishing_year: formData.publishing_year,
                     origin: formData.origin,
                     group_code: formData.group_code,
-                    amount: formData.amount
+                    amount: formData.amount,
+                    cabinet: formData.cabinet
                 });
             const formDataBooks = new FormData();
             formDataBooks.append("data", booksData);

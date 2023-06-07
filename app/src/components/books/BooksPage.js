@@ -87,6 +87,14 @@ const BooksPage = ({ prefixPath }) => {
             width: "10%"
         },
         {
+            title: "Tủ đựng",
+            dataIndex: "cabinet",
+            render: (text) => {
+                return <span>{text}</span>;
+            },
+            width: "8%"
+        },
+        {
             title: "Số lượng",
             dataIndex: "total_books",
             render: (text) => {

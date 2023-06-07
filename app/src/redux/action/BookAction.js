@@ -125,13 +125,53 @@ const createBookAction = async (dispatch,formCreate, filter) => {
   
 }
 
+const removeBookAction = async (dispatch,codeBooks ,code, filter) => {
+  try {
+      const response = await BookService.deleteBook(code)
+      if (response.data.status === 204){
+          openNotificationCommon("success", "Thông báo", `Xóa sách đơn ${code} thành công!`)
+          getListBookAction(dispatch,codeBooks ,filter)
+          return true
+      }else{
+          openNotificationCommon("error", "Thông báo", `Xóa sách đơn ${code} thất bại!`)
+      }
+      return false
+  } catch (error) {
+      openNotificationCommon("error", "Thông báo", `Xóa sách đơn ${code} thất bại!`)
+      console.log("BooksAction || remove || Cause by ", error)
+      return false
+  }
+}
+
+const updateBookAction = async (dispatch,code_books ,code_id, formUpdate, filter) => {
+  try {
+    const response = await BookService.updateBook(code_id, formUpdate)
+    if (response.data.status === 200) {
+      openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
+
+      getListBookAction(dispatch,code_books, filter);
+
+      return true
+    } else {
+      openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
+    }
+    return false;
+  } catch (err) {
+    console.log("UpdateBook Action - error: ", err);
+    openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+    return null;
+  }
+}
+
 
  const BookAction = {
     getListBookAction,
     updateBookFilterAction,
     updateBookPagination,
     getDetailBookAction,
-    createBookAction
+    createBookAction,
+    removeBookAction,
+    updateBookAction
  } 
 
  export default BookAction;

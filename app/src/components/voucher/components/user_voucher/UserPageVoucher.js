@@ -114,44 +114,51 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        let urlParams = { ...initPagingFilter }
-        if (searchParams.get('name')) {
-            urlParams["name"] = searchParams.get('name')
-        }
-        if (searchParams.get('code')) {
-            urlParams["code"] = searchParams.get('code')
-        }
-        if (searchParams.get('page')) {
-            urlParams["page"] = parseInt(searchParams.get('page'))
-        }
-        if (searchParams.get('size')) {
-            urlParams["size"] = parseInt(searchParams.get('size'))
-        }
-        if (searchParams.get('order_by')) {
-            urlParams["order_by"] = searchParams.get('order_by')
-        }
-        if (searchParams.get('order')) {
-            urlParams["order"] = parseInt(searchParams.get('order'))
-        }
+        // let urlParams = { ...initPagingFilter }
+        // if (searchParams.get('name')) {
+        //     urlParams["name"] = searchParams.get('name')
+        // }
+        // if (searchParams.get('code')) {
+        //     urlParams["code"] = searchParams.get('code')
+        // }
+        // if (searchParams.get('page')) {
+        //     urlParams["page"] = parseInt(searchParams.get('page'))
+        // }
+        // if (searchParams.get('size')) {
+        //     urlParams["size"] = parseInt(searchParams.get('size'))
+        // }
+        // if (searchParams.get('order_by')) {
+        //     urlParams["order_by"] = searchParams.get('order_by')
+        // }
+        // if (searchParams.get('order')) {
+        //     urlParams["order"] = parseInt(searchParams.get('order'))
+        // }
 
-        setSearchParams(urlParams)
-        UserAction.updateUserFilterAction(dispatch, urlParams)
+        // setSearchParams(urlParams)
+        UserAction.updateUserFilterAction(dispatch, initPagingFilter)
         UserAction.updateUserPagination(dispatch, {
             ...pagination,
-            page: urlParams.page,
-            size: urlParams.size
+            page: initPagingFilter.page,
+            size: initPagingFilter.size
         })
-        UserAction.getListUserAction(dispatch, urlParams)
+        UserAction.getListUserAction(dispatch, initPagingFilter)
     }, [])
 
 
 
     const handleChangeInputSearch = (field, value) => {
         let newSearchFilter = { ...filter ,[field]: value }
-        console.log(newSearchFilter);
         // const newSearchFilter = { ...filter, [field]: value }
 
         UserAction.updateUserFilterAction(dispatch, newSearchFilter)
+    }
+
+    const handleChangeDropdownSearch = (field, value) => {
+        let newSearchFilter = { ...filter ,[field]: value }
+        // const newSearchFilter = { ...filter, [field]: value }
+
+        UserAction.updateUserFilterAction(dispatch, newSearchFilter)
+        UserAction.getListUserAction(dispatch, newSearchFilter)
     }
 
     const handleSearch = () => {
@@ -160,13 +167,12 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
     }
 
     const handleNumberItemChange = (newSize, newPage) => {
-        console.log(newSize);
         let newSearchFilter = {
             ...filter,
             size: newSize,
             page: 1
         }
-        setSearchParams(newSearchFilter)
+        // setSearchParams(newSearchFilter)
         UserAction.updateUserFilterAction(dispatch, newSearchFilter)
         UserAction.updateUserPagination(dispatch, {
             ...pagination,
@@ -181,7 +187,7 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
             ...filter,
             page: newPage
         }
-        setSearchParams(newSearchFilter)
+        // setSearchParams(newSearchFilter)
         UserAction.updateUserFilterAction(dispatch, newSearchFilter)
         UserAction.updateUserPagination(dispatch, {
             ...pagination,
@@ -190,7 +196,11 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
         UserAction.getListUserAction(dispatch, newSearchFilter)
     }
 
-
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSearch()
+        }
+    }
 
     return (
         <div className="do-an__user">
@@ -208,6 +218,7 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
                             <input className="do-an__user__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("name", event.target.value)}
                                 value={filter?.name || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -219,6 +230,7 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
                             <input className="do-an__user__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("code", event.target.value)}
                                 value={filter?.code || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -231,7 +243,7 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
                                 listItem={listOrderBy}
                                 selected={filter?.order_by || "created_time"}
                                 name="order_by"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>
@@ -244,7 +256,7 @@ const UserPageVoucher = ({ prefixPath, handleSelectUser }) => {
                                 listItem={listOrder}
                                 selected={filter?.order || -1}
                                 name="order"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>

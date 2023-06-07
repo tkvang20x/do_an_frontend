@@ -14,6 +14,7 @@ import ConstAPI from '../../common/const';
 import Confirm from '../../share/ecm-base/components/confirm/Confirm';
 import CreateManager from './create-manager/CreateManager';
 import DetailManager from './get-detail-manager/DetailManager';
+import { event } from 'jquery';
 
 const ManagerPage = ({ prefixPath }) => {
 
@@ -177,6 +178,14 @@ const ManagerPage = ({ prefixPath }) => {
         ManagerAction.updateManagerFilterAction(dispatch, newSearchFilter)
     }
 
+    const handleChangeDropdownSearch = (field, value) => {
+        let newSearchFilter = { ...filter ,[field]: value }
+        // const newSearchFilter = { ...filter, [field]: value }
+
+        ManagerAction.updateManagerFilterAction(dispatch, newSearchFilter)
+        ManagerAction.getListManagerAction(dispatch, newSearchFilter)
+    }
+
     const handleSearch = () => {
         setSearchParams(filter)
         ManagerAction.getListManagerAction(dispatch, filter)
@@ -251,6 +260,12 @@ const ManagerPage = ({ prefixPath }) => {
         setDetailManager(null)
     }
 
+    const handleKeyDown = (event) => {
+        if (event.key === "Enter") {
+            handleSearch()
+        }
+    }
+
     return (
         <div className="do-an__manager">
             <div className="do-an__manager__image-cover">
@@ -267,6 +282,7 @@ const ManagerPage = ({ prefixPath }) => {
                             <input className="do-an__manager__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("name", event.target.value)}
                                 value={filter?.name || ""}
+                                onKeyDown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -278,6 +294,7 @@ const ManagerPage = ({ prefixPath }) => {
                             <input className="do-an__manager__group-search__item__input"
                                 onChange={(event) => handleChangeInputSearch("code", event.target.value)}
                                 value={filter?.code || ""}
+                                onkeydown={(event) => handleKeyDown(event)}
                             />
                         </div>
                     </div>
@@ -290,7 +307,7 @@ const ManagerPage = ({ prefixPath }) => {
                                 listItem={listOrderBy}
                                 selected={filter?.order_by || "created_time"}
                                 name="order_by"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>
@@ -303,7 +320,7 @@ const ManagerPage = ({ prefixPath }) => {
                                 listItem={listOrder}
                                 selected={filter?.order || -1}
                                 name="order"
-                                onSelected={handleChangeInputSearch}
+                                onSelected={handleChangeDropdownSearch}
                             />
                         </div>
                     </div>

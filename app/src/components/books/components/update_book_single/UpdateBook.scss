@@ -1,12 +1,12 @@
-.do-an-form-update-books {
+.do-an-form-update-book {
     &__body {
 
         &__content {
-            padding: 10px;
+            padding: 0px 10px 30px 10px;
             display: flex;
 
             &__info {
-                width: 80%;
+                width: 100%;
             }
 
             &__avatar {
@@ -14,16 +14,16 @@
             }
         }
 
-        &__group-input {
+        &__book-input {
             display: flex;
             margin: 12px;
 
             &__key {
-                width: 15%;
+                width: 30%;
             }
 
             &__input {
-                width: 85%;
+                width: 70%;
             }
 
             &__input-add-image{
@@ -33,24 +33,11 @@
             }
         }
     }  
-}
-
-.do-an-preview-image{
-    height: 160px;
-    width: 140px;
-    object-fit: contain;
-    margin-top: 10px;
+    .do-an-dropdown-update{
+        width: 50%;
+    }
 }
 
 
 
-.do-an-title-avatar{
-    font-size: 14px;
-    font-weight: 600;
-    margin-top: 10px;
-}
-
-.do-an-dropdown-update{
-    width: 50%;
-}
 

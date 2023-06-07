@@ -75,7 +75,7 @@ const MenuProject = ({ prefixPath, isExpand }) => {
                     icon: faBookOpen
                 },
                 {
-                    title: "Quản trị nhân viên",
+                    title: "Quản trị thủ thư",
                     url: `${prefixPath}/manager/manager-list`,
                     children: [],
                     icon: faUserSecret

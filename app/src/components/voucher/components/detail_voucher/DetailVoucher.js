@@ -277,7 +277,7 @@ const DetailVoucher = ({ prefixPath }) => {
                                 Người duyệt:
                             </div>
                             <div className='do-an__view-voucher-container__info__row__value'>
-                                {detailVoucher?.created_by}
+                                {detailVoucher?.manager_name}
                             </div>
                         </div>
                         <div className='do-an__view-voucher-container__info__row'>
