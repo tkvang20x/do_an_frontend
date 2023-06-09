@@ -15,6 +15,7 @@ import Confirm from '../../share/ecm-base/components/confirm/Confirm';
 import CreateManager from './create-manager/CreateManager';
 import DetailManager from './get-detail-manager/DetailManager';
 import { event } from 'jquery';
+import ImageView from '../image/ImageView';
 
 const ManagerPage = ({ prefixPath }) => {
 
@@ -72,7 +73,7 @@ const ManagerPage = ({ prefixPath }) => {
             title: "Ảnh",
             dataIndex: "avatar",
             render: (text) => {
-                return text !== null ? <img style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
+                return text !== null ? <img onClick={() => handleModalViewImage(text)}  style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
             },
             width: "10%"
         },
@@ -131,6 +132,8 @@ const ManagerPage = ({ prefixPath }) => {
 
     const [searchParams, setSearchParams] = useSearchParams({});
     const dispatch = useDispatch();
+    const [isOpenModalImage, setIsOpenModalImage] = useState(false)
+    const [dataImage, setDataImage] = useState()
 
     const [isHiddenModalCreateManager, setIsHiddenModalCreateManager] = useState(false)
 
@@ -266,6 +269,16 @@ const ManagerPage = ({ prefixPath }) => {
         }
     }
 
+    const handleModalViewImage = (src) => {
+        setIsOpenModalImage(true)
+        setDataImage(src)
+    }
+
+    const handleOnCancelViewImage = () => {
+        setIsOpenModalImage(false)
+        setDataImage("")
+    }
+
     return (
         <div className="do-an__manager">
             <div className="do-an__manager__image-cover">
@@ -390,6 +403,20 @@ const ManagerPage = ({ prefixPath }) => {
             >
                 <p>Nếu xóa {codeManagerDelete} thì dữ liệu thông tin của quản lý sẽ mất hết, xác nhận xóa?</p>
             </Confirm>
+
+            {isOpenModalImage &&
+                <Modal
+                    title="Ảnh đại diện"
+                    width="40%"
+                    onCancel={handleOnCancelViewImage}
+                    visible={isOpenModalImage}
+                >
+                    <ImageView src={dataImage}>
+
+                    </ImageView>
+
+                </Modal>
+            }
         </div>
     )
 }

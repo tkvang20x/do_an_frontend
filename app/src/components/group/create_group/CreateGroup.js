@@ -59,9 +59,9 @@ const CreateGroup = ({ onCloseModal }) => {
                                     )}
                                 />
                                 {errors.group_name?.type === "required" &&
-                                    <div className="input-value-error">Tên người dùng không được trống!</div>}
+                                    <div className="input-value-error">Tên thể loại không được trống!</div>}
                                 {errors.group_name?.type === "maxLength" &&
-                                    <div className="input-value-error">Tên người dùng không được vượt quá 100 ký tự!</div>}
+                                    <div className="input-value-error">Tên thể loại không được vượt quá 100 ký tự!</div>}
                             </div>
                         </div>
                         <div className="do-an-form-create-group__body__group-input">

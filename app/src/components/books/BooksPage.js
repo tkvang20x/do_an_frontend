@@ -15,6 +15,7 @@ import { ListButton } from '../../common/utils';
 import ConstAPI from '../../common/const';
 import Confirm from '../../share/ecm-base/components/confirm/Confirm';
 import UpdateBooks from './components/update_books/UpdateBooks';
+import ImageView from '../image/ImageView';
 
 const BooksPage = ({ prefixPath }) => {
 
@@ -39,7 +40,8 @@ const BooksPage = ({ prefixPath }) => {
                         overflow: "hidden",
                         whiteSpace: "nowrap",
                         display: "inline-block",
-                        width: "200px"
+                        width: "200px",
+                        padding: "5px"
                     }}
                 >{text}</span>
             },
@@ -57,7 +59,7 @@ const BooksPage = ({ prefixPath }) => {
             title: "Ảnh",
             dataIndex: "avatar",
             render: (text) => {
-                return text !== null ? <img style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
+                return text !== null ? <img onClick={() => handleModalViewImage(text)} style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
             },
             width: "10%"
         },
@@ -66,14 +68,14 @@ const BooksPage = ({ prefixPath }) => {
             dataIndex: "title",
             render: (text) => {
                 return <span
-                title={text}
-                style={{
-                    textOverflow: "ellipsis",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    display: "inline-block",
-                    width: "150px"
-                }}
+                    title={text}
+                    style={{
+                        textOverflow: "ellipsis",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        display: "inline-block",
+                        width: "150px"
+                    }}
                 >{text}</span>;
             },
             width: "10%"
@@ -92,7 +94,7 @@ const BooksPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>;
             },
-            width: "8%"
+            width: "5%"
         },
         {
             title: "Số lượng",
@@ -100,7 +102,7 @@ const BooksPage = ({ prefixPath }) => {
             render: (text) => {
                 return <span>{text}</span>;
             },
-            width: "10%"
+            width: "5%"
         },
         {
             title: "Thao tác",
@@ -110,11 +112,11 @@ const BooksPage = ({ prefixPath }) => {
                     <ListButton
                         onRemoveAction={() => handleDeleteBooks(code)}
                         removeButtonName="btnDeleteBooks"
-                        onEditAction={() => {handleEditBooks(code)}}
+                        onEditAction={() => { handleEditBooks(code) }}
                     ></ListButton>
                 );
             },
-            width: "15%"
+            width: "25%"
         }
     ]
 
@@ -157,6 +159,8 @@ const BooksPage = ({ prefixPath }) => {
     const dispatch = useDispatch();
 
     const [isHiddenModalCreateBooks, setIsHiddenModalCreateBooks] = useState(false)
+    const [isOpenModalImage, setIsOpenModalImage] = useState(false)
+    const [dataImage, setDataImage] = useState()
 
     useEffect(() => {
         let urlParams = { ...initPagingFilter }
@@ -321,10 +325,10 @@ const BooksPage = ({ prefixPath }) => {
 
     const onSubmitFormUpdate = () => {
         document.getElementById("do-an-form-update-books-button").click();
-        
+
     }
 
-    const onCancelUpdate = () =>{
+    const onCancelUpdate = () => {
         setOpenModalUpdate(false)
         setIdUpdate(null)
     }
@@ -333,6 +337,16 @@ const BooksPage = ({ prefixPath }) => {
         if (event.key === "Enter") {
             handleSearch()
         }
+    }
+
+    const handleModalViewImage = (src) => {
+        setIsOpenModalImage(true)
+        setDataImage(src)
+    }
+
+    const handleOnCancelViewImage = () => {
+        setIsOpenModalImage(false)
+        setDataImage("")
     }
 
     return (
@@ -505,6 +519,20 @@ const BooksPage = ({ prefixPath }) => {
 
                     </UpdateBooks>
                 </Modal>}
+
+            {isOpenModalImage &&
+                <Modal
+                    title="Ảnh đại diện"
+                    width="40%"
+                    onCancel={handleOnCancelViewImage}
+                    visible={isOpenModalImage}
+                >
+                    <ImageView src={dataImage}>
+
+                    </ImageView>
+
+                </Modal>
+            }
         </div>
     )
 }

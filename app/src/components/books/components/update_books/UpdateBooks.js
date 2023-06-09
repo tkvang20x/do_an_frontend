@@ -50,6 +50,7 @@ const UpdateBooks = ({ onCloseModal , codeBooks}) => {
         setValue("publishing_year", booksDetail?.publishing_year)
         setValue("origin", booksDetail?.origin)
         setValue("group_code", booksDetail?.group_code)
+        setValue("cabinet", booksDetail?.cabinet)
         setImage(`${ConstAPI.BASE_HOST_API}${booksDetail?.avatar}`)
         setFormUpdateBooks({
             "name": booksDetail?.name,
@@ -60,6 +61,7 @@ const UpdateBooks = ({ onCloseModal , codeBooks}) => {
             "publishing_year": booksDetail?.publishing_year,
             "origin": booksDetail?.origin,
             "group_code": booksDetail?.group_code,
+            "cabinet": booksDetail?.cabinet
         })
     }, [booksDetail])
 
@@ -282,6 +284,28 @@ const UpdateBooks = ({ onCloseModal , codeBooks}) => {
                                     <div className="input-value-error">Nhà xuất bản sách không được trống!</div>}
                                 {errors.origin?.type === "maxLength" &&
                                     <div className="input-value-error">Nhà xuất bản sách không được vượt quá 100 ký tự!</div>}
+                            </div>
+                        </div>
+                        <div className="do-an-form-update-books__body__group-input">
+                            <div className="do-an-form-update-books__body__group-input__key">
+                                <span>Tủ đựng: <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an-form-update-books__body__group-input__input">
+                                <input
+                                    className={`do-an__input do-an-input-name input-number ${errors.name ? 'is-invalid' : ''}`}
+                                    {...register("cabinet",
+                                        {
+                                            required: true,
+                                            maxLength: 2,
+                                            onChange: (e) => handleChangeInput("cabinet", e.target.value)
+                                        }
+                                    )}
+                                    type="number"
+                                />
+                                {errors.cabinet?.type === "required" &&
+                                    <div className="input-value-error">Số của tủ đựng sách không được trống!</div>}
+                                {errors.cabinet?.type === "maxLength" &&
+                                    <div className="input-value-error">Số của tủ đựng sách không được vượt quá 100!</div>}
                             </div>
                         </div>
                     </div>

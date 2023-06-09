@@ -161,6 +161,41 @@ const CreateUser = ({ onCloseModal }) => {
                         </div>
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
+                                <span>Giới tính: <i className="do-an__input-require">*</i></span>
+                            </div>
+                            <div className="do-an-form-create-user__body__group-input__input">
+                                <DropDown className="do-an-dropdown-create"
+                                    listItem={listDefaultDropDown}
+                                    selected={formCreate.gender || listDefaultDropDown[0]?.value}
+                                    name="gender"
+                                    onSelected={handleChangeInput}
+                                />
+
+                            </div>
+                        </div>
+                        <div className="do-an-form-create-user__body__group-input">
+                            <div className="do-an-form-create-user__body__group-input__key">
+                                <span>Ngày sinh:</span>
+                            </div>
+                            <div className="do-an-form-create-user__body__group-input__input">
+                                {/* <input
+                                    className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
+                                    {...register("date_of_birth",
+                                        {
+                                            onChange: (e) => handleChangeInput("date_of_birth", e.target.value)
+                                        }
+                                    )}
+                                /> */}
+                                <DatePicker
+                                    placeholder="Ngày sinh"
+                                    onChange={(e) => handleChangeInput("date_of_birth", e)}
+                                >
+
+                                </DatePicker>
+                            </div>
+                        </div>
+                        <div className="do-an-form-create-user__body__group-input">
+                            <div className="do-an-form-create-user__body__group-input__key">
                                 <span>Phân quyền: <i className="do-an__input-require">*</i></span>
                             </div>
                             <div className="do-an-form-create-user__body__group-input__input">
@@ -242,41 +277,6 @@ const CreateUser = ({ onCloseModal }) => {
                                 </div>
                             </div>  
                         }
-                        <div className="do-an-form-create-user__body__group-input">
-                            <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Giới tính: <i className="do-an__input-require">*</i></span>
-                            </div>
-                            <div className="do-an-form-create-user__body__group-input__input">
-                                <DropDown className="do-an-dropdown-create"
-                                    listItem={listDefaultDropDown}
-                                    selected={formCreate.gender || listDefaultDropDown[0]?.value}
-                                    name="gender"
-                                    onSelected={handleChangeInput}
-                                />
-
-                            </div>
-                        </div>
-                        <div className="do-an-form-create-user__body__group-input">
-                            <div className="do-an-form-create-user__body__group-input__key">
-                                <span>Ngày sinh:</span>
-                            </div>
-                            <div className="do-an-form-create-user__body__group-input__input">
-                                {/* <input
-                                    className={`do-an__input do-an-input-name ${errors.name ? 'is-invalid' : ''}`}
-                                    {...register("date_of_birth",
-                                        {
-                                            onChange: (e) => handleChangeInput("date_of_birth", e.target.value)
-                                        }
-                                    )}
-                                /> */}
-                                <DatePicker
-                                    placeholder="Ngày sinh"
-                                    onChange={(e) => handleChangeInput("date_of_birth", e)}
-                                >
-
-                                </DatePicker>
-                            </div>
-                        </div>
                         <div className="do-an-form-create-user__body__group-input">
                             <div className="do-an-form-create-user__body__group-input__key">
                                 <span>Đại học: <i className="do-an__input-require">*</i></span>

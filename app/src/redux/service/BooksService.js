@@ -34,7 +34,8 @@ const booksService = {
                     origin: formData.origin,
                     group_code: formData.group_code,
                     amount: formData.amount,
-                    cabinet: formData.cabinet
+                    cabinet: formData.cabinet,
+                    compartment:formData.compartment
                 });
             const formDataBooks = new FormData();
             formDataBooks.append("data", booksData);
@@ -68,7 +69,8 @@ const booksService = {
                     name_university: formData.name_university,
                     publishing_year: formData.publishing_year,
                     origin: formData.origin,
-                    group_code: formData.group_code
+                    group_code: formData.group_code,
+                    cabinet: formData.cabinet
                 });
             const formDataBooks = new FormData();
             formDataBooks.append("data_update", booksDataUpdate);

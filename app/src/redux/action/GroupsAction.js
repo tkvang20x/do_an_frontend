@@ -11,9 +11,8 @@ import { GroupsSlice } from "../../redux/slice/GroupsSlice";
  */
 const getListGroupsAction = async (dispatch, paging) => {
   try {
-    // get response from api
+    startLoading()
     const response = await GroupsService.getList(paging);
-    console.log(response);
     if (
       Utils.isNotNullOrUndefined(response) &&
       Utils.isNotNullOrUndefined(response.data) &&
@@ -37,7 +36,7 @@ const getListGroupsAction = async (dispatch, paging) => {
             totalItem: pagingResult.total_records,
         })
     );
-
+    stopLoading()
     } else {
       // dispath data to reducer - empty
       dispatch(
@@ -52,8 +51,10 @@ const getListGroupsAction = async (dispatch, paging) => {
             totalItem: 0,
         })
     );
+    stopLoading()
     }
   } catch (err) {
+    stopLoading()
     console.log("getListGroupsAction - error: ", err);
     openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
     return null;
@@ -62,18 +63,21 @@ const getListGroupsAction = async (dispatch, paging) => {
 
 const updateGroupAction = async (dispatch, group_code, formData, filter) => {
   try {
+    startLoading()
     const response = await GroupsService.update(group_code, formData)
     if (response.data.status === 200) {
       openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
 
       getListGroupsAction(dispatch, filter);
-
+      stopLoading()
       return true
     } else {
+      stopLoading()
       openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
     }
     return false;
   } catch (err) {
+    stopLoading()
     console.log("UpdateGroup Action - error: ", err);
     openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
     return null;
@@ -101,6 +105,7 @@ const updateGroupPagination = (dispatch, pagination) => {
 
 const createGroupAction = async (formData, dispatch, filter) => {
   try {
+    startLoading()
     const response = await GroupsService.create(
       formData
     );
@@ -108,13 +113,15 @@ const createGroupAction = async (formData, dispatch, filter) => {
     if (response.data.status === 201) {
       openNotificationCommon("success", "Thông báo", "Thêm mới thể loại thành công!")
       getListGroupsAction(dispatch, filter)
+      stopLoading()
       return true
     } else {
       openNotificationCommon("error", "Thông báo", "Thêm mới thể loại thất bại!")
+      stopLoading()
       return false
     }
-  //   return response
   } catch (err) {
+    stopLoading()
     console.log("createGroupAction - error: ", err);
     openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
     return false;

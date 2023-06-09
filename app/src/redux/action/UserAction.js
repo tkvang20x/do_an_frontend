@@ -12,7 +12,6 @@ import { UserSlice } from "../../redux/slice/UserSlice";
 const getListUserAction = async (dispatch, paging) => {
     try {
         // get response from api
-        console.log(paging);
         const response = await UserService.getListUser(paging);
         if (
             Utils.isNotNullOrUndefined(response) &&

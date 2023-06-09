@@ -25,14 +25,6 @@ const DetailVoucher = ({ prefixPath }) => {
             width: "20%"
         },
         {
-            title: "Tình trạng sách",
-            dataIndex: "status_book",
-            render: (text) => {
-                return <span>{text}</span>
-            },
-            width: "10%"
-        },
-        {
             title: "Tên sách",
             dataIndex: "name",
             render: (text, index) => {

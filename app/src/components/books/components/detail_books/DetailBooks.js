@@ -18,6 +18,7 @@ import CreateBook from '../create_book_single/CreateBook';
 import { ListButton, ListButtonUser } from '../../../../common/utils';
 import Confirm from '../../../../share/ecm-base/components/confirm/Confirm';
 import UpdateBook from '../update_book_single/UpdateBook';
+import ImageView from '../../../image/ImageView';
 
 const DetailBooks = ({ prefixPath }) => {
 
@@ -78,7 +79,7 @@ const DetailBooks = ({ prefixPath }) => {
             title: "Mã QR Code",
             dataIndex: "qr_code_data",
             render: (text) => {
-                return text !== null ? <img style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
+                return text !== null ? <img onClick={() => handleModalViewImage(text)} style={{ width: "40px" }} src={`${ConstAPI.BASE_HOST_API}${text}`}></img> : <span>Không có avatar</span>;
             },
             width: "15%"
         },
@@ -88,7 +89,7 @@ const DetailBooks = ({ prefixPath }) => {
             render: (code, index) => {
                 return (
                     <ListButton
-                    onEditAction={() => handleModalUpdateBook(code, index)}
+                        onEditAction={() => handleModalUpdateBook(code, index)}
                         onRemoveAction={() => handleDeleteBook(code, index)}
                         removeButtonName="btnDeleteUser"
                     ></ListButton>
@@ -223,7 +224,7 @@ const DetailBooks = ({ prefixPath }) => {
             size: newSize,
             page: 1
         })
-        BookAction.getListBookAction(dispatch,code ,newSearchFilter)
+        BookAction.getListBookAction(dispatch, code, newSearchFilter)
     }
 
     const handleNumberPagehange = (newPage) => {
@@ -237,21 +238,21 @@ const DetailBooks = ({ prefixPath }) => {
             ...pagination,
             page: newPage
         })
-        BookAction.getListBookAction(dispatch, code ,newSearchFilter)
+        BookAction.getListBookAction(dispatch, code, newSearchFilter)
     }
 
-    console.log(filter);
-
+    const [isOpenModalImage, setIsOpenModalImage] = useState(false)
+    const [dataImage, setDataImage] = useState()
     const [codeDelete, setCodeDelete] = useState(null)
     const [openModalDelete, setOpenModalDelete] = useState(false)
 
     const handleDeleteBook = (codeBook, dataBook) => {
         console.log(dataBook);
-        if(dataBook.user_borrow === null || dataBook.user_borrow === ""){
+        if (dataBook.user_borrow === null || dataBook.user_borrow === "") {
             setCodeDelete(codeBook)
             setOpenModalDelete(true)
         }
-        else{
+        else {
             openNotificationCommon("error", "Thông báo", "Sách đang có người mượn, không thế xóa!")
         }
     }
@@ -275,6 +276,16 @@ const DetailBooks = ({ prefixPath }) => {
 
     const onSubmitFormUpdateBookSingle = () => {
         document.getElementById("do-an-form-update-book-button").click()
+    }
+
+    const handleModalViewImage = (src) => {
+        setIsOpenModalImage(true)
+        setDataImage(src)
+    }
+
+    const handleOnCancelViewImage = () => {
+        setIsOpenModalImage(false)
+        setDataImage("")
     }
 
     return (
@@ -322,7 +333,9 @@ const DetailBooks = ({ prefixPath }) => {
                             Mô tả:
                         </div>
                         <div className='do-an__view-books-container__info__row__value'>
-                            {booksDetail.description}
+                            <span title={booksDetail.description} className='do-an__view-books-container__info__row__value__text'>
+                                {booksDetail.description}
+                            </span>
                         </div>
                     </div>
                     <div className='do-an__view-books-container__info__row'>
@@ -357,7 +370,9 @@ const DetailBooks = ({ prefixPath }) => {
                             Tiêu đề sách:
                         </div>
                         <div className='do-an__view-books-container__info__row__value'>
-                            {booksDetail.title}
+                            <span title={booksDetail.description} className='do-an__view-books-container__info__row__value__text'>
+                                {booksDetail.title}
+                            </span>
                         </div>
                     </div>
                     <div className='do-an__view-books-container__info__row'>
@@ -387,7 +402,7 @@ const DetailBooks = ({ prefixPath }) => {
                     </div>
                 </div>
                 <div className='do-an__view-books-container__info__avatar'>
-                    <img className="do-an-preview-image" src={`${ConstAPI.BASE_HOST_API}${booksDetail.avatar}`}></img>
+                    <img className="do-an-preview-image" onClick={() => handleModalViewImage(booksDetail.avatar)} src={`${ConstAPI.BASE_HOST_API}${booksDetail.avatar}`}></img>
                 </div>
             </div>
             <div className='do-an__view-books-container__button-add'>
@@ -557,6 +572,20 @@ const DetailBooks = ({ prefixPath }) => {
                     <UpdateBook codeBooks={code} dataBook={dataBook} onCloseModal={handleModalUpdateBook}>
 
                     </UpdateBook>
+                </Modal>
+            }
+
+            {isOpenModalImage &&
+                <Modal
+                    title="Ảnh"
+                    width="40%"
+                    onCancel={handleOnCancelViewImage}
+                    visible={isOpenModalImage}
+                >
+                    <ImageView src={dataImage}>
+
+                    </ImageView>
+
                 </Modal>
             }
         </div>

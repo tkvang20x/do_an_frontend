@@ -13,6 +13,7 @@ import { BooksSlice } from "../../redux/slice/BooksSlice";
 const getListBooksAction = async (dispatch, paging) => {
   try {
     // get response from api
+    startLoading()
     const response = await BooksService.getList(paging);
     if (
       Utils.isNotNullOrUndefined(response) &&
@@ -40,6 +41,7 @@ const getListBooksAction = async (dispatch, paging) => {
           totalItem: pagingResult.total_records,
         })
       );
+      stopLoading()
     } else {
       // dispath data to reducer - empty
       dispatch(
@@ -53,10 +55,12 @@ const getListBooksAction = async (dispatch, paging) => {
           totalItem: 0,
         })
       );
+      stopLoading()
     }
   } catch (err) {
     console.log("getListBooksAction - error: ", err);
     openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
+    stopLoading()
     return null;
   }
 };
@@ -86,6 +90,7 @@ const updateBooksPagination = (dispatch, pagination) => {
  */
 export const createBooksAction = async (formData, dispatch, filter) => {
   try {
+    startLoading()
     const response = await BooksService.create(
       formData
     );
@@ -93,8 +98,10 @@ export const createBooksAction = async (formData, dispatch, filter) => {
     if (response.data.status === 201) {
       openNotificationCommon("success", "Thông báo", "Thêm mới sách thành công!")
       getListBooksAction(dispatch, filter)
+      stopLoading()
       return true
     } else {
+      stopLoading()
       openNotificationCommon("error", "Thông báo", "Thêm mới sách thất bại!")
     }
     return response
@@ -107,8 +114,8 @@ export const createBooksAction = async (formData, dispatch, filter) => {
 
 const getDetailBooksAction = async (dispatch, code) => {
   try {
+    startLoading()
     const response = await booksService.getDetail(code)
-    console.log(response);
     if (
       Utils.isNotNullOrUndefined(response) &&
       Utils.isNotNullOrUndefined(response.data) &&
@@ -119,14 +126,17 @@ const getDetailBooksAction = async (dispatch, code) => {
           response.data.data
         )
       )
+      stopLoading()
     }
   } catch (error) {
+    stopLoading()
     console.log("BooksAction || getDetail || Cause by ", error)
   };
 }
 
 const updateBooksAction = async (dispatch,code, formData) => {
   try {
+    startLoading()
     const response = await booksService.updateBooks(code, formData)
     if (response.data.status === 200){
       openNotificationCommon("success", "Thông báo", `Cập nhật thành công!`)
@@ -135,8 +145,10 @@ const updateBooksAction = async (dispatch,code, formData) => {
               response.data.data
             )
       )
+      stopLoading()
       return true
   }else{
+    stopLoading()
       openNotificationCommon("error", "Thông báo", `Cập nhật thất bại!`)
   }
     return false;
@@ -149,16 +161,20 @@ const updateBooksAction = async (dispatch,code, formData) => {
 
 const removeBooks = async (dispatch, code, filter) => {
   try {
+      startLoading()
       const response = await booksService.remove(code)
       if (response.data.status === 204){
           openNotificationCommon("success", "Thông báo", `Xóa sách ${code} thành công!`)
           getListBooksAction(dispatch, filter)
+          stopLoading()
           return true
       }else{
+        stopLoading()
           openNotificationCommon("error", "Thông báo", `Xóa sách ${code} thất bại!`)
       }
       return false
   } catch (error) {
+    stopLoading()
       openNotificationCommon("error", "Thông báo", `Xóa sách ${code} thất bại!`)
       console.log("BooksAction || remove || Cause by ", error)
       return false

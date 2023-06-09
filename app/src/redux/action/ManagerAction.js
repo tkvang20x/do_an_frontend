@@ -1,4 +1,4 @@
-import { openNotificationCommon } from "../../common/const";
+import { openNotificationCommon, startLoading, stopLoading } from "../../common/const";
 import Utils from "../../common/utils";
 import LoginService from "../service/LoginService";
 import ManagerService from "../service/ManagerService";
@@ -12,8 +12,7 @@ import { ManagerSlice } from "../slice/ManagerSlice";
  */
 const getListManagerAction = async (dispatch, paging) => {
     try {
-        // get response from api
-        console.log(paging);
+        startLoading()
         const response = await ManagerService.getListManager(paging);
         if (
             Utils.isNotNullOrUndefined(response) &&
@@ -41,6 +40,7 @@ const getListManagerAction = async (dispatch, paging) => {
                     totalItem: pagingResult.total_records,
                 })
             );
+            stopLoading()
         } else {
             // dispath data to reducer - empty
             dispatch(
@@ -54,8 +54,10 @@ const getListManagerAction = async (dispatch, paging) => {
                     totalItem: 0,
                 })
             );
+            stopLoading()
         }
     } catch (err) {
+        stopLoading()
         console.log("getListManagerAction - error: ", err);
         openNotificationCommon("error", "Thông báo", "Đã có lỗi xảy ra!")
         return null;
