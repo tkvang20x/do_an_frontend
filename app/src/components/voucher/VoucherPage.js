@@ -151,7 +151,7 @@ const VoucherPage = ({ prefixPath }) => {
     var initPagingFilter = {
         page: 1,
         size: 10,
-        order_by: "created_time",
+        order_by: "modified_time",
         order: -1,
     };
 

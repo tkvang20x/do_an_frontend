@@ -76,6 +76,7 @@ const CreateVoucher = ({ prefixPath }) => {
             render: (code_id) => {
                 return (
                     <ListButtonUser
+                    onRemoveAction={() => handleRemoveAction(code_id)}
                         editDisable={true}
                     ></ListButtonUser>
                 );
@@ -163,17 +164,23 @@ const CreateVoucher = ({ prefixPath }) => {
         if (valueInput.trim() !== "") {
             BookAction.getDetailBookAction(dispatch, valueInput).then(response => {
                 if (response.status === 200) {
-                    setListBookTable([
-                        ...listBookTable,
-                        {
-                            "code_id": valueInput,
-                            "name": response.data.data.books.name,
-                            "avatar": response.data.data.books.avatar,
-                            "author": response.data.data.books.author,
-                            "title": response.data.data.books.title
-                        }
-                    ])
+                    console.log(response.data.data);
+                    if(response.data.data.user_borrow ===  "" || response.data.data.user_borrow === null){
 
+                        setListBookTable([
+                            ...listBookTable,
+                            {
+                                "code_id": valueInput,
+                                "name": response.data.data.books.name,
+                                "avatar": response.data.data.books.avatar,
+                                "author": response.data.data.books.author,
+                                "title": response.data.data.books.title
+                            }
+                        ])
+                    }else{
+                        openNotificationCommon("error", "Thông báo", "Sách đang có người mượn!")
+
+                    }
                 }
             })
             // setListBookCreate([
@@ -201,7 +208,15 @@ const CreateVoucher = ({ prefixPath }) => {
         navigate(`${prefixPath}/manager/voucher/list`)
     }
 
-    console.log(errors.name);
+    const handleRemoveAction = (code_id) => {
+        let index = listBookTable.findIndex(item => item.code_id === code_id)
+        let array = [...listBookTable]
+
+        if (index > -1){
+            array.splice(index , 1)
+            setListBookTable(array)
+        }
+    }
 
 
     return (
